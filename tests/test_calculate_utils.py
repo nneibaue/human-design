@@ -11,7 +11,7 @@ import tempfile
 from unittest.mock import Mock, patch
 
 import pytest
-import swisseph as swe
+import swisseph as swe  # type: ignore
 
 from human_design.calculate_utils import calc_lon_ut, geocode_place
 

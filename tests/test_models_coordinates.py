@@ -89,23 +89,18 @@ class TestGeographicalCoordinate:
         assert coord.lat == 40.7128
         assert coord.lon == -74.0060
 
-    def test_timezone_detection_new_york(self) -> None:
-        """Test timezone detection for New York."""
-        # New York coordinates
-        coord = GeographicalCoordinate(lat=40.7128, lon=-74.0060)
-        assert coord.timezone == "America/New_York"
-
-    def test_timezone_detection_london(self) -> None:
-        """Test timezone detection for London."""
-        # London coordinates
-        coord = GeographicalCoordinate(lat=51.5074, lon=-0.1278)
-        assert coord.timezone == "Europe/London"
-
-    def test_timezone_detection_tokyo(self) -> None:
-        """Test timezone detection for Tokyo."""
-        # Tokyo coordinates
-        coord = GeographicalCoordinate(lat=35.6762, lon=139.6503)
-        assert coord.timezone == "Asia/Tokyo"
+    @pytest.mark.parametrize(
+        "lat,lon,expected_tz",
+        [
+            (40.7128, -74.0060, "America/New_York"),  # New York
+            (51.5074, -0.1278, "Europe/London"),  # London
+            (35.6762, 139.6503, "Asia/Tokyo"),  # Tokyo
+        ],
+    )
+    def test_timezone_detection(self, lat: float, lon: float, expected_tz: str) -> None:
+        """Test timezone detection for various coordinates."""
+        coord = GeographicalCoordinate(lat=lat, lon=lon)
+        assert coord.timezone == expected_tz
 
     def test_invalid_coordinates_raise_error(self) -> None:
         """Test that invalid coordinates (e.g., middle of ocean) raise error."""
@@ -130,20 +125,28 @@ class TestZodiacCoordinate:
 
     def test_create_from_enum(self) -> None:
         """Test creating zodiac coordinate from ZodiacSign enum."""
-        coord = ZodiacCoordinate(
-            sign=ZodiacSign.ARIES, degree=0, minute=0, second=0
-        )
+        coord = ZodiacCoordinate(sign=ZodiacSign.ARIES, degree=0, minute=0, second=0)
         assert coord.sign == ZodiacSign.ARIES
 
-    def test_to_decimal_degrees(self) -> None:
+    @pytest.mark.parametrize(
+        "sign,degree,minute,second,expected_degrees",
+        [
+            ("VIRGO", 0, 0, 0, 150.0),  # Virgo starts at 150°
+            ("VIRGO", 15, 30, 0, 165.5),  # 150 + 15 + 0.5
+            ("ARIES", 0, 0, 0, 0.0),  # Aries starts at 0°
+        ],
+    )
+    def test_to_decimal_degrees(
+        self,
+        sign: str,
+        degree: int,
+        minute: int,
+        second: int,
+        expected_degrees: float,
+    ) -> None:
         """Test conversion to decimal degrees."""
-        # Virgo starts at 150 degrees
-        coord = ZodiacCoordinate(sign="VIRGO", degree=0, minute=0, second=0)
-        assert coord.to_decimal_degrees() == 150.0
-
-        coord = ZodiacCoordinate(sign="VIRGO", degree=15, minute=30, second=0)
-        # 150 + 15 + (30/60) = 165.5
-        assert coord.to_decimal_degrees() == pytest.approx(165.5)
+        coord = ZodiacCoordinate(sign=sign, degree=degree, minute=minute, second=second)
+        assert coord.to_decimal_degrees() == pytest.approx(expected_degrees)
 
     def test_serialization_by_sign_name(self) -> None:
         """Test that sign field serializes by enum name."""
@@ -172,33 +175,35 @@ class TestCoordinateRange:
         assert range_obj.start == start
         assert range_obj.end == end
 
-    def test_start_deg_property(self) -> None:
-        """Test start_deg computed property."""
-        start = ZodiacCoordinate(sign="VIRGO", degree=0, minute=0, second=0)
-        end = ZodiacCoordinate(sign="VIRGO", degree=5, minute=0, second=0)
+    @pytest.mark.parametrize(
+        "start_sign,start_deg,start_min,start_sec,end_sign,end_deg,end_min,end_sec,expected_start,expected_end",
+        [
+            ("VIRGO", 0, 0, 0, "VIRGO", 5, 0, 0, 150.0, 155.0),  # Virgo range
+            ("ARIES", 0, 0, 0, "ARIES", 5, 37, 30, 0.0, 5.625833),  # Aries range
+        ],
+    )
+    def test_start_and_end_deg_properties(
+        self,
+        start_sign: str,
+        start_deg: int,
+        start_min: int,
+        start_sec: int,
+        end_sign: str,
+        end_deg: int,
+        end_min: int,
+        end_sec: int,
+        expected_start: float,
+        expected_end: float,
+    ) -> None:
+        """Test start_deg and end_deg computed properties."""
+        start = ZodiacCoordinate(
+            sign=start_sign, degree=start_deg, minute=start_min, second=start_sec
+        )
+        end = ZodiacCoordinate(sign=end_sign, degree=end_deg, minute=end_min, second=end_sec)
         range_obj = CoordinateRange(start=start, end=end)
 
-        # Virgo starts at 150°
-        assert range_obj.start_deg == pytest.approx(150.0)
-
-    def test_end_deg_property(self) -> None:
-        """Test end_deg computed property."""
-        start = ZodiacCoordinate(sign="VIRGO", degree=0, minute=0, second=0)
-        end = ZodiacCoordinate(sign="VIRGO", degree=5, minute=30, second=0)
-        range_obj = CoordinateRange(start=start, end=end)
-
-        # 150 + 5 + (30/60) = 155.5
-        assert range_obj.end_deg == pytest.approx(155.5)
-
-    def test_range_with_minutes_and_seconds(self) -> None:
-        """Test range with complex degree/minute/second values."""
-        start = ZodiacCoordinate(sign="ARIES", degree=0, minute=0, second=0)
-        end = ZodiacCoordinate(sign="ARIES", degree=5, minute=37, second=30)
-        range_obj = CoordinateRange(start=start, end=end)
-
-        assert range_obj.start_deg == pytest.approx(0.0)
-        # 0 + 5 + (37/60) + (30/3600) = 5.625833...
-        assert range_obj.end_deg == pytest.approx(5.625833, abs=0.001)
+        assert range_obj.start_deg == pytest.approx(expected_start)
+        assert range_obj.end_deg == pytest.approx(expected_end, abs=0.001)
 
 
 class TestLocation:
@@ -206,7 +211,9 @@ class TestLocation:
 
     def test_create_location(self) -> None:
         """Test creating a location."""
-        loc = Location(place="New York, USA", latitude=40.7128, longitude=-74.0060, timezone="America/New_York")
+        loc = Location(
+            place="New York, USA", latitude=40.7128, longitude=-74.0060, timezone="America/New_York"
+        )
         assert loc.place == "New York, USA"
         assert loc.latitude == 40.7128
         assert loc.longitude == -74.0060
@@ -214,7 +221,9 @@ class TestLocation:
 
     def test_location_fields_accessible(self) -> None:
         """Test that Location fields are accessible and mutable."""
-        loc = Location(place="London, UK", latitude=51.5074, longitude=-0.1278, timezone="Europe/London")
+        loc = Location(
+            place="London, UK", latitude=51.5074, longitude=-0.1278, timezone="Europe/London"
+        )
         # Should be able to access fields
         assert loc.place == "London, UK"
         # Location is a BaseModel, so it should support modification in dict form

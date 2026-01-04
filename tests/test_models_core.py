@@ -7,6 +7,8 @@ Tests cover:
 - ZodiacSignField validation and serialization
 """
 
+from typing import Union
+
 import pytest
 from pydantic import BaseModel, ValidationError
 
@@ -73,65 +75,105 @@ class TestZodiacSign:
         signs = list(ZodiacSign)
         assert len(signs) == 12
 
-    def test_zodiac_sign_values(self) -> None:
+    @pytest.mark.parametrize(
+        "sign,expected_value",
+        [
+            (ZodiacSign.ARIES, ("Aries", 0, 30)),
+            (ZodiacSign.VIRGO, ("Virgo", 150, 180)),
+            (ZodiacSign.PISCES, ("Pisces", 330, 360)),
+        ],
+    )
+    def test_zodiac_sign_values(
+        self, sign: ZodiacSign, expected_value: tuple[str, int, int]
+    ) -> None:
         """Test that ZodiacSign values are tuples with name and degrees."""
-        assert ZodiacSign.ARIES.value == ("Aries", 0, 30)
-        assert ZodiacSign.VIRGO.value == ("Virgo", 150, 180)
-        assert ZodiacSign.PISCES.value == ("Pisces", 330, 360)
+        assert sign.value == expected_value
 
-    def test_full_name_property(self) -> None:
+    @pytest.mark.parametrize(
+        "sign,expected_name",
+        [
+            (ZodiacSign.ARIES, "Aries"),
+            (ZodiacSign.CAPRICORN, "Capricorn"),
+            (ZodiacSign.LIBRA, "Libra"),
+        ],
+    )
+    def test_full_name_property(self, sign: ZodiacSign, expected_name: str) -> None:
         """Test full_name property returns correct human-readable names."""
-        assert ZodiacSign.ARIES.full_name == "Aries"
-        assert ZodiacSign.CAPRICORN.full_name == "Capricorn"
-        assert ZodiacSign.LIBRA.full_name == "Libra"
+        assert sign.full_name == expected_name
 
-    def test_start_deg_property(self) -> None:
+    @pytest.mark.parametrize(
+        "sign,expected_start",
+        [
+            (ZodiacSign.ARIES, 0),
+            (ZodiacSign.TAURUS, 30),
+            (ZodiacSign.GEMINI, 60),
+            (ZodiacSign.PISCES, 330),
+        ],
+    )
+    def test_start_deg_property(self, sign: ZodiacSign, expected_start: int) -> None:
         """Test start_deg property returns correct starting degrees."""
-        assert ZodiacSign.ARIES.start_deg == 0
-        assert ZodiacSign.TAURUS.start_deg == 30
-        assert ZodiacSign.GEMINI.start_deg == 60
-        assert ZodiacSign.PISCES.start_deg == 330
+        assert sign.start_deg == expected_start
 
-    def test_end_deg_property(self) -> None:
+    @pytest.mark.parametrize(
+        "sign,expected_end",
+        [
+            (ZodiacSign.ARIES, 30),
+            (ZodiacSign.TAURUS, 60),
+            (ZodiacSign.PISCES, 360),
+        ],
+    )
+    def test_end_deg_property(self, sign: ZodiacSign, expected_end: int) -> None:
         """Test end_deg property returns correct ending degrees."""
-        assert ZodiacSign.ARIES.end_deg == 30
-        assert ZodiacSign.TAURUS.end_deg == 60
-        assert ZodiacSign.PISCES.end_deg == 360
+        assert sign.end_deg == expected_end
 
-    def test_to_decimal_degrees(self) -> None:
+    @pytest.mark.parametrize(
+        "sign,degrees,minutes,seconds,expected",
+        [
+            (ZodiacSign.ARIES, 15, 30, 0, 15.5),
+            (ZodiacSign.VIRGO, 0, 0, 0, 150.0),
+            (ZodiacSign.VIRGO, 15, 30, 36, 165.51),
+        ],
+    )
+    def test_to_decimal_degrees(
+        self,
+        sign: ZodiacSign,
+        degrees: float,
+        minutes: float,
+        seconds: float,
+        expected: float,
+    ) -> None:
         """Test conversion of degrees/minutes/seconds to decimal degrees."""
-        # Aries: 0-30 degrees
-        result = ZodiacSign.ARIES.to_decimal_degrees(15, 30, 0)
-        assert result == pytest.approx(15.5)
+        result = sign.to_decimal_degrees(degrees, minutes, seconds)
+        assert result == pytest.approx(expected)
 
-        # Virgo: 150-180 degrees
-        result = ZodiacSign.VIRGO.to_decimal_degrees(0, 0, 0)
-        assert result == pytest.approx(150.0)
-
-        result = ZodiacSign.VIRGO.to_decimal_degrees(15, 30, 36)
-        # 150 + 15 + (30/60) + (36/3600) = 150 + 15 + 0.5 + 0.01 = 165.51
-        assert result == pytest.approx(165.51)
-
-    def test_zodiac_sign_by_name(self) -> None:
+    @pytest.mark.parametrize(
+        "sign_name,expected_sign",
+        [
+            ("ARIES", ZodiacSign.ARIES),
+            ("VIRGO", ZodiacSign.VIRGO),
+            ("PISCES", ZodiacSign.PISCES),
+        ],
+    )
+    def test_zodiac_sign_by_name(self, sign_name: str, expected_sign: ZodiacSign) -> None:
         """Test accessing ZodiacSign enum members by name."""
-        assert ZodiacSign["ARIES"] == ZodiacSign.ARIES
-        assert ZodiacSign["VIRGO"] == ZodiacSign.VIRGO
-        assert ZodiacSign["PISCES"] == ZodiacSign.PISCES
+        assert ZodiacSign[sign_name] == expected_sign
 
 
 class TestZodiacSignParsing:
     """Tests for _parse_zodiac_sign validation function."""
 
-    def test_parse_zodiac_sign_from_string(self) -> None:
+    @pytest.mark.parametrize(
+        "input_str,expected_sign",
+        [
+            ("ARIES", ZodiacSign.ARIES),
+            ("virgo", ZodiacSign.VIRGO),
+            ("Capricorn", ZodiacSign.CAPRICORN),
+        ],
+    )
+    def test_parse_zodiac_sign_from_string(self, input_str: str, expected_sign: ZodiacSign) -> None:
         """Test parsing ZodiacSign from string name."""
-        result = _parse_zodiac_sign("ARIES")
-        assert result == ZodiacSign.ARIES
-
-        result = _parse_zodiac_sign("virgo")
-        assert result == ZodiacSign.VIRGO
-
-        result = _parse_zodiac_sign("Capricorn")
-        assert result == ZodiacSign.CAPRICORN
+        result = _parse_zodiac_sign(input_str)
+        assert result == expected_sign
 
     def test_parse_zodiac_sign_from_enum(self) -> None:
         """Test parsing ZodiacSign from enum value returns as-is."""
@@ -156,25 +198,33 @@ class TestZodiacSignField:
     class SampleModel(BaseModel):
         sign: ZodiacSignField
 
-    def test_parse_from_string(self) -> None:
-        """Test ZodiacSignField parses string names."""
-        model = self.SampleModel(sign="ARIES")
-        assert model.sign == ZodiacSign.ARIES
+    @pytest.mark.parametrize(
+        "input_value,expected_sign",
+        [
+            ("ARIES", ZodiacSign.ARIES),
+            ("virgo", ZodiacSign.VIRGO),
+            (ZodiacSign.LEO, ZodiacSign.LEO),
+        ],
+    )
+    def test_parse_string_and_enum(
+        self, input_value: Union[str, ZodiacSign], expected_sign: ZodiacSign
+    ) -> None:
+        """Test ZodiacSignField parses strings (case-insensitive) and enum values."""
+        model = self.SampleModel(sign=input_value)  # type: ignore
+        assert model.sign == expected_sign
 
-    def test_parse_from_lowercase_string(self) -> None:
-        """Test ZodiacSignField parses lowercase string names."""
-        model = self.SampleModel(sign="virgo")
-        assert model.sign == ZodiacSign.VIRGO
-
-    def test_parse_from_enum(self) -> None:
-        """Test ZodiacSignField accepts enum values."""
-        model = self.SampleModel(sign=ZodiacSign.LEO)
-        assert model.sign == ZodiacSign.LEO
-
-    def test_serialize_by_name(self) -> None:
+    @pytest.mark.parametrize(
+        "sign,expected_serialized",
+        [
+            (ZodiacSign.VIRGO, "VIRGO"),
+            (ZodiacSign.PISCES, "PISCES"),
+            (ZodiacSign.ARIES, "ARIES"),
+        ],
+    )
+    def test_serialize_by_name(self, sign: ZodiacSign, expected_serialized: str) -> None:
         """Test ZodiacSignField serializes enum by name."""
-        model = self.SampleModel(sign=ZodiacSign.VIRGO)
-        assert model.model_dump()["sign"] == "VIRGO"
+        model = self.SampleModel(sign=sign)
+        assert model.model_dump()["sign"] == expected_serialized
 
     def test_serialize_to_json(self) -> None:
         """Test ZodiacSignField serializes to JSON string."""
@@ -185,4 +235,4 @@ class TestZodiacSignField:
     def test_invalid_string_raises_error(self) -> None:
         """Test invalid string raises validation error."""
         with pytest.raises(ValidationError):
-            self.SampleModel(sign="INVALID")
+            self.SampleModel(sign="INVALID")  # type: ignore
