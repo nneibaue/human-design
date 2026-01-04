@@ -1,0 +1,46 @@
+{
+  "name": "Human Design Dev",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": "..",
+    "args": {
+      "USER": "${localEnv:USER}"
+    }
+  },
+  "containerEnv": {
+    "HD_USERNAME": "${localEnv:HD_USERNAME}",
+    "HD_PASSWORD": "${localEnv:HD_PASSWORD}"
+  },
+  "remoteUser": "${localEnv:USER}",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "ms-vscode.live-server",
+        "ms-python.python",
+        "ms-python.mypy-type-checker",
+        "charliermarsh.ruff",
+        "tamasfe.even-better-toml"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.analysis.typeCheckingMode": "basic",
+        "editor.formatOnSave": true,
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        }
+      },
+      "mounts": [
+        // Mount the local SSH config to the container for GitHub access
+        "source=${localEnv:HOME}/.ssh,target=/home/${localEnv:USER}/.ssh,type=bind,consistency=cached"
+      ],
+      "initializeCommand": {
+        // ensure host ssh dir exists
+        "init-ssh-dir": "mkdir -p /home/${localEnv:USER}/.ssh && chmod 700 /home/${localEnv:USER}/.ssh"
+
+      }
+    }
+  },
+  "postCreateCommand": "pip install -e .[dev]"
+}
