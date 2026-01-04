@@ -7,8 +7,6 @@ Tests cover:
 - ZodiacSignField validation and serialization
 """
 
-from typing import Union
-
 import pytest
 from pydantic import BaseModel, ValidationError
 
