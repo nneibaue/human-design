@@ -1,0 +1,861 @@
+# Human Design Bodygraph Configuration
+# Maps the 9 Centers and their associated Gates with bridge connections
+
+- name: INSPIRATION
+  gates:
+  - number: 64
+    bridge: 47
+    coordinate_range:
+      start: 
+        sign: VIRGO
+        degree: 11
+        minute: 22
+        second: 30
+      end:
+        sign: VIRGO
+        degree: 17
+        minute: 0
+        second: 0
+  - number: 61
+    bridge: 24
+    coordinate_range:
+      start:
+        sign: CAPRICORN
+        degree: 20
+        minute: 45
+        second: 0
+      end:
+        sign: CAPRICORN
+        degree: 26
+        minute: 22
+        second: 30
+  - number: 63
+    bridge: 4
+    coordinate_range:
+      start:
+        sign: PISCES
+        degree: 11
+        minute: 22
+        second: 30
+      end:
+        sign: PISCES
+        degree: 17
+        minute: 0
+        second: 0
+
+- name: MIND
+  gates:
+  - number: 47
+    bridge: 64
+    coordinate_range:
+      start:
+        sign: VIRGO
+        degree: 17
+        minute: 0
+        second: 0
+      end:
+        sign: VIRGO
+        degree: 22
+        minute: 27
+        second: 30
+  - number: 24
+    bridge: 61
+    coordinate_range:
+      start:
+        sign: TAURUS
+        degree: 7
+        minute: 37
+        second: 30
+      end:
+        sign: TAURUS
+        degree: 13
+        minute: 15
+        second: 0
+  - number: 4
+    bridge: 63
+    coordinate_range:
+      start:
+        sign: LEO
+        degree: 18
+        minute: 52
+        second: 30
+      end:
+        sign: LEO
+        degree: 24
+        minute: 30
+        second: 0
+  - number: 11
+    bridge: 56
+    coordinate_range:
+      start:
+        sign: SAGITTARIUS
+        degree: 22
+        minute: 27
+        second: 30
+      end:
+        sign: SAGITTARIUS
+        degree: 28
+        minute: 15
+        second: 0
+  - number: 43
+    bridge: 23
+    coordinate_range:
+      start:
+        sign: SCORPIO
+        degree: 18
+        minute: 52
+        second: 30
+      end:
+        sign: SCORPIO
+        degree: 24
+        minute: 30
+        second: 0
+  - number: 17
+    bridge: 62
+    coordinate_range:
+      start:
+        sign: ARIES
+        degree: 3
+        minute: 52
+        second: 30
+      end:
+        sign: ARIES
+        degree: 9
+        minute: 30
+        second: 0
+
+- name: EXPRESSION
+  gates:
+  - number: 62
+    bridge: 17
+    coordinate_range:
+      start:
+        sign: CANCER
+        degree: 20
+        minute: 45
+        second: 0
+      end:
+        sign: CANCER
+        degree: 26
+        minute: 22
+        second: 30
+  - number: 23
+    bridge: 43
+    coordinate_range:
+      start:
+        sign: TAURUS
+        degree: 18
+        minute: 52
+        second: 30
+      end:
+        sign: TAURUS
+        degree: 24
+        minute: 30
+        second: 0
+  - number: 56
+    bridge: 11
+    coordinate_range:
+      start:
+        sign: CANCER
+        degree: 26
+        minute: 22
+        second: 30
+      end:
+        sign: LEO
+        degree: 2
+        minute: 0
+        second: 0
+  - number: 35
+    bridge: 36
+    coordinate_range:
+      start:
+        sign: GEMINI
+        degree: 11
+        minute: 22
+        second: 30
+      end:
+        sign: GEMINI
+        degree: 17
+        minute: 0
+        second: 0
+  - number: 12
+    bridge: 22
+    coordinate_range:
+      start:
+        sign: GEMINI
+        degree: 22
+        minute: 27
+        second: 30
+      end:
+        sign: GEMINI
+        degree: 28
+        minute: 15
+        second: 0
+  - number: 45
+    bridge: 21
+    coordinate_range:
+      start:
+        sign: GEMINI
+        degree: 17
+        minute: 0
+        second: 0
+      end:
+        sign: GEMINI
+        degree: 22
+        minute: 27
+        second: 30
+  - number: 33
+    bridge: 13
+    coordinate_range:
+      start:
+        sign: LEO
+        degree: 7
+        minute: 37
+        second: 30
+      end:
+        sign: LEO
+        degree: 13
+        minute: 15
+        second: 0
+  - number: 8
+    bridge: 1
+    coordinate_range:
+      start:
+        sign: TAURUS
+        degree: 24
+        minute: 30
+        second: 0
+      end:
+        sign: GEMINI
+        degree: 0
+        minute: 7
+        second: 30
+  - number: 31
+    bridge: 7
+    coordinate_range:
+      start:
+        sign: LEO
+        degree: 2
+        minute: 0
+        second: 0
+      end:
+        sign: LEO
+        degree: 7
+        minute: 37
+        second: 30
+  - number: 20
+    bridge: [57, 10, 34]
+    coordinate_range:
+      start:
+        sign: GEMINI
+        degree: 0
+        minute: 7
+        second: 30
+      end:
+        sign: GEMINI
+        degree: 5
+        minute: 45
+        second: 0
+  - number: 16
+    bridge: 48
+    coordinate_range:
+      start:
+        sign: GEMINI
+        degree: 5
+        minute: 45
+        second: 0
+      end:
+        sign: GEMINI
+        degree: 11
+        minute: 22
+        second: 30
+
+- name: IDENTITY
+  gates:
+  - number: 7
+    bridge: 31
+    coordinate_range:
+      start:
+        sign: LEO
+        degree: 13
+        minute: 15
+        second: 0
+      end:
+        sign: LEO
+        degree: 18
+        minute: 52
+        second: 30
+  - number: 1
+    bridge: 8
+    coordinate_range:
+      start:
+        sign: SCORPIO
+        degree: 13
+        minute: 15
+        second: 0
+      end:
+        sign: SCORPIO
+        degree: 18
+        minute: 52
+        second: 30
+  - number: 13
+    bridge: 33
+    coordinate_range:
+      start:
+        sign: AQUARIUS
+        degree: 13
+        minute: 15
+        second: 0
+      end:
+        sign: AQUARIUS
+        degree: 18
+        minute: 52
+        second: 30
+  - number: 25
+    bridge: 51
+    coordinate_range:
+      start:
+        sign: PISCES
+        degree: 28
+        minute: 15
+        second: 0
+      end:
+        sign: ARIES
+        degree: 3
+        minute: 52
+        second: 30
+  - number: 46
+    bridge: 29
+    coordinate_range:
+      start:
+        sign: VIRGO
+        degree: 28
+        minute: 15
+        second: 0
+      end:
+        sign: LIBRA
+        degree: 3
+        minute: 52
+        second: 30
+  - number: 2
+    bridge: 14
+    coordinate_range:
+      start:
+        sign: TAURUS
+        degree: 13
+        minute: 15
+        second: 0
+      end:
+        sign: TAURUS
+        degree: 18
+        minute: 52
+        second: 30
+  - number: 15
+    bridge: 5
+    coordinate_range:
+      start:
+        sign: GEMINI
+        degree: 28
+        minute: 15
+        second: 0
+      end:
+        sign: CANCER
+        degree: 3
+        minute: 52
+        second: 30
+  - number: 10
+    bridge: [20, 57, 34]
+    coordinate_range:
+      start:
+        sign: SAGITTARIUS
+        degree: 28
+        minute: 15
+        second: 0
+      end:
+        sign: CAPRICORN
+        degree: 3
+        minute: 52
+        second: 30
+
+- name: WILLPOWER
+  gates:
+  - number: 21
+    bridge: 45
+    coordinate_range:
+      start:
+        sign: ARIES
+        degree: 9
+        minute: 30
+        second: 0
+      end:
+        sign: ARIES
+        degree: 15
+        minute: 7
+        second: 30
+  - number: 51
+    bridge: 25
+    coordinate_range:
+      start:
+        sign: ARIES
+        degree: 15
+        minute: 7
+        second: 30
+      end:
+        sign: ARIES
+        degree: 20
+        minute: 45
+        second: 0
+  - number: 26
+    bridge: 44
+    coordinate_range:
+      start:
+        sign: SAGITTARIUS
+        degree: 17
+        minute: 0
+        second: 0
+      end:
+        sign: SAGITTARIUS
+        degree: 22
+        minute: 27
+        second: 30
+  - number: 40
+    bridge: 37
+    coordinate_range:
+      start:
+        sign: VIRGO
+        degree: 5
+        minute: 45
+        second: 0
+      end:
+        sign: VIRGO
+        degree: 11
+        minute: 22
+        second: 30
+
+- name: EMOTION
+  gates:
+  - number: 36
+    bridge: 35
+    coordinate_range:
+      start:
+        sign: PISCES
+        degree: 22
+        minute: 27
+        second: 30
+      end:
+        sign: PISCES
+        degree: 28
+        minute: 15
+        second: 0
+  - number: 22
+    bridge: 12
+    coordinate_range:
+      start:
+        sign: PISCES
+        degree: 17
+        minute: 0
+        second: 0
+      end:
+        sign: PISCES
+        degree: 22
+        minute: 27
+        second: 30
+  - number: 37
+    bridge: 40
+    coordinate_range:
+      start:
+        sign: PISCES
+        degree: 5
+        minute: 45
+        second: 0
+      end:
+        sign: PISCES
+        degree: 11
+        minute: 22
+        second: 30
+  - number: 6
+    bridge: 59
+    coordinate_range:
+      start:
+        sign: VIRGO
+        degree: 22
+        minute: 27
+        second: 30
+      end:
+        sign: VIRGO
+        degree: 28
+        minute: 15
+        second: 0
+  - number: 49
+    bridge: 19
+    coordinate_range:
+      start:
+        sign: AQUARIUS
+        degree: 18
+        minute: 52
+        second: 30
+      end:
+        sign: AQUARIUS
+        degree: 24
+        minute: 30
+        second: 0
+  - number: 55
+    bridge: 39
+    coordinate_range:
+      start:
+        sign: PISCES
+        degree: 0
+        minute: 7
+        second: 30
+      end:
+        sign: PISCES
+        degree: 5
+        minute: 45
+        second: 0
+  - number: 30
+    bridge: 41
+    coordinate_range:
+      start:
+        sign: AQUARIUS
+        degree: 24
+        minute: 30
+        second: 0
+      end:
+        sign: PISCES
+        degree: 0
+        minute: 7
+        second: 30
+
+- name: DRIVE
+  gates:
+  - number: 41
+    bridge: 30
+    coordinate_range:
+      start:
+        sign: AQUARIUS
+        degree: 2
+        minute: 0
+        second: 0
+      end:
+        sign: AQUARIUS
+        degree: 7
+        minute: 37
+        second: 30
+  - number: 39
+    bridge: 55
+    coordinate_range:
+      start:
+        sign: CANCER
+        degree: 9
+        minute: 30
+        second: 0
+      end:
+        sign: CANCER
+        degree: 15
+        minute: 7
+        second: 30
+  - number: 19
+    bridge: 49
+    coordinate_range:
+      start:
+        sign: AQUARIUS
+        degree: 7
+        minute: 37
+        second: 30
+      end:
+        sign: AQUARIUS
+        degree: 13
+        minute: 15
+        second: 0
+  - number: 52
+    bridge: 9
+    coordinate_range:
+      start:
+        sign: CANCER
+        degree: 3
+        minute: 52
+        second: 30
+      end:
+        sign: CANCER
+        degree: 9
+        minute: 30
+        second: 0
+  - number: 60
+    bridge: 3
+    coordinate_range:
+      start:
+        sign: CAPRICORN
+        degree: 26
+        minute: 22
+        second: 30
+      end:
+        sign: AQUARIUS
+        degree: 2
+        minute: 0
+        second: 0
+  - number: 53
+    bridge: 42
+    coordinate_range:
+      start:
+        sign: CANCER
+        degree: 15
+        minute: 7
+        second: 30
+      end:
+        sign: CANCER
+        degree: 20
+        minute: 45
+        second: 0
+  - number: 54
+    bridge: 32
+    coordinate_range:
+      start:
+        sign: CAPRICORN
+        degree: 15
+        minute: 7
+        second: 30
+      end:
+        sign: CAPRICORN
+        degree: 20
+        minute: 45
+        second: 0
+  - number: 38
+    bridge: 28
+    coordinate_range:
+      start:
+        sign: CAPRICORN
+        degree: 9
+        minute: 30
+        second: 0
+      end:
+        sign: CAPRICORN
+        degree: 15
+        minute: 7
+        second: 30
+  - number: 58
+    bridge: 18
+    coordinate_range:
+      start:
+        sign: CAPRICORN
+        degree: 3
+        minute: 52
+        second: 30
+      end:
+        sign: CAPRICORN
+        degree: 9
+        minute: 30
+        second: 0
+
+- name: LIFEFORCE
+  gates:
+  - number: 5
+    bridge: 15
+    coordinate_range:
+      start:
+        sign: SAGITTARIUS
+        degree: 11
+        minute: 22
+        second: 30
+      end:
+        sign: SAGITTARIUS
+        degree: 17
+        minute: 0
+        second: 0
+  - number: 14
+    bridge: 2
+    coordinate_range:
+      start:
+        sign: SCORPIO
+        degree: 24
+        minute: 30
+        second: 0
+      end:
+        sign: SAGITTARIUS
+        degree: 0
+        minute: 7
+        second: 30
+  - number: 29
+    bridge: 46
+    coordinate_range:
+      start:
+        sign: LEO
+        degree: 24
+        minute: 30
+        second: 0
+      end:
+        sign: VIRGO
+        degree: 0
+        minute: 7
+        second: 30
+  - number: 59
+    bridge: 6
+    coordinate_range:
+      start:
+        sign: VIRGO
+        degree: 0
+        minute: 7
+        second: 30
+      end:
+        sign: VIRGO
+        degree: 5
+        minute: 45
+        second: 0
+  - number: 9
+    bridge: 52
+    coordinate_range:
+      start:
+        sign: SAGITTARIUS
+        degree: 5
+        minute: 45
+        second: 0
+      end:
+        sign: SAGITTARIUS
+        degree: 11
+        minute: 22
+        second: 30
+  - number: 3
+    bridge: 60
+    coordinate_range:
+      start:
+        sign: ARIES
+        degree: 26
+        minute: 22
+        second: 30
+      end:
+        sign: TAURUS
+        degree: 2
+        minute: 0
+        second: 0
+  - number: 42
+    bridge: 53
+    coordinate_range:
+      start:
+        sign: ARIES
+        degree: 20
+        minute: 45
+        second: 0
+      end:
+        sign: ARIES
+        degree: 26
+        minute: 22
+        second: 30
+  - number: 27
+    bridge: 50
+    coordinate_range:
+      start:
+        sign: TAURUS
+        degree: 2
+        minute: 0
+        second: 0
+      end:
+        sign: TAURUS
+        degree: 7
+        minute: 37
+        second: 30
+  - number: 34
+    bridge: [57, 10, 20]
+    coordinate_range:
+      start:
+        sign: SAGITTARIUS
+        degree: 0
+        minute: 7
+        second: 30
+      end:
+        sign: SAGITTARIUS
+        degree: 5
+        minute: 45
+        second: 0
+
+- name: INTUITION
+  gates:
+  - number: 48
+    bridge: 16
+    coordinate_range:
+      start:
+        sign: LIBRA
+        degree: 9
+        minute: 30
+        second: 0
+      end:
+        sign: LIBRA
+        degree: 15
+        minute: 7
+        second: 30
+  - number: 57
+    bridge: [20, 10, 34]
+    coordinate_range:
+      start:
+        sign: LIBRA
+        degree: 15
+        minute: 7
+        second: 30
+      end:
+        sign: LIBRA
+        degree: 20
+        minute: 45
+        second: 0
+  - number: 44
+    bridge: 26
+    coordinate_range:
+      start:
+        sign: SCORPIO
+        degree: 7
+        minute: 37
+        second: 30
+      end:
+        sign: SCORPIO
+        degree: 13
+        minute: 15
+        second: 0
+  - number: 50
+    bridge: 27
+    coordinate_range:
+      start:
+        sign: LIBRA
+        degree: 26
+        minute: 22
+        second: 30
+      end:
+        sign: SCORPIO
+        degree: 2
+        minute: 0
+        second: 0
+  - number: 32
+    bridge: 54
+    coordinate_range:
+      start:
+        sign: LIBRA
+        degree: 20
+        minute: 45
+        second: 0
+      end:
+        sign: LIBRA
+        degree: 26
+        minute: 22
+        second: 30
+  - number: 28
+    bridge: 38
+    coordinate_range:
+      start:
+        sign: SCORPIO
+        degree: 2
+        minute: 0
+        second: 0
+      end:
+        sign: SCORPIO
+        degree: 7
+        minute: 37
+        second: 30
+  - number: 18
+    bridge: 58
+    coordinate_range:
+      start:
+        sign: LIBRA
+        degree: 3
+        minute: 52
+        second: 30
+      end:
+        sign: LIBRA
+        degree: 9
+        minute: 30
+        second: 0
