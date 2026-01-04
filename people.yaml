@@ -1,0 +1,30 @@
+people:
+  - name: "Bella Pack"
+    birth_date: "1997-05-31"
+    birth_time: "03:22"
+    birth_location: "Orem, United States"
+
+  - name: "Fabiana Hottle"
+    birth_date: "1998-12-28"
+    birth_time: "10:56"
+    birth_location: "Kitakyushu, Japan"
+
+  - name: "Brian Fremeaux"
+    birth_date: "1984-03-08"
+    birth_time: "20:20"
+    birth_location: "Metairie, United States"
+
+  - name: "Jessica Peng"
+    birth_date: "1990-11-27"
+    birth_time: "08:49"
+    birth_location: "Taipei City, Taiwan"
+
+  - name: "Nate Neibauer"
+    birth_date: "1992-08-13"
+    birth_time: "09:13"
+    birth_location: "Albuquerque, United States"
+
+  - name: "Rebecca Jolli"
+    birth_date: "1972-11-13"
+    birth_time: "07:00"
+    birth_location: "Salt Lake City, United States"

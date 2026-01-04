@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "human-design"
+version = "0.1.0"
+description = "Python toolkit for learning and working with Human Design using 64keys.com"
+readme = "README.md"
+requires-python = ">=3.14"
+authors = [
+    { name = "Nate Neibauer" }
+]
+keywords = ["human-design", "64keys", "astrology", "self-discovery"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.14",
+]
+
+dependencies = [
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.0",
+    "pydantic>=2.0.0",
+    "typer>=0.9.0",
+    "pyswisseph",
+    "geopy",
+    "timezonefinder",
+    "pytz",
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.0.0",
+    "pytest>=7.0.0",
+    "ruff>=0.1.0",
+    "types-requests>=2.31.0",
+    "types-beautifulsoup4>=4.12.0",
+    "ipython",
+    "ipdb"
+]
+
+[project.scripts]
+human-design = "human_design.cli:app"
+hd = "human_design.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/nneibaue/human-design"
+Repository = "https://github.com/nneibaue/human-design"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4"]
+
+[tool.mypy]
+python_version = "3.14"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
