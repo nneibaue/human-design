@@ -8,11 +8,20 @@
       "USER": "${localEnv:USER}"
     }
   },
+
   "containerEnv": {
     "HD_USERNAME": "${localEnv:HD_USERNAME}",
     "HD_PASSWORD": "${localEnv:HD_PASSWORD}"
   },
+
   "remoteUser": "${localEnv:USER}",
+
+  "initializeCommand": "mkdir -p ${localEnv:HOME}/.ssh",
+
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/home/${localEnv:USER}/.ssh,type=bind"
+  ],
+
   "customizations": {
     "vscode": {
       "extensions": [
@@ -28,21 +37,10 @@
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "python.analysis.typeCheckingMode": "basic",
         "editor.formatOnSave": true,
-        "[python]": {
-          "editor.defaultFormatter": "charliermarsh.ruff"
-        }
-      },
-      "mounts": [
-        // Mount the local SSH config to the container for GitHub access
-        "source=${localEnv:HOME}/.ssh,target=/home/${localEnv:USER}/.ssh,type=bind"
-      ],
-      "initializeCommand": {
-        // ensure host ssh dir exists
-        "init-ssh-dir": "mkdir -p ${localEnv:HOME}/.ssh"
+        "[python]": { "editor.defaultFormatter": "charliermarsh.ruff" }
       }
     }
   },
-  // Dependencies are already installed in the image via pip-compile.
-  // Only need editable install for local package, --no-deps avoids reinstalling.
+
   "postCreateCommand": "pip install --no-deps -e ."
 }
