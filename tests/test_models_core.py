@@ -207,7 +207,7 @@ class TestZodiacSignField:
         ],
     )
     def test_parse_string_and_enum(
-        self, input_value: Union[str, ZodiacSign], expected_sign: ZodiacSign
+        self, input_value: str | ZodiacSign, expected_sign: ZodiacSign
     ) -> None:
         """Test ZodiacSignField parses strings (case-insensitive) and enum values."""
         model = self.SampleModel(sign=input_value)  # type: ignore

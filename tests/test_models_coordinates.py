@@ -9,17 +9,16 @@ Tests cover:
 - Location data model
 """
 
-from datetime import datetime, UTC
-from zoneinfo import ZoneInfo
+from datetime import datetime
 
 import pytest
 
 from human_design.models.coordinates import (
-    LocalTime,
-    GeographicalCoordinate,
-    ZodiacCoordinate,
     CoordinateRange,
+    GeographicalCoordinate,
+    LocalTime,
     Location,
+    ZodiacCoordinate,
 )
 from human_design.models.core import ZodiacSign
 

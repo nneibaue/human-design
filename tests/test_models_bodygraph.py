@@ -309,14 +309,14 @@ class TestRawBodyGraph:
         assert isinstance(raw_bg.unconscious_activations, list)
 
     def test_conscious_activations_count(self, birth_info: BirthInfo) -> None:
-        """Test that conscious activations has 13 bodies (Sun, Earth, 8 planets, North/South Node)."""
+        """Test that conscious activations has 13 bodies (Sun, Earth, 8 planets, nodes)."""
         raw_bg = RawBodyGraph(birth_info=birth_info)
 
         assert len(raw_bg.conscious_activations) == 13
         assert all(isinstance(a, RawActivation) for a in raw_bg.conscious_activations)
 
     def test_unconscious_activations_count(self, birth_info: BirthInfo) -> None:
-        """Test that unconscious activations has 13 bodies (Sun, Earth, 8 planets, North/South Node)."""
+        """Test that unconscious activations has 13 bodies (Sun, Earth, 8 planets, nodes)."""
         raw_bg = RawBodyGraph(birth_info=birth_info)
 
         assert len(raw_bg.unconscious_activations) == 13
