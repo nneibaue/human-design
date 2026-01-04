@@ -3,6 +3,7 @@
   "build": {
     "dockerfile": "../Dockerfile",
     "context": "..",
+    "target": "development",
     "args": {
       "USER": "${localEnv:USER}"
     }
@@ -33,14 +34,15 @@
       },
       "mounts": [
         // Mount the local SSH config to the container for GitHub access
-        "source=${localEnv:HOME}/.ssh,target=/home/${localEnv:USER}/.ssh,type=bind,consistency=cached"
+        "source=${localEnv:HOME}/.ssh,target=/home/${localEnv:USER}/.ssh,type=bind"
       ],
       "initializeCommand": {
         // ensure host ssh dir exists
-        "init-ssh-dir": "mkdir -p /home/${localEnv:USER}/.ssh && chmod 700 /home/${localEnv:USER}/.ssh"
-
+        "init-ssh-dir": "mkdir -p ${localEnv:HOME}/.ssh"
       }
     }
   },
-  "postCreateCommand": "pip install -e .[dev]"
+  // Dependencies are already installed in the image via pip-compile.
+  // Only need editable install for local package, --no-deps avoids reinstalling.
+  "postCreateCommand": "pip install --no-deps -e ."
 }

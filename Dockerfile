@@ -37,6 +37,8 @@ FROM python:3.14-bookworm as runtime
 
 ENV PYTHONUNBUFFERED=1
 
+# USER arg is passed from devcontainer.json build.args to match the host user.
+# This ensures file permissions work correctly when mounting volumes.
 ARG USER_UID=1000
 ARG USER_GID=1000
 ARG USER=non_root_user
@@ -50,14 +52,11 @@ RUN apt-get update \
     && groupadd --gid ${USER_GID} hdgroup \
     && useradd --uid ${USER_UID} --gid ${USER_GID} --create-home --shell /bin/bash ${USER}
 
-# Add user dir to PATH
-ENV PATH="/home/${USER}/.local/bin:${PATH}"
-
 # Copy compiled requirements from builder
 COPY --from=builder /build/requirements.txt /tmp/requirements.txt
 
-# Install all runtime dependencies in a single layer (optimized caching)
-RUN pip install --no-cache-dir --user -r /tmp/requirements.txt \
+# Install runtime dependencies system-wide (no --user flag in devcontainer)
+RUN pip install --no-cache-dir -r /tmp/requirements.txt \
     && rm /tmp/requirements.txt
 
 USER ${USER}
@@ -80,8 +79,8 @@ RUN apt-get update \
 # Copy compiled dev requirements from builder
 COPY --from=builder /build/requirements-dev.txt /tmp/requirements-dev.txt
 
-# Install all dependencies (including dev) in a single layer (optimized caching)
-RUN pip install --no-cache-dir --user -r /tmp/requirements-dev.txt \
+# Install dev dependencies system-wide (no --user flag in devcontainer)
+RUN pip install --no-cache-dir -r /tmp/requirements-dev.txt \
     && rm /tmp/requirements-dev.txt
 
 USER ${USER}
