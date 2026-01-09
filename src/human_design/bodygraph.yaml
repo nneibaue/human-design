@@ -1,10 +1,10 @@
 # Human Design Bodygraph Configuration
-# Maps the 9 Centers and their associated Gates with bridge connections
+# Maps the 9 Centers and their associated Gates with complement connections
 
 - name: INSPIRATION
   gates:
   - number: 64
-    bridge: 47
+    complement: 47
     coordinate_range:
       start: 
         sign: VIRGO
@@ -17,7 +17,7 @@
         minute: 0
         second: 0
   - number: 61
-    bridge: 24
+    complement: 24
     coordinate_range:
       start:
         sign: CAPRICORN
@@ -30,7 +30,7 @@
         minute: 22
         second: 30
   - number: 63
-    bridge: 4
+    complement: 4
     coordinate_range:
       start:
         sign: PISCES
@@ -46,7 +46,7 @@
 - name: MIND
   gates:
   - number: 47
-    bridge: 64
+    complement: 64
     coordinate_range:
       start:
         sign: VIRGO
@@ -59,7 +59,7 @@
         minute: 27
         second: 30
   - number: 24
-    bridge: 61
+    complement: 61
     coordinate_range:
       start:
         sign: TAURUS
@@ -72,7 +72,7 @@
         minute: 15
         second: 0
   - number: 4
-    bridge: 63
+    complement: 63
     coordinate_range:
       start:
         sign: LEO
@@ -85,7 +85,7 @@
         minute: 30
         second: 0
   - number: 11
-    bridge: 56
+    complement: 56
     coordinate_range:
       start:
         sign: SAGITTARIUS
@@ -98,7 +98,7 @@
         minute: 15
         second: 0
   - number: 43
-    bridge: 23
+    complement: 23
     coordinate_range:
       start:
         sign: SCORPIO
@@ -111,7 +111,7 @@
         minute: 30
         second: 0
   - number: 17
-    bridge: 62
+    complement: 62
     coordinate_range:
       start:
         sign: ARIES
@@ -127,7 +127,7 @@
 - name: EXPRESSION
   gates:
   - number: 62
-    bridge: 17
+    complement: 17
     coordinate_range:
       start:
         sign: CANCER
@@ -140,7 +140,7 @@
         minute: 22
         second: 30
   - number: 23
-    bridge: 43
+    complement: 43
     coordinate_range:
       start:
         sign: TAURUS
@@ -153,7 +153,7 @@
         minute: 30
         second: 0
   - number: 56
-    bridge: 11
+    complement: 11
     coordinate_range:
       start:
         sign: CANCER
@@ -166,7 +166,7 @@
         minute: 0
         second: 0
   - number: 35
-    bridge: 36
+    complement: 36
     coordinate_range:
       start:
         sign: GEMINI
@@ -179,7 +179,7 @@
         minute: 0
         second: 0
   - number: 12
-    bridge: 22
+    complement: 22
     coordinate_range:
       start:
         sign: GEMINI
@@ -192,7 +192,7 @@
         minute: 15
         second: 0
   - number: 45
-    bridge: 21
+    complement: 21
     coordinate_range:
       start:
         sign: GEMINI
@@ -205,7 +205,7 @@
         minute: 27
         second: 30
   - number: 33
-    bridge: 13
+    complement: 13
     coordinate_range:
       start:
         sign: LEO
@@ -218,7 +218,7 @@
         minute: 15
         second: 0
   - number: 8
-    bridge: 1
+    complement: 1
     coordinate_range:
       start:
         sign: TAURUS
@@ -231,7 +231,7 @@
         minute: 7
         second: 30
   - number: 31
-    bridge: 7
+    complement: 7
     coordinate_range:
       start:
         sign: LEO
@@ -244,7 +244,7 @@
         minute: 37
         second: 30
   - number: 20
-    bridge: [57, 10, 34]
+    complement: [57, 10, 34]
     coordinate_range:
       start:
         sign: GEMINI
@@ -257,7 +257,7 @@
         minute: 45
         second: 0
   - number: 16
-    bridge: 48
+    complement: 48
     coordinate_range:
       start:
         sign: GEMINI
@@ -273,7 +273,7 @@
 - name: IDENTITY
   gates:
   - number: 7
-    bridge: 31
+    complement: 31
     coordinate_range:
       start:
         sign: LEO
@@ -286,7 +286,7 @@
         minute: 52
         second: 30
   - number: 1
-    bridge: 8
+    complement: 8
     coordinate_range:
       start:
         sign: SCORPIO
@@ -299,7 +299,7 @@
         minute: 52
         second: 30
   - number: 13
-    bridge: 33
+    complement: 33
     coordinate_range:
       start:
         sign: AQUARIUS
@@ -312,7 +312,7 @@
         minute: 52
         second: 30
   - number: 25
-    bridge: 51
+    complement: 51
     coordinate_range:
       start:
         sign: PISCES
@@ -325,7 +325,7 @@
         minute: 52
         second: 30
   - number: 46
-    bridge: 29
+    complement: 29
     coordinate_range:
       start:
         sign: VIRGO
@@ -338,7 +338,7 @@
         minute: 52
         second: 30
   - number: 2
-    bridge: 14
+    complement: 14
     coordinate_range:
       start:
         sign: TAURUS
@@ -351,7 +351,7 @@
         minute: 52
         second: 30
   - number: 15
-    bridge: 5
+    complement: 5
     coordinate_range:
       start:
         sign: GEMINI
@@ -364,7 +364,7 @@
         minute: 52
         second: 30
   - number: 10
-    bridge: [20, 57, 34]
+    complement: [20, 57, 34]
     coordinate_range:
       start:
         sign: SAGITTARIUS
@@ -380,7 +380,7 @@
 - name: WILLPOWER
   gates:
   - number: 21
-    bridge: 45
+    complement: 45
     coordinate_range:
       start:
         sign: ARIES
@@ -393,7 +393,7 @@
         minute: 7
         second: 30
   - number: 51
-    bridge: 25
+    complement: 25
     coordinate_range:
       start:
         sign: ARIES
@@ -406,7 +406,7 @@
         minute: 45
         second: 0
   - number: 26
-    bridge: 44
+    complement: 44
     coordinate_range:
       start:
         sign: SAGITTARIUS
@@ -419,7 +419,7 @@
         minute: 27
         second: 30
   - number: 40
-    bridge: 37
+    complement: 37
     coordinate_range:
       start:
         sign: VIRGO
@@ -435,7 +435,7 @@
 - name: EMOTION
   gates:
   - number: 36
-    bridge: 35
+    complement: 35
     coordinate_range:
       start:
         sign: PISCES
@@ -448,7 +448,7 @@
         minute: 15
         second: 0
   - number: 22
-    bridge: 12
+    complement: 12
     coordinate_range:
       start:
         sign: PISCES
@@ -461,7 +461,7 @@
         minute: 27
         second: 30
   - number: 37
-    bridge: 40
+    complement: 40
     coordinate_range:
       start:
         sign: PISCES
@@ -474,7 +474,7 @@
         minute: 22
         second: 30
   - number: 6
-    bridge: 59
+    complement: 59
     coordinate_range:
       start:
         sign: VIRGO
@@ -487,7 +487,7 @@
         minute: 15
         second: 0
   - number: 49
-    bridge: 19
+    complement: 19
     coordinate_range:
       start:
         sign: AQUARIUS
@@ -500,7 +500,7 @@
         minute: 30
         second: 0
   - number: 55
-    bridge: 39
+    complement: 39
     coordinate_range:
       start:
         sign: PISCES
@@ -513,7 +513,7 @@
         minute: 45
         second: 0
   - number: 30
-    bridge: 41
+    complement: 41
     coordinate_range:
       start:
         sign: AQUARIUS
@@ -529,7 +529,7 @@
 - name: DRIVE
   gates:
   - number: 41
-    bridge: 30
+    complement: 30
     coordinate_range:
       start:
         sign: AQUARIUS
@@ -542,7 +542,7 @@
         minute: 37
         second: 30
   - number: 39
-    bridge: 55
+    complement: 55
     coordinate_range:
       start:
         sign: CANCER
@@ -555,7 +555,7 @@
         minute: 7
         second: 30
   - number: 19
-    bridge: 49
+    complement: 49
     coordinate_range:
       start:
         sign: AQUARIUS
@@ -568,7 +568,7 @@
         minute: 15
         second: 0
   - number: 52
-    bridge: 9
+    complement: 9
     coordinate_range:
       start:
         sign: CANCER
@@ -581,7 +581,7 @@
         minute: 30
         second: 0
   - number: 60
-    bridge: 3
+    complement: 3
     coordinate_range:
       start:
         sign: CAPRICORN
@@ -594,7 +594,7 @@
         minute: 0
         second: 0
   - number: 53
-    bridge: 42
+    complement: 42
     coordinate_range:
       start:
         sign: CANCER
@@ -607,7 +607,7 @@
         minute: 45
         second: 0
   - number: 54
-    bridge: 32
+    complement: 32
     coordinate_range:
       start:
         sign: CAPRICORN
@@ -620,7 +620,7 @@
         minute: 45
         second: 0
   - number: 38
-    bridge: 28
+    complement: 28
     coordinate_range:
       start:
         sign: CAPRICORN
@@ -633,7 +633,7 @@
         minute: 7
         second: 30
   - number: 58
-    bridge: 18
+    complement: 18
     coordinate_range:
       start:
         sign: CAPRICORN
@@ -649,7 +649,7 @@
 - name: LIFEFORCE
   gates:
   - number: 5
-    bridge: 15
+    complement: 15
     coordinate_range:
       start:
         sign: SAGITTARIUS
@@ -662,7 +662,7 @@
         minute: 0
         second: 0
   - number: 14
-    bridge: 2
+    complement: 2
     coordinate_range:
       start:
         sign: SCORPIO
@@ -675,7 +675,7 @@
         minute: 7
         second: 30
   - number: 29
-    bridge: 46
+    complement: 46
     coordinate_range:
       start:
         sign: LEO
@@ -688,7 +688,7 @@
         minute: 7
         second: 30
   - number: 59
-    bridge: 6
+    complement: 6
     coordinate_range:
       start:
         sign: VIRGO
@@ -701,7 +701,7 @@
         minute: 45
         second: 0
   - number: 9
-    bridge: 52
+    complement: 52
     coordinate_range:
       start:
         sign: SAGITTARIUS
@@ -714,7 +714,7 @@
         minute: 22
         second: 30
   - number: 3
-    bridge: 60
+    complement: 60
     coordinate_range:
       start:
         sign: ARIES
@@ -727,7 +727,7 @@
         minute: 0
         second: 0
   - number: 42
-    bridge: 53
+    complement: 53
     coordinate_range:
       start:
         sign: ARIES
@@ -740,7 +740,7 @@
         minute: 22
         second: 30
   - number: 27
-    bridge: 50
+    complement: 50
     coordinate_range:
       start:
         sign: TAURUS
@@ -753,7 +753,7 @@
         minute: 37
         second: 30
   - number: 34
-    bridge: [57, 10, 20]
+    complement: [57, 10, 20]
     coordinate_range:
       start:
         sign: SAGITTARIUS
@@ -769,7 +769,7 @@
 - name: INTUITION
   gates:
   - number: 48
-    bridge: 16
+    complement: 16
     coordinate_range:
       start:
         sign: LIBRA
@@ -782,7 +782,7 @@
         minute: 7
         second: 30
   - number: 57
-    bridge: [20, 10, 34]
+    complement: [20, 10, 34]
     coordinate_range:
       start:
         sign: LIBRA
@@ -795,7 +795,7 @@
         minute: 45
         second: 0
   - number: 44
-    bridge: 26
+    complement: 26
     coordinate_range:
       start:
         sign: SCORPIO
@@ -808,7 +808,7 @@
         minute: 15
         second: 0
   - number: 50
-    bridge: 27
+    complement: 27
     coordinate_range:
       start:
         sign: LIBRA
@@ -821,7 +821,7 @@
         minute: 0
         second: 0
   - number: 32
-    bridge: 54
+    complement: 54
     coordinate_range:
       start:
         sign: LIBRA
@@ -834,7 +834,7 @@
         minute: 22
         second: 30
   - number: 28
-    bridge: 38
+    complement: 38
     coordinate_range:
       start:
         sign: SCORPIO
@@ -847,7 +847,7 @@
         minute: 37
         second: 30
   - number: 18
-    bridge: 58
+    complement: 58
     coordinate_range:
       start:
         sign: LIBRA

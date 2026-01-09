@@ -38,12 +38,12 @@ class GateDefinition(BaseModel):
     """
     Raw gate definition from the bodygraph structure.
 
-    Contains the gate number, bridge connection(s), and zodiac coordinate range.
+    Contains the gate number, complement connection(s), and zodiac coordinate range.
     Does NOT include 64keys content like descriptions or line details.
     """
 
     number: GateNumber
-    bridge: int | list[int]  # Some gates connect to multiple other gates
+    complement: int | list[int]  # Some gates connect to multiple other gates
     coordinate_range: CoordinateRange
 
 

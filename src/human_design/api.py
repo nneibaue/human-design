@@ -261,7 +261,7 @@ class GateAPI:
 
         return GateSummary64Keys(
             number=gate_number,  # type: ignore
-            bridge=gate_def_from_bodygraph.bridge,
+            complement=gate_def_from_bodygraph.complement,
             coordinate_range=gate_def_from_bodygraph.coordinate_range,
             quarter=quarter,
             name=name,

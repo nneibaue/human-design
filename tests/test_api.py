@@ -35,7 +35,7 @@ def create_mock_gate_summary(gate_num: GateLineNumber) -> GateSummary64Keys:
 
     return GateSummary64Keys(
         number=gate_num,
-        bridge=gate_num + 1 if gate_num < 64 else 1,
+        complement=gate_num + 1 if gate_num < 64 else 1,
         coordinate_range=coord_range,
         quarter="Q1 - Initiation",
         name=f"Gate {gate_num}",

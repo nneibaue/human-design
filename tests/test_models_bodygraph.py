@@ -36,23 +36,23 @@ class TestGateDefinition:
         from human_design.models.coordinates import CoordinateRange
 
         coord_range = CoordinateRange(start=start, end=end)
-        gate = GateDefinition(number=64, bridge=63, coordinate_range=coord_range)
+        gate = GateDefinition(number=64, complement=63, coordinate_range=coord_range)
 
         assert gate.number == 64
-        assert gate.bridge == 63
+        assert gate.complement == 63
         assert gate.coordinate_range == coord_range
 
-    def test_gate_with_list_bridge(self) -> None:
-        """Test gate with multiple bridge values."""
+    def test_gate_with_list_complement(self) -> None:
+        """Test gate with multiple complement values."""
         start = ZodiacCoordinate(sign="ARIES", degree=0, minute=0, second=0)
         end = ZodiacCoordinate(sign="ARIES", degree=5, minute=0, second=0)
         from human_design.models.coordinates import CoordinateRange
 
         coord_range = CoordinateRange(start=start, end=end)
-        gate = GateDefinition(number=1, bridge=[2, 3], coordinate_range=coord_range)
+        gate = GateDefinition(number=1, complement=[2, 3], coordinate_range=coord_range)
 
         assert gate.number == 1
-        assert gate.bridge == [2, 3]
+        assert gate.complement == [2, 3]
 
 
 class TestCenterDefinition:
@@ -65,7 +65,7 @@ class TestCenterDefinition:
         from human_design.models.coordinates import CoordinateRange
 
         coord_range = CoordinateRange(start=start, end=end)
-        gate = GateDefinition(number=64, bridge=63, coordinate_range=coord_range)
+        gate = GateDefinition(number=64, complement=63, coordinate_range=coord_range)
         center = CenterDefinition(name="INSPIRATION", gates=[gate])
 
         assert center.name == "INSPIRATION"

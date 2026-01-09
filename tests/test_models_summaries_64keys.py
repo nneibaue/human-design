@@ -76,7 +76,7 @@ class TestGateSummary64Keys:
 
         gate = GateSummary64Keys(
             number=64,
-            bridge=63,
+            complement=63,
             coordinate_range=coord_range,
             quarter="Q4 - Mutation",
             name="Attention",
@@ -106,7 +106,7 @@ class TestGateSummary64Keys:
 
         gate = GateSummary64Keys(
             number=1,
-            bridge=2,
+            complement=2,
             coordinate_range=coord_range,
             quarter="Q1 - Initiation",
             name="The Self",
@@ -118,7 +118,7 @@ class TestGateSummary64Keys:
 
         assert isinstance(gate, GateDefinition)
         assert gate.number == 1
-        assert gate.bridge == 2
+        assert gate.complement == 2
 
     def test_gate_summary_with_multiple_lines(self) -> None:
         """Test gate summary with all 6 lines."""
@@ -137,7 +137,7 @@ class TestGateSummary64Keys:
 
         gate = GateSummary64Keys(
             number=1,
-            bridge=2,
+            complement=2,
             coordinate_range=coord_range,
             quarter="Q1 - Initiation",
             name="The Self",
@@ -161,7 +161,7 @@ class TestActivationSummary64Keys:
 
         gate = GateSummary64Keys(
             number=64,
-            bridge=63,
+            complement=63,
             coordinate_range=coord_range,
             quarter="Q4 - Mutation",
             name="Attention",
@@ -209,7 +209,7 @@ class TestActivationSummary64Keys:
 
         gate = GateSummary64Keys(
             number=1,
-            bridge=2,
+            complement=2,
             coordinate_range=coord_range,
             quarter="Q1 - Initiation",
             name="The Self",
@@ -246,7 +246,7 @@ class TestCenterSummary64Keys:
         end = ZodiacCoordinate(sign="VIRGO", degree=17, minute=59, second=59)
         coord_range = CoordinateRange(start=start, end=end)
 
-        gate = GateDefinition(number=64, bridge=63, coordinate_range=coord_range)
+        gate = GateDefinition(number=64, complement=63, coordinate_range=coord_range)
 
         center = CenterSummary64Keys(
             name="INSPIRATION",
@@ -267,7 +267,7 @@ class TestCenterSummary64Keys:
         end = ZodiacCoordinate(sign="ARIES", degree=5, minute=0, second=0)
         coord_range = CoordinateRange(start=start, end=end)
 
-        gate = GateDefinition(number=1, bridge=2, coordinate_range=coord_range)
+        gate = GateDefinition(number=1, complement=2, coordinate_range=coord_range)
 
         center = CenterSummary64Keys(
             name="MIND",
@@ -283,7 +283,7 @@ class TestCenterSummary64Keys:
         end = ZodiacCoordinate(sign="ARIES", degree=5, minute=0, second=0)
         coord_range = CoordinateRange(start=start, end=end)
 
-        gate = GateDefinition(number=1, bridge=2, coordinate_range=coord_range)
+        gate = GateDefinition(number=1, complement=2, coordinate_range=coord_range)
 
         center = CenterSummary64Keys(
             name="EMOTION",
@@ -307,7 +307,7 @@ class TestBodyGraphSummary64Keys:
 
         gate = GateSummary64Keys(
             number=1,
-            bridge=2,
+            complement=2,
             coordinate_range=coord_range,
             quarter="Q1",
             name="The Self",
@@ -350,7 +350,7 @@ class TestBodyGraphSummary64Keys:
 
         gate = GateSummary64Keys(
             number=1,
-            bridge=2,
+            complement=2,
             coordinate_range=coord_range,
             quarter="Q1",
             name="The Self",
@@ -394,7 +394,7 @@ class TestBodyGraphSummary64Keys:
 
         gate = GateSummary64Keys(
             number=1,
-            bridge=2,
+            complement=2,
             coordinate_range=coord_range,
             quarter="Q1",
             name="The Self",
