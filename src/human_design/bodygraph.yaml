@@ -5,6 +5,8 @@
   gates:
   - number: 64
     complement: 47
+    ra_description: >
+      Before Completion
     coordinate_range:
       start: 
         sign: VIRGO
@@ -18,6 +20,8 @@
         second: 0
   - number: 61
     complement: 24
+    ra_description: >
+      Inner Truth
     coordinate_range:
       start:
         sign: CAPRICORN
@@ -31,22 +35,25 @@
         second: 30
   - number: 63
     complement: 4
-    coordinate_range:
-      start:
-        sign: PISCES
-        degree: 11
-        minute: 22
-        second: 30
-      end:
-        sign: PISCES
-        degree: 17
-        minute: 0
-        second: 0
+    ra_description: >
+      After Completion
+    start:
+      sign: PISCES
+      degree: 11
+      minute: 22
+      second: 30
+    end:
+      sign: PISCES
+      degree: 17
+      minute: 0
+      second: 0
 
 - name: MIND
   gates:
   - number: 47
     complement: 64
+    ra_description: >
+      Oppression
     coordinate_range:
       start:
         sign: VIRGO
@@ -60,19 +67,22 @@
         second: 30
   - number: 24
     complement: 61
-    coordinate_range:
-      start:
-        sign: TAURUS
-        degree: 7
-        minute: 37
-        second: 30
-      end:
-        sign: TAURUS
-        degree: 13
-        minute: 15
-        second: 0
+    ra_description: >
+      Return
+    start:
+      sign: TAURUS
+      degree: 7
+      minute: 37
+      second: 30
+    end:
+      sign: TAURUS
+      degree: 13
+      minute: 15
+      second: 0
   - number: 4
     complement: 63
+    ra_description: >
+      Youthful Folly
     coordinate_range:
       start:
         sign: LEO
@@ -86,6 +96,8 @@
         second: 0
   - number: 11
     complement: 56
+    ra_description: >
+      Peace
     coordinate_range:
       start:
         sign: SAGITTARIUS
@@ -99,6 +111,8 @@
         second: 0
   - number: 43
     complement: 23
+    ra_description: >
+      Breakthrough
     coordinate_range:
       start:
         sign: SCORPIO
@@ -111,6 +125,8 @@
         minute: 30
         second: 0
   - number: 17
+    ra_description: >
+      Following
     complement: 62
     coordinate_range:
       start:
@@ -127,19 +143,22 @@
 - name: EXPRESSION
   gates:
   - number: 62
+    ra_description: >
+      Preponderance of the Small
     complement: 17
-    coordinate_range:
-      start:
-        sign: CANCER
-        degree: 20
-        minute: 45
-        second: 0
-      end:
-        sign: CANCER
-        degree: 26
-        minute: 22
-        second: 30
+    start:
+      sign: CANCER
+      degree: 20
+      minute: 45
+      second: 0
+    end:
+      sign: CANCER
+      degree: 26
+      minute: 22
+      second: 30
   - number: 23
+    ra_description: >
+      Splitting Apart
     complement: 43
     coordinate_range:
       start:
@@ -153,6 +172,8 @@
         minute: 30
         second: 0
   - number: 56
+    ra_description: >
+      The Wanderer
     complement: 11
     coordinate_range:
       start:
@@ -166,6 +187,8 @@
         minute: 0
         second: 0
   - number: 35
+    ra_description: >
+      Progress
     complement: 36
     coordinate_range:
       start:
@@ -179,6 +202,8 @@
         minute: 0
         second: 0
   - number: 12
+    ra_description: >
+      Standstill
     complement: 22
     coordinate_range:
       start:
@@ -192,6 +217,8 @@
         minute: 15
         second: 0
   - number: 45
+    ra_description: >
+      Gathering Together
     complement: 21
     coordinate_range:
       start:
@@ -205,6 +232,8 @@
         minute: 27
         second: 30
   - number: 33
+    ra_description: >
+      Retreat
     complement: 13
     coordinate_range:
       start:
@@ -218,6 +247,8 @@
         minute: 15
         second: 0
   - number: 8
+    ra_description: >
+      Holding Together
     complement: 1
     coordinate_range:
       start:
@@ -231,6 +262,8 @@
         minute: 7
         second: 30
   - number: 31
+    ra_description: >
+      Influence
     complement: 7
     coordinate_range:
       start:
@@ -244,6 +277,8 @@
         minute: 37
         second: 30
   - number: 20
+    ra_description: >
+      Contemplation
     complement: [57, 10, 34]
     coordinate_range:
       start:
@@ -257,6 +292,8 @@
         minute: 45
         second: 0
   - number: 16
+    ra_description: >
+      Enthusiasm
     complement: 48
     coordinate_range:
       start:
@@ -273,6 +310,8 @@
 - name: IDENTITY
   gates:
   - number: 7
+    ra_description: >
+      The Army
     complement: 31
     coordinate_range:
       start:
@@ -286,6 +325,8 @@
         minute: 52
         second: 30
   - number: 1
+    ra_description: >
+      The Creative
     complement: 8
     coordinate_range:
       start:
@@ -299,6 +340,8 @@
         minute: 52
         second: 30
   - number: 13
+    ra_description: >
+      Fellowship of Man
     complement: 33
     coordinate_range:
       start:
@@ -312,6 +355,8 @@
         minute: 52
         second: 30
   - number: 25
+    ra_description: >
+      Innocence
     complement: 51
     coordinate_range:
       start:
@@ -325,6 +370,8 @@
         minute: 52
         second: 30
   - number: 46
+    ra_description: >
+      Pushing Upward
     complement: 29
     coordinate_range:
       start:
@@ -338,6 +385,8 @@
         minute: 52
         second: 30
   - number: 2
+    ra_description: >
+      The Receptive
     complement: 14
     coordinate_range:
       start:
@@ -351,6 +400,8 @@
         minute: 52
         second: 30
   - number: 15
+    ra_description: >
+      Modesty
     complement: 5
     coordinate_range:
       start:
@@ -364,6 +415,8 @@
         minute: 52
         second: 30
   - number: 10
+    ra_description: >
+      Treading
     complement: [20, 57, 34]
     coordinate_range:
       start:
@@ -380,6 +433,8 @@
 - name: WILLPOWER
   gates:
   - number: 21
+    ra_description: >
+      Biting Through
     complement: 45
     coordinate_range:
       start:
@@ -393,6 +448,8 @@
         minute: 7
         second: 30
   - number: 51
+    ra_description: >
+      The Arousing
     complement: 25
     coordinate_range:
       start:
@@ -406,6 +463,8 @@
         minute: 45
         second: 0
   - number: 26
+    ra_description: >
+      The Taming Power of the Great
     complement: 44
     coordinate_range:
       start:
@@ -420,6 +479,8 @@
         second: 30
   - number: 40
     complement: 37
+    ra_description: >
+      Deliverance
     coordinate_range:
       start:
         sign: VIRGO
@@ -449,6 +510,8 @@
         second: 0
   - number: 22
     complement: 12
+    ra_description: >
+      Grace
     coordinate_range:
       start:
         sign: PISCES
@@ -462,6 +525,8 @@
         second: 30
   - number: 37
     complement: 40
+    ra_description: >
+      The Family
     coordinate_range:
       start:
         sign: PISCES
@@ -475,6 +540,8 @@
         second: 30
   - number: 6
     complement: 59
+    ra_description: >
+      Conflict
     coordinate_range:
       start:
         sign: VIRGO
@@ -488,6 +555,8 @@
         second: 0
   - number: 49
     complement: 19
+    ra_description: >
+      Revolution
     coordinate_range:
       start:
         sign: AQUARIUS
@@ -501,6 +570,8 @@
         second: 0
   - number: 55
     complement: 39
+    ra_description: >
+      Abundance
     coordinate_range:
       start:
         sign: PISCES
@@ -514,6 +585,8 @@
         second: 0
   - number: 30
     complement: 41
+    ra_description: >
+      The Clinging
     coordinate_range:
       start:
         sign: AQUARIUS
@@ -530,6 +603,8 @@
   gates:
   - number: 41
     complement: 30
+    ra_description: >
+      Decrease
     coordinate_range:
       start:
         sign: AQUARIUS
@@ -543,6 +618,8 @@
         second: 30
   - number: 39
     complement: 55
+    ra_description: >
+      Obstruction
     coordinate_range:
       start:
         sign: CANCER
@@ -556,6 +633,8 @@
         second: 30
   - number: 19
     complement: 49
+    ra_description: >
+      Approach
     coordinate_range:
       start:
         sign: AQUARIUS
@@ -569,6 +648,8 @@
         second: 0
   - number: 52
     complement: 9
+    ra_description: >
+      Keeping Still
     coordinate_range:
       start:
         sign: CANCER
@@ -582,6 +663,8 @@
         second: 0
   - number: 60
     complement: 3
+    ra_description: >
+      Limitation
     coordinate_range:
       start:
         sign: CAPRICORN
@@ -595,6 +678,8 @@
         second: 0
   - number: 53
     complement: 42
+    ra_description: >
+      Development
     coordinate_range:
       start:
         sign: CANCER
@@ -608,6 +693,8 @@
         second: 0
   - number: 54
     complement: 32
+    ra_description: >
+      The Marrying Maiden
     coordinate_range:
       start:
         sign: CAPRICORN
@@ -621,6 +708,8 @@
         second: 0
   - number: 38
     complement: 28
+    ra_description: >
+      Opposition
     coordinate_range:
       start:
         sign: CAPRICORN
@@ -634,6 +723,8 @@
         second: 30
   - number: 58
     complement: 18
+    ra_description: >
+      The Joyous
     coordinate_range:
       start:
         sign: CAPRICORN
@@ -650,6 +741,8 @@
   gates:
   - number: 5
     complement: 15
+    ra_description: >
+      Waiting
     coordinate_range:
       start:
         sign: SAGITTARIUS
@@ -663,6 +756,8 @@
         second: 0
   - number: 14
     complement: 2
+    ra_description: >
+      Possession in Great Measure
     coordinate_range:
       start:
         sign: SCORPIO
@@ -676,6 +771,8 @@
         second: 30
   - number: 29
     complement: 46
+    ra_description: >
+      The Abysmal
     coordinate_range:
       start:
         sign: LEO
@@ -689,6 +786,8 @@
         second: 30
   - number: 59
     complement: 6
+    ra_description: >
+      Dispersion
     coordinate_range:
       start:
         sign: VIRGO
@@ -702,6 +801,8 @@
         second: 0
   - number: 9
     complement: 52
+    ra_description: >
+      The Taming Power of the Small
     coordinate_range:
       start:
         sign: SAGITTARIUS
@@ -715,6 +816,8 @@
         second: 30
   - number: 3
     complement: 60
+    ra_description: >
+      Difficulty at the Beginning
     coordinate_range:
       start:
         sign: ARIES
@@ -728,6 +831,8 @@
         second: 0
   - number: 42
     complement: 53
+    ra_description: >
+      Increase
     coordinate_range:
       start:
         sign: ARIES
@@ -741,6 +846,8 @@
         second: 30
   - number: 27
     complement: 50
+    ra_description: >
+      Nourishment
     coordinate_range:
       start:
         sign: TAURUS
@@ -754,6 +861,8 @@
         second: 30
   - number: 34
     complement: [57, 10, 20]
+    ra_description: >
+      The Power of the Great
     coordinate_range:
       start:
         sign: SAGITTARIUS
@@ -770,6 +879,8 @@
   gates:
   - number: 48
     complement: 16
+    ra_description: >
+      The Well
     coordinate_range:
       start:
         sign: LIBRA
@@ -783,6 +894,8 @@
         second: 30
   - number: 57
     complement: [20, 10, 34]
+    ra_description: >
+      The Gentle
     coordinate_range:
       start:
         sign: LIBRA
@@ -796,6 +909,8 @@
         second: 0
   - number: 44
     complement: 26
+    ra_description: >
+      Coming to Meet
     coordinate_range:
       start:
         sign: SCORPIO
@@ -809,6 +924,8 @@
         second: 0
   - number: 50
     complement: 27
+    ra_description: >
+      The Cauldron
     coordinate_range:
       start:
         sign: LIBRA
@@ -822,6 +939,8 @@
         second: 0
   - number: 32
     complement: 54
+    ra_description: >
+      Duration
     coordinate_range:
       start:
         sign: LIBRA
@@ -835,6 +954,8 @@
         second: 30
   - number: 28
     complement: 38
+    ra_description: >
+      Preponderance of the Great
     coordinate_range:
       start:
         sign: SCORPIO
@@ -848,6 +969,8 @@
         second: 30
   - number: 18
     complement: 58
+    ra_description: >
+      Work on What Has Been Spoiled
     coordinate_range:
       start:
         sign: LIBRA
