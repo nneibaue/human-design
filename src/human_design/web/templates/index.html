@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jolly Alchemy · Humun Design Explorer</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Quicksand:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --deep-purple: #4a2c6a;
+            --mystic-purple: #6b4190;
+            --soft-purple: #9d7bb5;
+            --twilight-purple: #2d1b3d;
+            --golden-amber: #d4a853;
+            --warm-gold: #c9943a;
+            --forest-green: #4a6741;
+            --sage-green: #7d9a6f;
+            --cream: #faf6f0;
+            --earth-brown: #8b7355;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, var(--twilight-purple) 0%, var(--deep-purple) 50%, #3d2654 100%);
+            min-height: 100vh;
+            color: var(--cream);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse at 20% 80%, rgba(74, 103, 65, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(212, 168, 83, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container-fluid {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .header {
+            padding: 2rem 0 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 168, 83, 0.3);
+            margin-bottom: 1.5rem;
+        }
+
+        .brand-title {
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: var(--golden-amber);
+            text-shadow: 0 2px 20px rgba(212, 168, 83, 0.3);
+            margin-bottom: 0.25rem;
+            letter-spacing: 0.05em;
+        }
+
+        .brand-subtitle {
+            font-size: 1.1rem;
+            color: var(--soft-purple);
+            font-style: italic;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .brand-tagline {
+            font-size: 0.9rem;
+            color: rgba(250, 246, 240, 0.6);
+            margin-top: 0.5rem;
+        }
+
+        .flourish {
+            color: var(--golden-amber);
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            opacity: 0.7;
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(45, 27, 61, 0.9) 0%, rgba(74, 44, 106, 0.85) 100%);
+            border: 1px solid rgba(212, 168, 83, 0.25);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .card-header {
+            background: linear-gradient(90deg, rgba(212, 168, 83, 0.15) 0%, transparent 100%);
+            border-bottom: 1px solid rgba(212, 168, 83, 0.2);
+            color: var(--golden-amber);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .group-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .group-btn {
+            border-radius: 20px;
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-jolly-primary {
+            background: linear-gradient(135deg, var(--mystic-purple) 0%, var(--deep-purple) 100%);
+            border-color: var(--soft-purple);
+            color: var(--cream);
+        }
+
+        .btn-jolly-primary:hover,
+        .btn-jolly-primary.active {
+            background: linear-gradient(135deg, var(--soft-purple) 0%, var(--mystic-purple) 100%);
+            border-color: var(--golden-amber);
+            color: white;
+            box-shadow: 0 0 15px rgba(157, 123, 181, 0.4);
+        }
+
+        .btn-jolly-gold {
+            background: linear-gradient(135deg, var(--golden-amber) 0%, var(--warm-gold) 100%);
+            border-color: var(--golden-amber);
+            color: var(--twilight-purple);
+        }
+
+        .btn-jolly-gold:hover,
+        .btn-jolly-gold.active {
+            background: linear-gradient(135deg, #e5b964 0%, var(--golden-amber) 100%);
+            box-shadow: 0 0 20px rgba(212, 168, 83, 0.5);
+            color: var(--twilight-purple);
+        }
+
+        .btn-jolly-forest {
+            background: linear-gradient(135deg, var(--forest-green) 0%, #3d5636 100%);
+            border-color: var(--sage-green);
+            color: var(--cream);
+        }
+
+        .btn-jolly-forest:hover,
+        .btn-jolly-forest.active {
+            background: linear-gradient(135deg, var(--sage-green) 0%, var(--forest-green) 100%);
+            border-color: var(--golden-amber);
+            box-shadow: 0 0 15px rgba(125, 154, 111, 0.4);
+        }
+
+        .btn-jolly-earth {
+            background: linear-gradient(135deg, var(--earth-brown) 0%, #6b5a45 100%);
+            border-color: var(--earth-brown);
+            color: var(--cream);
+        }
+
+        .btn-jolly-earth:hover,
+        .btn-jolly-earth.active {
+            background: linear-gradient(135deg, #9d8466 0%, var(--earth-brown) 100%);
+            border-color: var(--golden-amber);
+            box-shadow: 0 0 15px rgba(139, 115, 85, 0.4);
+        }
+
+        .btn-refresh {
+            background: transparent;
+            border: 1px solid var(--soft-purple);
+            color: var(--soft-purple);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-refresh:hover {
+            background: rgba(157, 123, 181, 0.2);
+            border-color: var(--golden-amber);
+            color: var(--golden-amber);
+        }
+
+        .btn-help {
+            background: transparent;
+            border: 1px solid var(--golden-amber);
+            color: var(--golden-amber);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-help:hover {
+            background: var(--golden-amber);
+            color: var(--twilight-purple);
+        }
+
+        #peopleTable {
+            color: var(--cream);
+            font-size: 0.9rem;
+        }
+
+        #peopleTable thead th {
+            background: linear-gradient(180deg, rgba(212, 168, 83, 0.2) 0%, rgba(212, 168, 83, 0.1) 100%);
+            color: var(--golden-amber);
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(212, 168, 83, 0.3);
+            white-space: nowrap;
+            padding: 0.75rem;
+        }
+
+        #peopleTable tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        #peopleTable tbody tr:hover {
+            background: rgba(157, 123, 181, 0.15) !important;
+        }
+
+        #peopleTable tbody td {
+            border-color: rgba(157, 123, 181, 0.15);
+            vertical-align: middle;
+            padding: 0.6rem;
+        }
+
+        .table-striped>tbody>tr:nth-of-type(odd)>* {
+            background-color: rgba(45, 27, 61, 0.3);
+            color: var(--cream);
+        }
+
+        .table-striped>tbody>tr:nth-of-type(even)>* {
+            background-color: rgba(74, 44, 106, 0.2);
+            color: var(--cream);
+        }
+
+        .type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .type-I {
+            background: linear-gradient(135deg, #5c9542 0%, #4a7a35 100%);
+            color: white;
+        }
+
+        .type-S {
+            background: linear-gradient(135deg, #b53000 0%, #8f2600 100%);
+            color: white;
+        }
+
+        .type-C {
+            background: linear-gradient(135deg, #6085A3 0%, #4d6a82 100%);
+            color: white;
+        }
+
+        .type-O {
+            background: linear-gradient(135deg, #c562c2 0%, #a34fa0 100%);
+            color: white;
+        }
+
+        .type-B {
+            background: linear-gradient(135deg, #cc6500 0%, #a35200 100%);
+            color: white;
+        }
+
+        .tag-badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            margin: 0.1rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tag-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .tag-64keys {
+            background: rgba(107, 65, 144, 0.6);
+            color: var(--cream);
+            border: 1px solid var(--soft-purple);
+        }
+
+        .tag-custom {
+            background: rgba(212, 168, 83, 0.3);
+            color: var(--golden-amber);
+            border: 1px solid var(--golden-amber);
+        }
+
+        .tag-add {
+            background: rgba(250, 246, 240, 0.1);
+            color: var(--soft-purple);
+            border: 1px dashed var(--soft-purple);
+        }
+
+        .tag-add:hover {
+            background: rgba(157, 123, 181, 0.2);
+            border-style: solid;
+        }
+
+        /* Autocomplete dropdown */
+        .autocomplete-container {
+            position: relative;
+        }
+
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(45, 27, 61, 0.98);
+            border: 1px solid var(--soft-purple);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1050;
+            display: none;
+        }
+
+        .autocomplete-dropdown.show {
+            display: block;
+        }
+
+        .autocomplete-item {
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(157, 123, 181, 0.2);
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-item:hover,
+        .autocomplete-item.selected {
+            background: rgba(157, 123, 181, 0.3);
+        }
+
+        .autocomplete-item .group-name {
+            color: var(--cream);
+        }
+
+        .autocomplete-item .group-count {
+            font-size: 0.75rem;
+            color: var(--soft-purple);
+            background: rgba(157, 123, 181, 0.2);
+            padding: 0.1rem 0.4rem;
+            border-radius: 10px;
+        }
+
+        .autocomplete-item.new-group {
+            color: var(--golden-amber);
+            font-style: italic;
+        }
+
+        .autocomplete-item.new-group::before {
+            content: "✨ ";
+        }
+
+        .btn-chart-link {
+            background: transparent;
+            border: 1px solid var(--soft-purple);
+            color: var(--soft-purple);
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-chart-link:hover {
+            background: var(--soft-purple);
+            color: var(--twilight-purple);
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            background: rgba(45, 27, 61, 0.8);
+            border: 1px solid var(--soft-purple);
+            border-radius: 8px;
+            color: var(--cream);
+            padding: 0.4rem 0.8rem;
+        }
+
+        .dataTables_wrapper .dataTables_filter input:focus {
+            outline: none;
+            border-color: var(--golden-amber);
+            box-shadow: 0 0 10px rgba(212, 168, 83, 0.3);
+        }
+
+        .dataTables_wrapper .dataTables_filter input::placeholder {
+            color: rgba(250, 246, 240, 0.4);
+        }
+
+        .dataTables_wrapper .dataTables_filter label,
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_info {
+            color: var(--soft-purple);
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            color: var(--soft-purple) !important;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            margin: 0 2px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: rgba(157, 123, 181, 0.2) !important;
+            border-color: var(--soft-purple) !important;
+            color: var(--golden-amber) !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: var(--mystic-purple) !important;
+            border-color: var(--golden-amber) !important;
+            color: var(--cream) !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+            color: rgba(157, 123, 181, 0.4) !important;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(45, 27, 61, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(212, 168, 83, 0.2);
+            border-top-color: var(--golden-amber);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            margin-top: 1rem;
+            color: var(--golden-amber);
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, var(--twilight-purple) 0%, var(--deep-purple) 100%);
+            border: 1px solid rgba(212, 168, 83, 0.3);
+            border-radius: 12px;
+            color: var(--cream);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(212, 168, 83, 0.2);
+        }
+
+        .modal-title {
+            color: var(--golden-amber);
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .btn-close {
+            filter: invert(1) sepia(1) saturate(5) hue-rotate(10deg);
+        }
+
+        .modal-body input {
+            background: rgba(45, 27, 61, 0.8);
+            border: 1px solid var(--soft-purple);
+            border-radius: 8px;
+            color: var(--cream);
+            padding: 0.5rem 1rem;
+        }
+
+        .modal-body input:focus {
+            outline: none;
+            border-color: var(--golden-amber);
+            box-shadow: 0 0 10px rgba(212, 168, 83, 0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(212, 168, 83, 0.2);
+            color: rgba(250, 246, 240, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: var(--soft-purple);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: var(--golden-amber);
+        }
+
+        /* Help Panel */
+        .help-panel {
+            background: linear-gradient(145deg, rgba(45, 27, 61, 0.95) 0%, rgba(74, 44, 106, 0.95) 100%);
+            border: 1px solid rgba(212, 168, 83, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .help-panel.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .help-panel h4 {
+            color: var(--golden-amber);
+            margin-bottom: 1rem;
+        }
+
+        .help-section {
+            margin-bottom: 1.25rem;
+        }
+
+        .help-section h5 {
+            color: var(--soft-purple);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+        }
+
+        .help-section p {
+            color: rgba(250, 246, 240, 0.8);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            line-height: 1.5;
+        }
+
+        .help-section ul {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+
+        .help-section li {
+            color: rgba(250, 246, 240, 0.8);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .type-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .type-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+        }
+
+        .kbd {
+            background: rgba(212, 168, 83, 0.2);
+            border: 1px solid rgba(212, 168, 83, 0.4);
+            border-radius: 4px;
+            padding: 0.15rem 0.4rem;
+            font-size: 0.8rem;
+            color: var(--golden-amber);
+        }
+
+        @media (max-width: 768px) {
+            .brand-title {
+                font-size: 2rem;
+            }
+
+            .group-buttons {
+                justify-content: center;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Brewing the magic...</div>
+    </div>
+
+    <div class="container-fluid" style="max-width: 1600px; margin: 0 auto; padding: 0 2rem;">
+        <header class="header">
+            <div class="d-flex justify-content-between align-items-start">
+                <div style="width: 120px;"></div>
+                <div class="text-center flex-grow-1">
+                    <h1 class="brand-title">
+                        <span class="flourish">✧</span>
+                        Jolly Alchemy
+                        <span class="flourish">✧</span>
+                    </h1>
+                    <p class="brand-subtitle">Humun Design Explorer</p>
+                    <p class="brand-tagline">Discover the treasure map of your true essence</p>
+                </div>
+                <div class="header-actions d-flex gap-2">
+                    <button class="btn-help" onclick="toggleHelp()" title="Help & Guide">?</button>
+                    <button class="btn btn-refresh" onclick="refreshData()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                            viewBox="0 0 16 16" style="margin-right: 0.25rem;">
+                            <path fill-rule="evenodd"
+                                d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+                            <path
+                                d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Help Panel -->
+        <div class="help-panel" id="helpPanel">
+            <div class="d-flex justify-content-between align-items-start">
+                <h4>✨ Welcome to Your Humun Design Explorer</h4>
+                <button class="btn-close" onclick="toggleHelp()"></button>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="help-section">
+                        <h5>🔮 Getting Started</h5>
+                        <p>This tool helps you explore and manage your collection of Humun Design charts from
+                            64keys.com.</p>
+                        <ul>
+                            <li>Use the <strong>circle filters</strong> to view different groups</li>
+                            <li>Click any <strong>column header</strong> to sort</li>
+                            <li>Use the <strong>search box</strong> to find specific people</li>
+                            <li>Click <strong>"View"</strong> to see the full chart on 64keys</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="help-section">
+                        <h5>👨‍👩‍👧‍👦 Custom Groups</h5>
+                        <p>Create your own groups to organize families and connections:</p>
+                        <ul>
+                            <li>Click the <span class="tag-badge tag-add">+</span> button on any row</li>
+                            <li>Type a group name (e.g. "Sandy family") and press <span class="kbd">Enter</span></li>
+                            <li>Click a group name in the table to filter by it</li>
+                            <li>Groups are saved automatically</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="help-section">
+                        <h5>🌟 Energy Types</h5>
+                        <p>The colored badges show each person's Humun Design type:</p>
+                        <div class="type-legend">
+                            <div class="type-legend-item"><span class="type-badge type-I">I</span> Initiator
+                                (Manifestor)</div>
+                            <div class="type-legend-item"><span class="type-badge type-B">B</span> Builder (Generator)
+                            </div>
+                            <div class="type-legend-item"><span class="type-badge type-S">S</span> Specialist (Mani-Gen)
+                            </div>
+                            <div class="type-legend-item"><span class="type-badge type-C">C</span> Coordinator
+                                (Projector)</div>
+                            <div class="type-legend-item"><span class="type-badge type-O">O</span> Observer (Reflector)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <span>✨ Filter by Circle</span>
+                <small style="color: var(--soft-purple); font-weight: normal; font-family: 'Quicksand', sans-serif;">
+                    Click a button to view that group
+                </small>
+            </div>
+            <div class="card-body">
+                <div class="group-buttons">
+                    {% for key, group in groups.items() %}
+                    {% if group.color == 'warning' %}
+                    <button class="btn group-btn btn-jolly-gold{% if key == 'allmine' %} active{% endif %}"
+                        data-group="{{ key }}" onclick="filterByGroup('{{ key }}')">
+                        {{ group.label }}
+                    </button>
+                    {% elif group.color == 'primary' %}
+                    <button class="btn group-btn btn-jolly-primary" data-group="{{ key }}"
+                        onclick="filterByGroup('{{ key }}')">
+                        {{ group.label }}
+                    </button>
+                    {% elif group.color == 'info' %}
+                    <button class="btn group-btn btn-jolly-forest" data-group="{{ key }}"
+                        onclick="filterByGroup('{{ key }}')">
+                        {{ group.label }}
+                    </button>
+                    {% else %}
+                    <button class="btn group-btn btn-jolly-earth" data-group="{{ key }}"
+                        onclick="filterByGroup('{{ key }}')">
+                        {{ group.label }}
+                    </button>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart Actions Bar (appears when people are selected) -->
+        <div class="card mb-4" id="chartActionsCard" style="display: none;">
+            <div class="card-header">
+                <span>🔮 Chart Actions</span>
+                <span id="selectionCount"
+                    style="color: var(--soft-purple); font-weight: normal; font-family: 'Quicksand', sans-serif; margin-left: 1rem;"></span>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <button class="btn btn-sm btn-jolly-gold" onclick="openChartUrls('individual')"
+                        title="Open individual charts">
+                        👤 Individual Charts
+                    </button>
+                    <button class="btn btn-sm btn-jolly-primary" id="btnInteraction"
+                        onclick="openChartUrls('interaction')" title="Requires exactly 2 people" disabled>
+                        👥 Interaction (2)
+                    </button>
+
+                    <button class="btn btn-sm btn-jolly-primary" id="btnFamilyPenta"
+                        onclick="openChartUrls('family_penta')" title="Requires 3-5 people" disabled>
+                        🏠 Family Penta (3-5)
+                    </button>
+                    <button class="btn btn-sm btn-jolly-forest" id="btnMultiChart"
+                        onclick="openChartUrls('multi_chart')" title="Requires 2-16 people" disabled>
+                        📊 Multi-Chart (2-16)
+                    </button>
+                    <button class="btn btn-sm btn-jolly-earth" id="btnTransit" onclick="openChartUrls('transit')"
+                        title="Transit for first selected">
+                        🌍 Transit
+                    </button>
+                    <div class="ms-auto">
+                        <button class="btn btn-sm"
+                            style="background: transparent; border: 1px solid var(--soft-purple); color: var(--soft-purple);"
+                            onclick="clearSelection()">
+                            ✕ Clear Selection
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Groups Filter -->
+        <div class="card mb-4" id="customGroupsCard" style="display: none;">
+            <div class="card-header">
+                <span>👨‍👩‍👧‍👦 Your Custom Groups</span>
+                <div class="d-flex gap-2 align-items-center">
+                    <button class="btn btn-sm btn-jolly-gold" id="multiChartBtn" style="display: none;"
+                        onclick="openMultiChart()">
+                        📊 View Combined Chart
+                    </button>
+                    <button class="btn btn-sm"
+                        style="background: transparent; border: 1px solid var(--soft-purple); color: var(--soft-purple);"
+                        onclick="clearCustomGroupFilter()" id="clearGroupBtn" style="display: none;">
+                        ✕ Clear Filter
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="group-buttons" id="customGroupButtons">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span>🌟 Your Humuns</span>
+                <div class="d-flex align-items-center gap-3">
+                    <small id="recordCount"
+                        style="color: var(--soft-purple); font-weight: normal; font-family: 'Quicksand', sans-serif;"></small>
+                    <small id="activeGroupFilter"
+                        style="color: var(--golden-amber); font-weight: 500; display: none;"></small>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="peopleTable" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;"><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"
+                                    title="Select all"></th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Profile</th>
+                            <th>Cross</th>
+                            <th>Def</th>
+                            <th>Birth Date</th>
+                            <th>Groups</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>
+                Made with 💜 for <a href="https://jollyalchemy.com" target="_blank">Jolly Alchemy</a>
+                · Data from <a href="https://64keys.com" target="_blank">64keys.com</a>
+            </p>
+            <p style="font-style: italic; opacity: 0.7;">
+                "Every grand adventure begins with a single step—or perhaps a spirited leap into the unknown!"
+            </p>
+        </footer>
+    </div>
+
+    <!-- Group Modal -->
+    <div class="modal fade" id="tagModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">👨‍👩‍👧‍👦 Manage Groups</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong id="tagPersonName" style="color: var(--golden-amber);"></strong></p>
+                    <div id="currentTags" class="mb-3"></div>
+                    <div class="autocomplete-container">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="newTagInput"
+                                placeholder="Add to a group (e.g. Sandy family)..." autocomplete="off"
+                                oninput="showGroupSuggestions(this.value)" onkeydown="handleAutocompleteKeydown(event)">
+                            <button class="btn btn-jolly-gold" onclick="addTag()">Add</button>
+                        </div>
+                        <div class="autocomplete-dropdown" id="groupSuggestions"></div>
+                    </div>
+                    <small class="text-muted mt-2 d-block">
+                        💡 Type to search existing groups or create a new one
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        let table;
+        let currentPersonId = null;
+        let peopleData = [];
+        let allPeopleData = []; // Keep original data for filtering
+        let currentCustomGroup = null;
+        let allCustomGroups = new Set();
+        let selectedIds = new Set(); // Track selected people
+
+        function showLoading() { document.getElementById('loadingOverlay').classList.add('active'); }
+        function hideLoading() { document.getElementById('loadingOverlay').classList.remove('active'); }
+
+        // Selection management
+        function updateSelectionUI() {
+            const count = selectedIds.size;
+            const card = document.getElementById('chartActionsCard');
+            const countEl = document.getElementById('selectionCount');
+
+            if (count === 0) {
+                card.style.display = 'none';
+                document.getElementById('selectAll').checked = false;
+                return;
+            }
+
+            card.style.display = 'block';
+            countEl.textContent = `${count} humun${count > 1 ? 's' : ''} selected`;
+
+            // Enable/disable buttons based on count
+            document.getElementById('btnInteraction').disabled = count !== 2;
+
+            document.getElementById('btnFamilyPenta').disabled = count < 3 || count > 5;
+            document.getElementById('btnMultiChart').disabled = count < 2 || count > 16;
+            document.getElementById('btnTransit').disabled = count < 1;
+
+            // Update select-all checkbox state
+            const visibleRows = table.rows({ search: 'applied' }).data().toArray();
+            const allVisible = visibleRows.every(row => selectedIds.has(row.id));
+            document.getElementById('selectAll').checked = allVisible && visibleRows.length > 0;
+        }
+
+        function toggleSelectAll() {
+            const isChecked = document.getElementById('selectAll').checked;
+            const visibleRows = table.rows({ search: 'applied' }).data().toArray();
+
+            visibleRows.forEach(row => {
+                if (isChecked) {
+                    selectedIds.add(row.id);
+                } else {
+                    selectedIds.delete(row.id);
+                }
+            });
+
+            // Update all checkboxes
+            document.querySelectorAll('.row-select').forEach(cb => {
+                const id = parseInt(cb.dataset.id);
+                cb.checked = selectedIds.has(id);
+            });
+
+            updateSelectionUI();
+        }
+
+        function toggleRowSelect(id) {
+            if (selectedIds.has(id)) {
+                selectedIds.delete(id);
+            } else {
+                selectedIds.add(id);
+            }
+            updateSelectionUI();
+        }
+
+        function clearSelection() {
+            selectedIds.clear();
+            document.querySelectorAll('.row-select').forEach(cb => cb.checked = false);
+            updateSelectionUI();
+        }
+
+        async function openChartUrls(chartType) {
+            if (selectedIds.size === 0) return;
+
+            const ids = Array.from(selectedIds).join(',');
+            try {
+                const response = await fetch(`/api/chart-urls?ids=${ids}`);
+                const data = await response.json();
+
+                if (chartType === 'individual') {
+                    // Open individual charts for all selected
+                    data.urls.individual.forEach(url => window.open(url, '_blank'));
+                } else if (data.urls[chartType]) {
+                    window.open(data.urls[chartType], '_blank');
+                } else {
+                    alert(`This chart type is not available for ${data.count} people.`);
+                }
+            } catch (e) {
+                console.error('Error getting chart URLs:', e);
+                alert('Could not get chart URLs. Please try again.');
+            }
+        }
+
+        function renderCheckbox(data, type, row) {
+            if (type !== 'display') return '';
+            const checked = selectedIds.has(row.id) ? 'checked' : '';
+            return `<input type="checkbox" class="row-select" data-id="${row.id}" 
+                onclick="toggleRowSelect(${row.id})" ${checked}>`;
+        }
+
+        function renderActions(data, type, row) {
+            if (type !== 'display') return data;
+            return `<a href="https://www.64keys.com/chart?id=${row.id}" target="_blank" class="btn-chart-link" title="View chart">👤</a>
+                <a href="https://www.64keys.com/transit?id1=${row.id}" target="_blank" class="btn-chart-link" title="View transit">🌍</a>`;
+        }
+
+        function toggleHelp() {
+            const panel = document.getElementById('helpPanel');
+            panel.classList.toggle('show');
+            localStorage.setItem('jollyAlchemyHelpSeen', 'true');
+        }
+
+        // Show help on first visit
+        if (!localStorage.getItem('jollyAlchemyHelpSeen')) {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => document.getElementById('helpPanel').classList.add('show'), 500);
+            });
+        }
+
+        const typeNames = { 'I': 'Initiator', 'B': 'Builder', 'S': 'Specialist', 'C': 'Coordinator', 'O': 'Observer' };
+
+        function renderType(data) {
+            if (!data) return '';
+            return `<span class="type-badge type-${data}" title="${typeNames[data] || data}">${typeNames[data] || data}</span>`;
+        }
+
+        function renderTags(data, type, row) {
+            if (type !== 'display') return data;
+            let html = '';
+            if (row.tags) {
+                row.tags.split(',').filter(t => t.trim()).forEach(tag => {
+                    html += `<span class="tag-badge tag-64keys">${tag.trim()}</span>`;
+                });
+            }
+            if (row.custom_tags && row.custom_tags.length) {
+                row.custom_tags.forEach(tag => {
+                    html += `<span class="tag-badge tag-custom" onclick="filterByCustomGroup('${tag.replace(/'/g, "\\'")}')"
+                        title="Click to filter by this group">${tag}</span>`;
+                });
+            }
+            html += `<span class="tag-badge tag-add" onclick="openTagModal(${row.id})" title="Add to group">+</span>`;
+            return html;
+        }
+
+        function collectCustomGroups(data) {
+            allCustomGroups.clear();
+            data.forEach(person => {
+                if (person.custom_tags) {
+                    person.custom_tags.forEach(tag => allCustomGroups.add(tag));
+                }
+            });
+            updateCustomGroupsUI();
+        }
+
+        function updateCustomGroupsUI() {
+            const card = document.getElementById('customGroupsCard');
+            const container = document.getElementById('customGroupButtons');
+
+            if (allCustomGroups.size === 0) {
+                card.style.display = 'none';
+                return;
+            }
+
+            card.style.display = 'block';
+            const sortedGroups = [...allCustomGroups].sort();
+
+            container.innerHTML = sortedGroups.map(group => {
+                const count = allPeopleData.filter(p => p.custom_tags && p.custom_tags.includes(group)).length;
+                const isActive = currentCustomGroup === group;
+                return `<button class="btn group-btn btn-jolly-primary${isActive ? ' active' : ''}" 
+                    onclick="filterByCustomGroup('${group.replace(/'/g, "\\'")}')">${group} (${count})</button>`;
+            }).join('');
+        }
+
+        function filterByCustomGroup(groupName) {
+            currentCustomGroup = groupName;
+
+            // Filter data
+            const filtered = allPeopleData.filter(p => p.custom_tags && p.custom_tags.includes(groupName));
+
+            // Update table
+            table.clear().rows.add(filtered).draw();
+
+            // Update UI
+            updateCustomGroupsUI();
+            document.getElementById('activeGroupFilter').textContent = `Filtering: "${groupName}"`;
+            document.getElementById('activeGroupFilter').style.display = 'inline';
+            document.getElementById('clearGroupBtn').style.display = 'inline';
+            document.getElementById('multiChartBtn').style.display = 'inline';
+            document.getElementById('recordCount').textContent = `${filtered.length} of ${allPeopleData.length} humuns`;
+        }
+
+        function clearCustomGroupFilter() {
+            currentCustomGroup = null;
+            table.clear().rows.add(allPeopleData).draw();
+            updateCustomGroupsUI();
+            document.getElementById('activeGroupFilter').style.display = 'none';
+            document.getElementById('clearGroupBtn').style.display = 'none';
+            document.getElementById('multiChartBtn').style.display = 'none';
+            document.getElementById('recordCount').textContent = `${allPeopleData.length} humuns`;
+        }
+
+        function openMultiChart() {
+            if (!currentCustomGroup) return;
+            const filtered = allPeopleData.filter(p => p.custom_tags && p.custom_tags.includes(currentCustomGroup));
+            if (filtered.length === 0) return;
+
+            // 64keys multi-chart URL format: /multi_chart?id[0]=123&id[1]=456...
+            const params = filtered.map((p, i) => `id[${i}]=${p.id}`).join('&');
+            window.open(`https://www.64keys.com/multi_chart?${params}`, '_blank');
+        }
+
+        function initTable(data) {
+            peopleData = data;
+            allPeopleData = data;
+            collectCustomGroups(data);
+
+            document.getElementById('recordCount').textContent = `${data.length} humuns`;
+
+            if (table) {
+                table.clear().rows.add(data).draw();
+                return;
+            }
+
+            table = $('#peopleTable').DataTable({
+                data: data,
+                columns: [
+                    { data: null, render: renderCheckbox, orderable: false, searchable: false },
+                    { data: null, render: (d, t, row) => `${row.firstname} ${row.lastname}` },
+                    { data: 'maintype', render: renderType },
+                    { data: 'profile' },
+                    { data: 'cross_name' },
+                    { data: 'definitions' },
+                    { data: 'birth_date' },
+                    { data: null, render: renderTags },
+                    { data: null, render: renderActions, orderable: false }
+                ],
+                pageLength: 25,
+                order: [[1, 'asc']],  // Sort by name (column 1, since 0 is checkbox)
+                dom: 'frtip',
+                language: {
+                    search: "🔍 Search:",
+                    info: "Showing _START_ to _END_ of _TOTAL_ humuns",
+                    infoEmpty: "No humuns found",
+                    infoFiltered: "(filtered from _MAX_ total)",
+                    paginate: { next: "→", previous: "←" }
+                },
+                drawCallback: function () {
+                    // Re-check previously selected rows after redraw
+                    document.querySelectorAll('.row-select').forEach(cb => {
+                        const id = parseInt(cb.dataset.id);
+                        cb.checked = selectedIds.has(id);
+                    });
+                    updateSelectionUI();
+                }
+            });
+        }
+
+        async function loadPeople(group = 'allmine', refresh = false) {
+            showLoading();
+            try {
+                const response = await fetch(`/api/people?group=${group}&refresh=${refresh}`);
+                const data = await response.json();
+                currentCustomGroup = null;
+                document.getElementById('activeGroupFilter').style.display = 'none';
+                document.getElementById('clearGroupBtn').style.display = 'none';
+                document.getElementById('multiChartBtn').style.display = 'none';
+                initTable(data.people);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('The magic fizzled! Please try again. 🔮');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function filterByGroup(group) {
+            document.querySelectorAll('.group-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-group="${group}"]`)?.classList.add('active');
+            loadPeople(group);
+        }
+
+        function refreshData() {
+            const activeGroup = document.querySelector('.group-btn.active')?.dataset.group || 'allmine';
+            loadPeople(activeGroup, true);
+        }
+
+        function openTagModal(personId) {
+            currentPersonId = personId;
+            const person = allPeopleData.find(p => p.id === personId);
+            if (!person) return;
+
+            document.getElementById('tagPersonName').textContent = `${person.firstname} ${person.lastname}`;
+            const tagsHtml = (person.custom_tags || []).map(tag =>
+                `<span class="tag-badge tag-custom" style="cursor:pointer" onclick="removeTag('${tag.replace(/'/g, "\\'")}')">${tag} ×</span>`
+            ).join('');
+            document.getElementById('currentTags').innerHTML = tagsHtml || '<em style="color:rgba(250,246,240,0.5)">Not in any custom groups yet</em>';
+            document.getElementById('newTagInput').value = '';
+            hideGroupSuggestions();
+            new bootstrap.Modal(document.getElementById('tagModal')).show();
+        }
+
+        // Autocomplete functions
+        let autocompleteIndex = -1;
+
+        function showGroupSuggestions(query) {
+            const dropdown = document.getElementById('groupSuggestions');
+            const input = document.getElementById('newTagInput');
+            autocompleteIndex = -1;
+
+            if (!query.trim()) {
+                hideGroupSuggestions();
+                return;
+            }
+
+            const lowerQuery = query.toLowerCase();
+            const matches = [...allCustomGroups]
+                .filter(g => g.toLowerCase().includes(lowerQuery))
+                .sort((a, b) => {
+                    // Prioritize starts-with matches
+                    const aStarts = a.toLowerCase().startsWith(lowerQuery);
+                    const bStarts = b.toLowerCase().startsWith(lowerQuery);
+                    if (aStarts && !bStarts) return -1;
+                    if (!aStarts && bStarts) return 1;
+                    return a.localeCompare(b);
+                })
+                .slice(0, 8);
+
+            let html = '';
+
+            // Show matching groups with count
+            matches.forEach((group, idx) => {
+                const count = allPeopleData.filter(p => p.custom_tags && p.custom_tags.includes(group)).length;
+                html += `<div class="autocomplete-item" data-index="${idx}" onclick="selectGroupSuggestion('${group.replace(/'/g, "\\'")}')">
+                    <span class="group-name">${highlightMatch(group, query)}</span>
+                    <span class="group-count">${count} humun${count !== 1 ? 's' : ''}</span>
+                </div>`;
+            });
+
+            // Show "create new" option if query doesn't exactly match existing
+            const exactMatch = [...allCustomGroups].some(g => g.toLowerCase() === lowerQuery);
+            if (!exactMatch && query.trim()) {
+                html += `<div class="autocomplete-item new-group" data-index="${matches.length}" onclick="selectGroupSuggestion('${query.replace(/'/g, "\\'")}')">
+                    Create "${query}"
+                </div>`;
+            }
+
+            if (html) {
+                dropdown.innerHTML = html;
+                dropdown.classList.add('show');
+            } else {
+                hideGroupSuggestions();
+            }
+        }
+
+        function highlightMatch(text, query) {
+            const idx = text.toLowerCase().indexOf(query.toLowerCase());
+            if (idx === -1) return text;
+            return text.slice(0, idx) +
+                '<strong style="color: var(--golden-amber)">' +
+                text.slice(idx, idx + query.length) +
+                '</strong>' +
+                text.slice(idx + query.length);
+        }
+
+        function hideGroupSuggestions() {
+            document.getElementById('groupSuggestions').classList.remove('show');
+            autocompleteIndex = -1;
+        }
+
+        function selectGroupSuggestion(group) {
+            document.getElementById('newTagInput').value = group;
+            hideGroupSuggestions();
+            addTag();
+        }
+
+        function handleAutocompleteKeydown(e) {
+            const dropdown = document.getElementById('groupSuggestions');
+            const items = dropdown.querySelectorAll('.autocomplete-item');
+
+            if (!dropdown.classList.contains('show')) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addTag();
+                }
+                return;
+            }
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                autocompleteIndex = Math.min(autocompleteIndex + 1, items.length - 1);
+                updateAutocompleteSelection(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                autocompleteIndex = Math.max(autocompleteIndex - 1, -1);
+                updateAutocompleteSelection(items);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (autocompleteIndex >= 0 && items[autocompleteIndex]) {
+                    items[autocompleteIndex].click();
+                } else {
+                    addTag();
+                }
+            } else if (e.key === 'Escape') {
+                hideGroupSuggestions();
+            }
+        }
+
+        function updateAutocompleteSelection(items) {
+            items.forEach((item, idx) => {
+                item.classList.toggle('selected', idx === autocompleteIndex);
+            });
+        }
+
+        async function addTag() {
+            const tag = document.getElementById('newTagInput').value.trim();
+            if (!tag || !currentPersonId) return;
+            hideGroupSuggestions();
+            try {
+                const response = await fetch(`/api/people/${currentPersonId}/tags/${encodeURIComponent(tag)}`, { method: 'POST' });
+                const data = await response.json();
+                const person = allPeopleData.find(p => p.id === currentPersonId);
+                if (person) {
+                    person.custom_tags = data.tags;
+                    collectCustomGroups(allPeopleData);
+                    table.rows().invalidate().draw(false);
+                }
+                openTagModal(currentPersonId);
+            } catch (e) { console.error('Error:', e); }
+        }
+
+        async function removeTag(tag) {
+            if (!currentPersonId) return;
+            try {
+                const response = await fetch(`/api/people/${currentPersonId}/tags/${encodeURIComponent(tag)}`, { method: 'DELETE' });
+                const data = await response.json();
+                const person = allPeopleData.find(p => p.id === currentPersonId);
+                if (person) {
+                    person.custom_tags = data.tags;
+                    collectCustomGroups(allPeopleData);
+                    table.rows().invalidate().draw(false);
+                }
+                openTagModal(currentPersonId);
+            } catch (e) { console.error('Error:', e); }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Close autocomplete when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.autocomplete-container')) {
+                    hideGroupSuggestions();
+                }
+            });
+
+            // Clean up modal when closed
+            const tagModal = document.getElementById('tagModal');
+            tagModal.addEventListener('hidden.bs.modal', () => {
+                hideGroupSuggestions();
+                document.getElementById('newTagInput').value = '';
+                // Remove any lingering backdrops
+                document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                document.body.classList.remove('modal-open');
+                document.body.style.removeProperty('overflow');
+                document.body.style.removeProperty('padding-right');
+            });
+        });
+
+        loadPeople();
+    </script>
+</body>
+
+</html>

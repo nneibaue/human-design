@@ -1,9 +1,3 @@
----
-name: findPersonOrGenerateData
-description: Look up a person in data file or prompt for required info to generate results via CLI
-argument-hint: The person's name or identifying information
----
-
 You are helping users find and process data for specific people. Follow this workflow:
 
 ## 1. Search the Data File

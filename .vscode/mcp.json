@@ -1,0 +1,16 @@
+{
+    "servers": {
+        "64keys": {
+            "type": "stdio",
+            "command": "python",
+            "args": [
+                "-m",
+                "mcp_server_64keys.server"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/src"
+            }
+        }
+    }
+}

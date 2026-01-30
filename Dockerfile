@@ -67,14 +67,20 @@ WORKDIR /home/${USER}
 # ============================================================================
 FROM runtime as development
 
+# Re-declare ARG to make it available in this stage
+ARG USER
+
 USER root
 
-# Install additional build tools for development
+# Install additional build tools for development and sudo for the non-root user
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
         curl \
-    && rm -rf /var/lib/apt/lists/*
+        sudo \
+    && rm -rf /var/lib/apt/lists/* \
+    && echo "${USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/${USER} \
+    && chmod 0440 /etc/sudoers.d/${USER}
 
 # Copy compiled dev requirements from builder
 COPY --from=builder /build/requirements-dev.txt /tmp/requirements-dev.txt

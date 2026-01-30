@@ -34,6 +34,8 @@ from .core import CenterName, GateLineNumber, GateNumber, Planet, PlanetField
 BODYGRAPH_DEFINITION_FILE = Path(str(importlib.resources.files("human_design") / "bodygraph.yaml"))
 
 
+
+
 class GateDefinition(BaseModel):
     """
     Raw gate definition from the bodygraph structure.

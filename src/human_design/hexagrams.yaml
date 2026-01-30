@@ -1,0 +1,898 @@
+# Human Design Hexagrams (Gates)
+# I Ching hexagram reference with Human Design coordinates
+
+- number: 1
+  ra_description: The Creative
+  coordinate_range:
+    start:
+      sign: SCORPIO
+      degree: 13
+      minute: 15
+      second: 0
+    end:
+      sign: SCORPIO
+      degree: 18
+      minute: 52
+      second: 30
+
+- number: 2
+  ra_description: The Receptive
+  coordinate_range:
+    start:
+      sign: TAURUS
+      degree: 13
+      minute: 15
+      second: 0
+    end:
+      sign: TAURUS
+      degree: 18
+      minute: 52
+      second: 30
+
+- number: 3
+  ra_description: Difficulty at the Beginning
+  coordinate_range:
+    start:
+      sign: ARIES
+      degree: 26
+      minute: 22
+      second: 30
+    end:
+      sign: TAURUS
+      degree: 2
+      minute: 0
+      second: 0
+
+- number: 4
+  ra_description: Youthful Folly
+  coordinate_range:
+    start:
+      sign: LEO
+      degree: 18
+      minute: 52
+      second: 30
+    end:
+      sign: LEO
+      degree: 24
+      minute: 30
+      second: 0
+
+- number: 5
+  ra_description: Waiting
+  coordinate_range:
+    start:
+      sign: SAGITTARIUS
+      degree: 11
+      minute: 22
+      second: 30
+    end:
+      sign: SAGITTARIUS
+      degree: 17
+      minute: 0
+      second: 0
+
+- number: 6
+  ra_description: Conflict
+  coordinate_range:
+    start:
+      sign: VIRGO
+      degree: 22
+      minute: 27
+      second: 30
+    end:
+      sign: VIRGO
+      degree: 28
+      minute: 15
+      second: 0
+
+- number: 7
+  ra_description: The Army
+  coordinate_range:
+    start:
+      sign: LEO
+      degree: 13
+      minute: 15
+      second: 0
+    end:
+      sign: LEO
+      degree: 18
+      minute: 52
+      second: 30
+
+- number: 8
+  ra_description: Holding Together
+  coordinate_range:
+    start:
+      sign: TAURUS
+      degree: 24
+      minute: 30
+      second: 0
+    end:
+      sign: GEMINI
+      degree: 0
+      minute: 7
+      second: 30
+
+- number: 9
+  ra_description: The Taming Power of the Small
+  coordinate_range:
+    start:
+      sign: SAGITTARIUS
+      degree: 5
+      minute: 45
+      second: 0
+    end:
+      sign: SAGITTARIUS
+      degree: 11
+      minute: 22
+      second: 30
+
+- number: 10
+  ra_description: Treading
+  coordinate_range:
+    start:
+      sign: SAGITTARIUS
+      degree: 28
+      minute: 15
+      second: 0
+    end:
+      sign: CAPRICORN
+      degree: 3
+      minute: 52
+      second: 30
+
+- number: 11
+  ra_description: Peace
+  coordinate_range:
+    start:
+      sign: SAGITTARIUS
+      degree: 22
+      minute: 27
+      second: 30
+    end:
+      sign: SAGITTARIUS
+      degree: 28
+      minute: 15
+      second: 0
+
+- number: 12
+  ra_description: Standstill
+  coordinate_range:
+    start:
+      sign: GEMINI
+      degree: 22
+      minute: 27
+      second: 30
+    end:
+      sign: GEMINI
+      degree: 28
+      minute: 15
+      second: 0
+
+- number: 13
+  ra_description: Fellowship of Man
+  coordinate_range:
+    start:
+      sign: AQUARIUS
+      degree: 13
+      minute: 15
+      second: 0
+    end:
+      sign: AQUARIUS
+      degree: 18
+      minute: 52
+      second: 30
+
+- number: 14
+  ra_description: Possession in Great Measure
+  coordinate_range:
+    start:
+      sign: SCORPIO
+      degree: 24
+      minute: 30
+      second: 0
+    end:
+      sign: SAGITTARIUS
+      degree: 0
+      minute: 7
+      second: 30
+
+- number: 15
+  ra_description: Modesty
+  coordinate_range:
+    start:
+      sign: GEMINI
+      degree: 28
+      minute: 15
+      second: 0
+    end:
+      sign: CANCER
+      degree: 3
+      minute: 52
+      second: 30
+
+- number: 16
+  ra_description: Enthusiasm
+  coordinate_range:
+    start:
+      sign: GEMINI
+      degree: 5
+      minute: 45
+      second: 0
+    end:
+      sign: GEMINI
+      degree: 11
+      minute: 22
+      second: 30
+
+- number: 17
+  ra_description: Following
+  coordinate_range:
+    start:
+      sign: ARIES
+      degree: 3
+      minute: 52
+      second: 30
+    end:
+      sign: ARIES
+      degree: 9
+      minute: 30
+      second: 0
+
+- number: 18
+  ra_description: Work on What Has Been Spoiled
+  coordinate_range:
+    start:
+      sign: LIBRA
+      degree: 3
+      minute: 52
+      second: 30
+    end:
+      sign: LIBRA
+      degree: 9
+      minute: 30
+      second: 0
+
+- number: 19
+  ra_description: Approach
+  coordinate_range:
+    start:
+      sign: AQUARIUS
+      degree: 7
+      minute: 37
+      second: 30
+    end:
+      sign: AQUARIUS
+      degree: 13
+      minute: 15
+      second: 0
+
+- number: 20
+  ra_description: Contemplation
+  coordinate_range:
+    start:
+      sign: GEMINI
+      degree: 0
+      minute: 7
+      second: 30
+    end:
+      sign: GEMINI
+      degree: 5
+      minute: 45
+      second: 0
+
+- number: 21
+  ra_description: Biting Through
+  coordinate_range:
+    start:
+      sign: ARIES
+      degree: 9
+      minute: 30
+      second: 0
+    end:
+      sign: ARIES
+      degree: 15
+      minute: 7
+      second: 30
+
+- number: 22
+  ra_description: Grace
+  coordinate_range:
+    start:
+      sign: PISCES
+      degree: 17
+      minute: 0
+      second: 0
+    end:
+      sign: PISCES
+      degree: 22
+      minute: 27
+      second: 30
+
+- number: 23
+  ra_description: Splitting Apart
+  coordinate_range:
+    start:
+      sign: TAURUS
+      degree: 18
+      minute: 52
+      second: 30
+    end:
+      sign: TAURUS
+      degree: 24
+      minute: 30
+      second: 0
+
+- number: 24
+  ra_description: Return
+  coordinate_range:
+    start:
+      sign: TAURUS
+      degree: 7
+      minute: 37
+      second: 30
+    end:
+      sign: TAURUS
+      degree: 13
+      minute: 15
+      second: 0
+
+- number: 25
+  ra_description: Innocence
+  coordinate_range:
+    start:
+      sign: PISCES
+      degree: 28
+      minute: 15
+      second: 0
+    end:
+      sign: ARIES
+      degree: 3
+      minute: 52
+      second: 30
+
+- number: 26
+  ra_description: The Taming Power of the Great
+  coordinate_range:
+    start:
+      sign: SAGITTARIUS
+      degree: 17
+      minute: 0
+      second: 0
+    end:
+      sign: SAGITTARIUS
+      degree: 22
+      minute: 27
+      second: 30
+
+- number: 27
+  ra_description: Nourishment
+  coordinate_range:
+    start:
+      sign: TAURUS
+      degree: 2
+      minute: 0
+      second: 0
+    end:
+      sign: TAURUS
+      degree: 7
+      minute: 37
+      second: 30
+
+- number: 28
+  ra_description: Preponderance of the Great
+  coordinate_range:
+    start:
+      sign: SCORPIO
+      degree: 2
+      minute: 0
+      second: 0
+    end:
+      sign: SCORPIO
+      degree: 7
+      minute: 37
+      second: 30
+
+- number: 29
+  ra_description: The Abysmal
+  coordinate_range:
+    start:
+      sign: LEO
+      degree: 24
+      minute: 30
+      second: 0
+    end:
+      sign: VIRGO
+      degree: 0
+      minute: 7
+      second: 30
+
+- number: 30
+  ra_description: The Clinging
+  coordinate_range:
+    start:
+      sign: AQUARIUS
+      degree: 24
+      minute: 30
+      second: 0
+    end:
+      sign: PISCES
+      degree: 0
+      minute: 7
+      second: 30
+
+- number: 31
+  ra_description: Influence
+  coordinate_range:
+    start:
+      sign: LEO
+      degree: 2
+      minute: 0
+      second: 0
+    end:
+      sign: LEO
+      degree: 7
+      minute: 37
+      second: 30
+
+- number: 32
+  ra_description: Duration
+  coordinate_range:
+    start:
+      sign: LIBRA
+      degree: 20
+      minute: 45
+      second: 0
+    end:
+      sign: LIBRA
+      degree: 26
+      minute: 22
+      second: 30
+
+- number: 33
+  ra_description: Retreat
+  coordinate_range:
+    start:
+      sign: LEO
+      degree: 7
+      minute: 37
+      second: 30
+    end:
+      sign: LEO
+      degree: 13
+      minute: 15
+      second: 0
+
+- number: 34
+  ra_description: The Power of the Great
+  coordinate_range:
+    start:
+      sign: SAGITTARIUS
+      degree: 0
+      minute: 7
+      second: 30
+    end:
+      sign: SAGITTARIUS
+      degree: 5
+      minute: 45
+      second: 0
+
+- number: 35
+  ra_description: Progress
+  coordinate_range:
+    start:
+      sign: GEMINI
+      degree: 11
+      minute: 22
+      second: 30
+    end:
+      sign: GEMINI
+      degree: 17
+      minute: 0
+      second: 0
+
+- number: 36
+  ra_description: Darkening of the Light
+  coordinate_range:
+    start:
+      sign: PISCES
+      degree: 22
+      minute: 27
+      second: 30
+    end:
+      sign: PISCES
+      degree: 28
+      minute: 15
+      second: 0
+
+- number: 37
+  ra_description: The Family
+  coordinate_range:
+    start:
+      sign: PISCES
+      degree: 5
+      minute: 45
+      second: 0
+    end:
+      sign: PISCES
+      degree: 11
+      minute: 22
+      second: 30
+
+- number: 38
+  ra_description: Opposition
+  coordinate_range:
+    start:
+      sign: CAPRICORN
+      degree: 9
+      minute: 30
+      second: 0
+    end:
+      sign: CAPRICORN
+      degree: 15
+      minute: 7
+      second: 30
+
+- number: 39
+  ra_description: Obstruction
+  coordinate_range:
+    start:
+      sign: CANCER
+      degree: 9
+      minute: 30
+      second: 0
+    end:
+      sign: CANCER
+      degree: 15
+      minute: 7
+      second: 30
+
+- number: 40
+  ra_description: Deliverance
+  coordinate_range:
+    start:
+      sign: VIRGO
+      degree: 5
+      minute: 45
+      second: 0
+    end:
+      sign: VIRGO
+      degree: 11
+      minute: 22
+      second: 30
+
+- number: 41
+  ra_description: Decrease
+  coordinate_range:
+    start:
+      sign: AQUARIUS
+      degree: 2
+      minute: 0
+      second: 0
+    end:
+      sign: AQUARIUS
+      degree: 7
+      minute: 37
+      second: 30
+
+- number: 42
+  ra_description: Increase
+  coordinate_range:
+    start:
+      sign: ARIES
+      degree: 20
+      minute: 45
+      second: 0
+    end:
+      sign: ARIES
+      degree: 26
+      minute: 22
+      second: 30
+
+- number: 43
+  ra_description: Breakthrough
+  coordinate_range:
+    start:
+      sign: SCORPIO
+      degree: 18
+      minute: 52
+      second: 30
+    end:
+      sign: SCORPIO
+      degree: 24
+      minute: 30
+      second: 0
+
+- number: 44
+  ra_description: Coming to Meet
+  coordinate_range:
+    start:
+      sign: SCORPIO
+      degree: 7
+      minute: 37
+      second: 30
+    end:
+      sign: SCORPIO
+      degree: 13
+      minute: 15
+      second: 0
+
+- number: 45
+  ra_description: Gathering Together
+  coordinate_range:
+    start:
+      sign: GEMINI
+      degree: 17
+      minute: 0
+      second: 0
+    end:
+      sign: GEMINI
+      degree: 22
+      minute: 27
+      second: 30
+
+- number: 46
+  ra_description: Pushing Upward
+  coordinate_range:
+    start:
+      sign: VIRGO
+      degree: 28
+      minute: 15
+      second: 0
+    end:
+      sign: LIBRA
+      degree: 3
+      minute: 52
+      second: 30
+
+- number: 47
+  ra_description: Oppression
+  coordinate_range:
+    start:
+      sign: VIRGO
+      degree: 17
+      minute: 0
+      second: 0
+    end:
+      sign: VIRGO
+      degree: 22
+      minute: 27
+      second: 30
+
+- number: 48
+  ra_description: The Well
+  coordinate_range:
+    start:
+      sign: LIBRA
+      degree: 9
+      minute: 30
+      second: 0
+    end:
+      sign: LIBRA
+      degree: 15
+      minute: 7
+      second: 30
+
+- number: 49
+  ra_description: Revolution
+  coordinate_range:
+    start:
+      sign: AQUARIUS
+      degree: 18
+      minute: 52
+      second: 30
+    end:
+      sign: AQUARIUS
+      degree: 24
+      minute: 30
+      second: 0
+
+- number: 50
+  ra_description: The Cauldron
+  coordinate_range:
+    start:
+      sign: LIBRA
+      degree: 26
+      minute: 22
+      second: 30
+    end:
+      sign: SCORPIO
+      degree: 2
+      minute: 0
+      second: 0
+
+- number: 51
+  ra_description: The Arousing
+  coordinate_range:
+    start:
+      sign: ARIES
+      degree: 15
+      minute: 7
+      second: 30
+    end:
+      sign: ARIES
+      degree: 20
+      minute: 45
+      second: 0
+
+- number: 52
+  ra_description: Keeping Still
+  coordinate_range:
+    start:
+      sign: CANCER
+      degree: 3
+      minute: 52
+      second: 30
+    end:
+      sign: CANCER
+      degree: 9
+      minute: 30
+      second: 0
+
+- number: 53
+  ra_description: Development
+  coordinate_range:
+    start:
+      sign: CANCER
+      degree: 15
+      minute: 7
+      second: 30
+    end:
+      sign: CANCER
+      degree: 20
+      minute: 45
+      second: 0
+
+- number: 54
+  ra_description: The Marrying Maiden
+  coordinate_range:
+    start:
+      sign: CAPRICORN
+      degree: 15
+      minute: 7
+      second: 30
+    end:
+      sign: CAPRICORN
+      degree: 20
+      minute: 45
+      second: 0
+
+- number: 55
+  ra_description: Abundance
+  coordinate_range:
+    start:
+      sign: PISCES
+      degree: 0
+      minute: 7
+      second: 30
+    end:
+      sign: PISCES
+      degree: 5
+      minute: 45
+      second: 0
+
+- number: 56
+  ra_description: The Wanderer
+  coordinate_range:
+    start:
+      sign: CANCER
+      degree: 26
+      minute: 22
+      second: 30
+    end:
+      sign: LEO
+      degree: 2
+      minute: 0
+      second: 0
+
+- number: 57
+  ra_description: The Gentle
+  coordinate_range:
+    start:
+      sign: LIBRA
+      degree: 15
+      minute: 7
+      second: 30
+    end:
+      sign: LIBRA
+      degree: 20
+      minute: 45
+      second: 0
+
+- number: 58
+  ra_description: The Joyous
+  coordinate_range:
+    start:
+      sign: CAPRICORN
+      degree: 3
+      minute: 52
+      second: 30
+    end:
+      sign: CAPRICORN
+      degree: 9
+      minute: 30
+      second: 0
+
+- number: 59
+  ra_description: Dispersion
+  coordinate_range:
+    start:
+      sign: VIRGO
+      degree: 0
+      minute: 7
+      second: 30
+    end:
+      sign: VIRGO
+      degree: 5
+      minute: 45
+      second: 0
+
+- number: 60
+  ra_description: Limitation
+  coordinate_range:
+    start:
+      sign: CAPRICORN
+      degree: 26
+      minute: 22
+      second: 30
+    end:
+      sign: AQUARIUS
+      degree: 2
+      minute: 0
+      second: 0
+
+- number: 61
+  ra_description: Inner Truth
+  coordinate_range:
+    start:
+      sign: CAPRICORN
+      degree: 20
+      minute: 45
+      second: 0
+    end:
+      sign: CAPRICORN
+      degree: 26
+      minute: 22
+      second: 30
+
+- number: 62
+  ra_description: Preponderance of the Small
+  coordinate_range:
+    start:
+      sign: CANCER
+      degree: 20
+      minute: 45
+      second: 0
+    end:
+      sign: CANCER
+      degree: 26
+      minute: 22
+      second: 30
+
+- number: 63
+  ra_description: After Completion
+  coordinate_range:
+    start:
+      sign: PISCES
+      degree: 11
+      minute: 22
+      second: 30
+    end:
+      sign: PISCES
+      degree: 17
+      minute: 0
+      second: 0
+
+- number: 64
+  ra_description: Before Completion
+  coordinate_range:
+    start:
+      sign: VIRGO
+      degree: 11
+      minute: 22
+      second: 30
+    end:
+      sign: VIRGO
+      degree: 17
+      minute: 0
+      second: 0
