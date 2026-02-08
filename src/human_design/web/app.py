@@ -15,13 +15,16 @@ from 64keys.com with custom tagging support.
 """
 
 import json
+import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any
 
+import boto3
 from fastapi import FastAPI, HTTPException, Query, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from starlette.middleware.sessions import SessionMiddleware
 
 from ..api import GateAPI
 from ..models.people import GroupStore, PeopleResponse, Person, RelationshipStore, TagStore
@@ -37,6 +40,73 @@ _tags_file: Path = Path("data/tags.json")
 _relationships_file: Path = Path("data/relationships.json")
 _groups_file: Path = Path("data/groups.json")
 
+# S3 client (lazy initialization)
+_s3_client = None
+
+
+def _get_s3_client():
+    """Get or create S3 client"""
+    global _s3_client
+    if _s3_client is None:
+        import boto3
+        _s3_client = boto3.client("s3")
+    return _s3_client
+
+
+def _get_data_bucket() -> str:
+    """Get S3 data bucket name from env or fallback to local"""
+    return os.environ.get("DATA_BUCKET", "")
+
+
+def _load_json_from_s3_or_local(key: str, default: dict[str, Any]) -> dict[str, Any]:
+    """Load JSON from S3 if DATA_BUCKET is set, otherwise use local file"""
+    bucket = _get_data_bucket()
+
+    # Use S3 if in AWS environment
+    if bucket:
+        try:
+            s3 = _get_s3_client()
+            response = s3.get_object(Bucket=bucket, Key=key)
+            return json.loads(response["Body"].read())
+        except s3.exceptions.NoSuchKey:
+            # File doesn't exist yet, return default
+            return default
+        except Exception as e:
+            print(f"Warning: Failed to load {key} from S3: {e}")
+            return default
+
+    # Fallback to local file (development)
+    local_path = Path(f"data/{key}")
+    if local_path.exists():
+        with open(local_path) as f:
+            return json.load(f)
+    return default
+
+
+def _save_json_to_s3_or_local(key: str, data: dict[str, Any]) -> None:
+    """Save JSON to S3 if DATA_BUCKET is set, otherwise save locally"""
+    bucket = _get_data_bucket()
+
+    # Use S3 if in AWS environment
+    if bucket:
+        try:
+            s3 = _get_s3_client()
+            s3.put_object(
+                Bucket=bucket,
+                Key=key,
+                Body=json.dumps(data, indent=2),
+                ContentType="application/json"
+            )
+        except Exception as e:
+            print(f"Error: Failed to save {key} to S3: {e}")
+            raise
+    else:
+        # Fallback to local file (development)
+        local_path = Path(f"data/{key}")
+        local_path.parent.mkdir(exist_ok=True)
+        with open(local_path, "w") as f:
+            json.dump(data, f, indent=2)
+
 
 def get_api() -> GateAPI:
     """Get the authenticated 64keys API client."""
@@ -48,66 +118,48 @@ def get_api() -> GateAPI:
 
 
 def get_tag_store() -> TagStore:
-    """Get the tag store, loading from disk if needed."""
+    """Get the tag store, loading from S3 or disk if needed."""
     global _tag_store
     if _tag_store is None:
-        if _tags_file.exists():
-            with open(_tags_file) as f:
-                data = json.load(f)
-                _tag_store = TagStore.model_validate(data)
-        else:
-            _tag_store = TagStore()
+        data = _load_json_from_s3_or_local("tags.json", {"person_tags": {}})
+        _tag_store = TagStore.model_validate(data)
     return _tag_store
 
 
 def save_tag_store() -> None:
-    """Save the tag store to disk."""
+    """Save the tag store to S3 or disk."""
     store = get_tag_store()
-    _tags_file.parent.mkdir(parents=True, exist_ok=True)
-    with open(_tags_file, "w") as f:
-        json.dump(store.model_dump(), f, indent=2)
+    _save_json_to_s3_or_local("tags.json", store.model_dump())
 
 
 def get_relationship_store() -> RelationshipStore:
-    """Get the relationship store, loading from disk if needed."""
+    """Get the relationship store, loading from S3 or disk if needed."""
     global _relationship_store
     if _relationship_store is None:
-        if _relationships_file.exists():
-            with open(_relationships_file) as f:
-                data = json.load(f)
-                _relationship_store = RelationshipStore.model_validate(data)
-        else:
-            _relationship_store = RelationshipStore()
+        data = _load_json_from_s3_or_local("relationships.json", {"relationships": []})
+        _relationship_store = RelationshipStore.model_validate(data)
     return _relationship_store
 
 
 def save_relationship_store() -> None:
-    """Save the relationship store to disk."""
+    """Save the relationship store to S3 or disk."""
     store = get_relationship_store()
-    _relationships_file.parent.mkdir(parents=True, exist_ok=True)
-    with open(_relationships_file, "w") as f:
-        json.dump(store.model_dump(), f, indent=2)
+    _save_json_to_s3_or_local("relationships.json", store.model_dump())
 
 
 def get_group_store() -> GroupStore:
-    """Get the group store, loading from disk if needed."""
+    """Get the group store, loading from S3 or disk if needed."""
     global _group_store
     if _group_store is None:
-        if _groups_file.exists():
-            with open(_groups_file) as f:
-                data = json.load(f)
-                _group_store = GroupStore.model_validate(data)
-        else:
-            _group_store = GroupStore()
+        data = _load_json_from_s3_or_local("groups.json", {"groups": []})
+        _group_store = GroupStore.model_validate(data)
     return _group_store
 
 
 def save_group_store() -> None:
-    """Save the group store to disk."""
+    """Save the group store to S3 or disk."""
     store = get_group_store()
-    _groups_file.parent.mkdir(parents=True, exist_ok=True)
-    with open(_groups_file, "w") as f:
-        json.dump(store.model_dump(), f, indent=2)
+    _save_json_to_s3_or_local("groups.json", store.model_dump())
 
 
 # 64keys group definitions - filter is the 'a' param value for filtered queries
@@ -287,6 +339,21 @@ def clear_cache() -> None:
     _people_cache = {}
 
 
+def _get_webapp_password() -> str:
+    """Get webapp password from AWS Secrets Manager or environment variable."""
+    secret_name = os.environ.get("WEBAPP_PASSWORD_SECRET")
+    if secret_name:
+        try:
+            sm = boto3.client("secretsmanager")
+            response = sm.get_secret_value(SecretId=secret_name)
+            secret = json.loads(response["SecretString"])
+            return secret.get("password", "")
+        except Exception:
+            pass
+    # Fallback to environment variable
+    return os.environ.get("WEBAPP_PASSWORD", "")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):  # type: ignore
     """Application lifespan handler."""
@@ -306,10 +373,87 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Add session middleware for authentication
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=os.environ.get("SESSION_SECRET_KEY", "dev-secret-key-change-in-production"),
+)
+
 # Templates
 templates_dir = Path(__file__).parent / "templates"
-templates_dir.mkdir(exist_ok=True)
+# Only create templates directory if it doesn't exist (for local dev)
+# In Lambda, the directory is read-only and already exists from the package
+if not templates_dir.exists():
+    templates_dir.mkdir(exist_ok=True)
 templates = Jinja2Templates(directory=str(templates_dir))
+
+
+# ============================================================================
+# Authentication
+# ============================================================================
+
+
+@app.post("/login")
+async def login(request: Request) -> RedirectResponse:
+    """Login endpoint that verifies password and sets session."""
+    try:
+        form_data = await request.form()
+        pwd = form_data.get("password", "")
+    except Exception:
+        pwd = ""
+
+    if pwd == _get_webapp_password():
+        request.session["authenticated"] = True
+        return RedirectResponse(url="/", status_code=303)
+    return RedirectResponse(url="/login?error=Invalid+password", status_code=303)
+
+
+@app.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request, error: str = "") -> HTMLResponse:
+    """Login page."""
+    # Check if already authenticated
+    if request.session.get("authenticated"):
+        return RedirectResponse(url="/", status_code=303)
+
+    error_msg = error if error else ""
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Login - Human Design</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {{ font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #4a2c6a 0%, #6b4190 100%); margin: 0; }}
+            .login-box {{ background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); width: 300px; }}
+            h1 {{ text-align: center; color: #4a2c6a; margin-top: 0; }}
+            input {{ width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }}
+            button {{ width: 100%; padding: 10px; background: #6b4190; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }}
+            button:hover {{ background: #4a2c6a; }}
+            .error {{ color: red; margin: 10px 0; text-align: center; }}
+        </style>
+    </head>
+    <body>
+        <div class="login-box">
+            <h1>Human Design</h1>
+            {f'<div class="error">⚠️ {error_msg}</div>' if error_msg else ''}
+            <form method="post">
+                <input type="password" name="password" placeholder="Password" required autofocus>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </body>
+    </html>
+    """
+
+
+def require_auth(func):  # type: ignore
+    """Decorator to require authentication for a route."""
+    async def wrapper(request: Request, *args: Any, **kwargs: Any) -> Any:  # type: ignore
+        if not request.session.get("authenticated"):
+            return RedirectResponse(url="/login", status_code=303)
+        return await func(request, *args, **kwargs)
+    return wrapper
 
 
 # Routes
@@ -318,6 +462,10 @@ templates = Jinja2Templates(directory=str(templates_dir))
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request) -> HTMLResponse:
     """Landing page with DataTables."""
+    # Check authentication
+    if not request.session.get("authenticated"):
+        return RedirectResponse(url="/login", status_code=303)
+
     return templates.TemplateResponse(
         "index.html",
         {
