@@ -1,5 +1,5 @@
 # ============================================================================
-# Build stage: Compile dependencies using pip-compile
+# Stage 1: Builder — Compile dependencies using pip-compile
 # ============================================================================
 FROM python:3.14-bookworm as builder
 
@@ -31,9 +31,31 @@ RUN pip-compile \
     pyproject.toml
 
 # ============================================================================
-# Runtime stage: Minimal production image
+# Stage 2: Deps — Pre-compile wheels (includes C extensions like pyswisseph)
 # ============================================================================
-FROM python:3.14-bookworm as runtime
+FROM python:3.14-bookworm as deps
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        build-essential \
+        ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /build
+
+# Copy compiled requirements from builder
+COPY --from=builder /build/requirements.txt .
+COPY --from=builder /build/requirements-dev.txt .
+
+# Create /wheels directory and compile all wheels (prod + dev)
+RUN mkdir -p /wheels \
+    && pip wheel --no-cache-dir --wheel-dir=/wheels -r requirements.txt \
+    && pip wheel --no-cache-dir --wheel-dir=/wheels -r requirements-dev.txt
+
+# ============================================================================
+# Stage 3: Base — Shared foundation (Python, deps, user)
+# ============================================================================
+FROM python:3.14-bookworm as base
 
 ENV PYTHONUNBUFFERED=1
 
@@ -52,20 +74,49 @@ RUN apt-get update \
     && groupadd --gid ${USER_GID} hdgroup \
     && useradd --uid ${USER_UID} --gid ${USER_GID} --create-home --shell /bin/bash ${USER}
 
-# Copy compiled requirements from builder
-COPY --from=builder /build/requirements.txt /tmp/requirements.txt
+# Copy pre-built wheels from deps stage
+COPY --from=deps /wheels /wheels
 
-# Install runtime dependencies system-wide (no --user flag in devcontainer)
-RUN pip install --no-cache-dir -r /tmp/requirements.txt \
+# Copy compiled requirements and install from pre-built wheels
+# Note: --no-index removed to allow fallback to PyPI for any missing deps
+COPY --from=builder /build/requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir --find-links=/wheels -r /tmp/requirements.txt \
     && rm /tmp/requirements.txt
 
 USER ${USER}
 WORKDIR /home/${USER}
 
 # ============================================================================
-# Development stage: Full development environment
+# Stage 4: Runtime — Lambda-compatible production image
 # ============================================================================
-FROM runtime as development
+FROM base as runtime
+
+USER root
+
+# Install AWS Lambda Runtime Interface Client and Mangum (ASGI adapter)
+RUN pip install --no-cache-dir awslambdaric mangum
+
+# Copy application code
+COPY pyproject.toml /app/
+COPY src/ /app/src/
+COPY lambda/handler.py /app/
+
+WORKDIR /app
+
+# Install the human-design package itself (no deps, they're already installed)
+RUN pip install --no-cache-dir --no-deps .
+
+# Set up PYTHONPATH so awslambdaric can resolve handler.handler
+ENV PYTHONPATH=/app:$PYTHONPATH
+
+# Lambda handler entrypoint
+ENTRYPOINT ["python", "-m", "awslambdaric"]
+CMD ["handler.handler"]
+
+# ============================================================================
+# Stage 5: Dev — Full development environment with build tools
+# ============================================================================
+FROM base as dev
 
 # Re-declare ARG to make it available in this stage
 ARG USER
@@ -85,9 +136,13 @@ RUN apt-get update \
 # Copy compiled dev requirements from builder
 COPY --from=builder /build/requirements-dev.txt /tmp/requirements-dev.txt
 
-# Install dev dependencies system-wide (no --user flag in devcontainer)
-RUN pip install --no-cache-dir -r /tmp/requirements-dev.txt \
-    && rm /tmp/requirements-dev.txt
+# Copy wheels from deps stage for dev dependencies
+COPY --from=deps /wheels /wheels
+
+# Install dev dependencies from pre-built wheels
+# Note: --no-index removed to allow fallback to PyPI for any missing deps
+RUN pip install --no-cache-dir --find-links=/wheels -r /tmp/requirements-dev.txt \
+    && rm /tmp/requirements-dev.txt /wheels -rf
 
 USER ${USER}
 WORKDIR /home/${USER}

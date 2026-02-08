@@ -13,9 +13,11 @@ Key functionality:
 
 import json
 import os
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
+import boto3
 import requests
 from bs4 import BeautifulSoup
 
@@ -31,42 +33,69 @@ from .models import (
 )
 
 
+@lru_cache(maxsize=1)
 def _get_credentials() -> tuple[str, str]:
     """
-    Get credentials from environment variables.
+    Get credentials from AWS Secrets Manager or environment variables.
+
+    Tries AWS Secrets Manager first (when SECRET_NAME env var is set),
+    then falls back to environment variables for local development.
 
     Returns:
         Tuple of (username, password)
 
     Raises:
-        ValueError: If credentials are not set in environment
+        ValueError: If credentials are not set in environment or Secrets Manager
     """
+    # Try AWS Secrets Manager first (when deployed)
+    secret_name = os.environ.get("SECRET_NAME")
+
+    if secret_name and os.environ.get("AWS_REGION"):
+        try:
+            import boto3
+
+            client = boto3.client("secretsmanager")
+            response = client.get_secret_value(SecretId=secret_name)
+            secrets = json.loads(response["SecretString"])
+            return secrets["HD_USERNAME"], secrets["HD_PASSWORD"]
+        except Exception as e:
+            print(f"Warning: Failed to fetch from Secrets Manager: {e}")
+            print("Falling back to environment variables")
+
+    # Fallback to environment variables (local development)
     username = os.environ.get("HD_USERNAME")
     password = os.environ.get("HD_PASSWORD")
 
     if not username or not password:
         raise ValueError(
-            "Missing credentials. Please set HD_USERNAME and HD_PASSWORD environment variables."
+            "Missing credentials. Set HD_USERNAME/HD_PASSWORD env vars "
+            "or configure SECRET_NAME to use AWS Secrets Manager."
         )
 
     return username, password
 
 
-def _get_session_cache_path() -> Path:
-    """Get the path to the session cache file."""
-    config_dir = Path.home() / ".config" / "human-design"
-    config_dir.mkdir(parents=True, exist_ok=True)
-    return config_dir / "session.json"
-
-
 def _load_cached_cookies() -> dict[str, str] | None:
     """
-    Load cached session cookies from disk.
+    Load cached session cookies from S3 or local disk.
 
     Returns:
         Dictionary of cookies if cache exists, None otherwise
     """
-    cache_path = _get_session_cache_path()
+    data_bucket = os.environ.get("DATA_BUCKET")
+
+    # Try S3 first if bucket is configured
+    if data_bucket:
+        try:
+            s3 = boto3.client("s3")
+            response = s3.get_object(Bucket=data_bucket, Key="session-cache.json")
+            return json.loads(response["Body"].read())  # type: ignore
+        except Exception:
+            pass  # Fall through to local disk cache
+
+    # Fall back to local disk cache for development
+    config_dir = Path.home() / ".config" / "human-design"
+    cache_path = config_dir / "session.json"
     if cache_path.exists():
         try:
             with open(cache_path) as f:
@@ -77,11 +106,30 @@ def _load_cached_cookies() -> dict[str, str] | None:
 
 
 def _save_cookies(cookies: Any) -> None:
-    """Save session cookies to disk."""
-    cache_path = _get_session_cache_path()
+    """Save session cookies to S3 or local disk."""
+    data_bucket = os.environ.get("DATA_BUCKET")
+    cookies_dict = requests.utils.dict_from_cookiejar(cookies)
+
+    # Try S3 first if bucket is configured
+    if data_bucket:
+        try:
+            s3 = boto3.client("s3")
+            s3.put_object(
+                Bucket=data_bucket,
+                Key="session-cache.json",
+                Body=json.dumps(cookies_dict),
+                ContentType="application/json",
+            )
+            return
+        except Exception:
+            pass  # Fall through to local disk cache
+
+    # Fall back to local disk cache for development
+    config_dir = Path.home() / ".config" / "human-design"
     try:
-        with open(cache_path, "w") as f:
-            json.dump(requests.utils.dict_from_cookiejar(cookies), f)
+        config_dir.mkdir(parents=True, exist_ok=True)
+        with open(config_dir / "session.json", "w") as f:
+            json.dump(cookies_dict, f)
     except OSError:
         pass  # Silently fail if we can't save cookies
 

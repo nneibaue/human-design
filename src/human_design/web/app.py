@@ -16,7 +16,9 @@ from 64keys.com with custom tagging support.
 
 import json
 import os
+import uuid
 from contextlib import asynccontextmanager
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -27,6 +29,7 @@ from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
 from ..api import GateAPI
+from ..gates_data import CHANNELS, CIRCUIT_GROUPS, CONFUSABLE_CLUSTERS, GATES
 from ..models.people import GroupStore, PeopleResponse, Person, RelationshipStore, TagStore
 
 
@@ -731,3 +734,149 @@ async def delete_humun_group(group_name: str) -> dict[str, Any]:
     store.delete_group(group_name)
     save_group_store()
     return {"status": "ok"}
+
+
+# ============================================================================
+# Memory Academy: Gates Learning & Flash Cards
+# ============================================================================
+
+
+def _get_session_id(request: Request) -> str:
+    """Get or create a session ID for learning progress isolation."""
+    session_id = request.session.get("learning_session_id")
+    if not session_id:
+        session_id = str(uuid.uuid4())
+        request.session["learning_session_id"] = session_id
+    return session_id
+
+
+@app.get("/gates", response_class=HTMLResponse)
+async def gates_page(request: Request) -> HTMLResponse:
+    """Render the Memory Academy flash card learning page."""
+    if not request.session.get("authenticated"):
+        return RedirectResponse(url="/login", status_code=303)
+
+    session_id = _get_session_id(request)
+    return templates.TemplateResponse(
+        "gates.html",
+        {
+            "request": request,
+            "session_id": session_id,
+        },
+    )
+
+
+@app.get("/api/gates")
+async def get_gates_list() -> dict[str, Any]:
+    """Return all 64 gates with metadata for flash cards."""
+    return {"gates": GATES}
+
+
+@app.get("/api/gates/{gate_number}")
+async def get_gate_detail(gate_number: int) -> dict[str, Any]:
+    """Return detailed gate info including memory hooks."""
+    if gate_number not in GATES:
+        raise HTTPException(status_code=404, detail=f"Gate {gate_number} not found")
+    return {"gate_number": gate_number, **GATES[gate_number]}
+
+
+@app.get("/api/channels")
+async def get_channels_list() -> dict[str, Any]:
+    """Return all 36 channels with gate pairs and circuit info."""
+    return {"channels": CHANNELS}
+
+
+@app.get("/api/circuits")
+async def get_circuits() -> dict[str, Any]:
+    """Return circuit group metadata."""
+    return {"circuit_groups": CIRCUIT_GROUPS}
+
+
+@app.get("/api/confusables")
+async def get_confusables() -> dict[str, Any]:
+    """Return confusable gate clusters for disambiguation study."""
+    return {"clusters": CONFUSABLE_CLUSTERS}
+
+
+@app.get("/api/learning/progress")
+async def get_learning_progress(request: Request) -> dict[str, Any]:
+    """Retrieve user's learning progress for spaced repetition."""
+    if not request.session.get("authenticated"):
+        raise HTTPException(status_code=401)
+
+    session_id = _get_session_id(request)
+    progress = _load_json_from_s3_or_local(
+        f"learning/{session_id}/progress.json",
+        default={},
+    )
+
+    # Calculate gates due for review
+    now = datetime.utcnow()
+    due_gates = []
+    for gate_num in range(1, 65):
+        key = str(gate_num)
+        if key not in progress:
+            due_gates.append(gate_num)
+        else:
+            last_reviewed = progress[key].get("last_reviewed")
+            if last_reviewed:
+                last_dt = datetime.fromisoformat(last_reviewed)
+                # Simple spacing: interval grows with confidence
+                confidence = progress[key].get("confidence", 0)
+                interval_days = max(1, int(confidence * 3))
+                if (now - last_dt) > timedelta(days=interval_days):
+                    due_gates.append(gate_num)
+            else:
+                due_gates.append(gate_num)
+
+    return {
+        "session_id": session_id,
+        "all_progress": progress,
+        "gates_due_for_review": due_gates[:10],
+        "total_reviewed": len([g for g in progress.values() if g.get("review_count", 0) > 0]),
+        "total_gates": 64,
+    }
+
+
+@app.post("/api/learning/progress")
+async def save_learning_progress(request: Request) -> dict[str, Any]:
+    """Save flash card quiz/flip results to learning progress."""
+    if not request.session.get("authenticated"):
+        raise HTTPException(status_code=401)
+
+    data = await request.json()
+    session_id = _get_session_id(request)
+
+    progress = _load_json_from_s3_or_local(
+        f"learning/{session_id}/progress.json",
+        default={},
+    )
+
+    gate_num = str(data["gate_number"])
+    if gate_num not in progress:
+        progress[gate_num] = {
+            "confidence": 0,
+            "review_count": 0,
+            "correct_count": 0,
+            "attempts": [],
+        }
+
+    progress[gate_num]["attempts"].append({
+        "timestamp": datetime.utcnow().isoformat(),
+        "result": data["result"],
+        "mode": data["mode"],
+    })
+    # Keep only last 20 attempts per gate to avoid unbounded growth
+    progress[gate_num]["attempts"] = progress[gate_num]["attempts"][-20:]
+
+    progress[gate_num]["review_count"] += 1
+    if data["result"] == "correct":
+        progress[gate_num]["correct_count"] += 1
+
+    review_count = progress[gate_num]["review_count"]
+    correct_count = progress[gate_num]["correct_count"]
+    progress[gate_num]["confidence"] = round(correct_count / review_count, 2)
+    progress[gate_num]["last_reviewed"] = datetime.utcnow().isoformat()
+
+    _save_json_to_s3_or_local(f"learning/{session_id}/progress.json", progress)
+    return {"status": "saved", "progress": progress[gate_num]}

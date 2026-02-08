@@ -133,3 +133,9 @@ dmypy.json
 # Work-in-progress artifacts
 wip/
 .cache/
+
+# Whisper models (large files, download locally)
+models/
+
+# cdk.out (CDK context files)
+cdk.out/
