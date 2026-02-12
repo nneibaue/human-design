@@ -137,5 +137,14 @@ wip/
 # Whisper models (large files, download locally)
 models/
 
-# cdk.out (CDK context files)
+# CDK
 cdk.out/
+cdk/package-lock.json
+
+# Local venvs
+hd-env/
+
+# Junk / scratch
+junk_drawer/
+plans/
+--raw
