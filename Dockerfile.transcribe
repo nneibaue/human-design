@@ -1,0 +1,14 @@
+FROM python:3.11-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir faster-whisper boto3
+
+WORKDIR /workspace
+
+# Copy the transcription script
+COPY parallel_transcribe.py /workspace/
+
+ENTRYPOINT ["python"]
