@@ -50,7 +50,7 @@ def _get_credentials() -> tuple[str, str]:
     # Try AWS Secrets Manager first (when deployed)
     secret_name = os.environ.get("SECRET_NAME")
 
-    if secret_name and os.environ.get("AWS_REGION"):
+    if secret_name:
         try:
             import boto3
 

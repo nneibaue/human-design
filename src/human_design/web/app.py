@@ -287,11 +287,7 @@ def fetch_all_people() -> list[Person]:
     """Fetch all people and track their group memberships."""
     global _people_cache
 
-    # Use cached data if available
-    if "all" in _people_cache:
-        return _people_cache["all"]
-
-    # Fetch from allmine to get everyone
+    # Always fetch fresh from 64keys
     api = get_api()
 
     # Step 1: Set the session filter by visiting list_prepare
