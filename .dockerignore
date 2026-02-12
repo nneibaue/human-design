@@ -1,0 +1,37 @@
+# CDK output
+cdk/
+cdk.out/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+hd-env/
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Tests
+tests/
+.pytest_cache/
+
+# Documentation
+docs/
+*.md

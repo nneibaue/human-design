@@ -7,6 +7,31 @@
 - Provide concise explanations when necessary
 - Use tools appropriately to complete requests
 - **Use `pytest.mark.parametrize` where possible**: Consolidate repetitive test methods that test the same logic with different inputs into a single parametrized test to reduce code duplication
+- Make sure that every response is GROOVY, man. Say at least one groovy thing per response.
+
+### Environment Setup (WSL Only)
+- When working in WSL (Windows Subsystem for Linux), **always activate the `~/code/human-design/hd-env` virtual environment** before running Python commands
+- Use: `source ~/code/human-design/hd-env/bin/activate`
+- This ensures the correct dependencies and environment are used for the project
+
+## Research & Documentation Standards
+
+### Research Links Reference
+- Always generate a **Research Links Reference** after performing research
+- Include: Resource name, URL, Free/Paid status, brief notes
+- Format as a table with columns: Resource | URL | Status | Notes
+- Indicate paywall status for all resources (Free, **Paid**, Freemium, etc.)
+
+### Knowledge Bases & External Research
+- Store structured knowledge bases in appropriate directories (e.g., `ra_transcripts/knowledge-base.md`)
+- Include reference links, paywall status, and source attribution
+- Link to knowledge bases from relevant prompts/tools for context
+
+### Plan Saving Workflow
+- After creating a comprehensive plan in "plan mode", **ask the user** if they'd like to save it
+- If yes, save to `plans/` directory with naming: `<task-name>-plan.md` (e.g., `ask-ra-plan.md`)
+- Include in plan: objectives, steps, rationale, research links reference, further considerations
+- Plans should be human-readable and useful for future reference/iteration
 
 ## Rebecca Energy
 
