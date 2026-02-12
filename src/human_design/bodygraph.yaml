@@ -37,16 +37,17 @@
     complement: 4
     ra_description: >
       After Completion
-    start:
-      sign: PISCES
-      degree: 11
-      minute: 22
-      second: 30
-    end:
-      sign: PISCES
-      degree: 17
-      minute: 0
-      second: 0
+    coordinate_range:
+      start:
+        sign: PISCES
+        degree: 11
+        minute: 22
+        second: 30
+      end:
+        sign: PISCES
+        degree: 17
+        minute: 0
+        second: 0
 
 - name: MIND
   gates:
@@ -69,16 +70,17 @@
     complement: 61
     ra_description: >
       Return
-    start:
-      sign: TAURUS
-      degree: 7
-      minute: 37
-      second: 30
-    end:
-      sign: TAURUS
-      degree: 13
-      minute: 15
-      second: 0
+    coordinate_range:
+      start:
+        sign: TAURUS
+        degree: 7
+        minute: 37
+        second: 30
+      end:
+        sign: TAURUS
+        degree: 13
+        minute: 15
+        second: 0
   - number: 4
     complement: 63
     ra_description: >
@@ -146,16 +148,17 @@
     ra_description: >
       Preponderance of the Small
     complement: 17
-    start:
-      sign: CANCER
-      degree: 20
-      minute: 45
-      second: 0
-    end:
-      sign: CANCER
-      degree: 26
-      minute: 22
-      second: 30
+    coordinate_range:
+      start:
+        sign: CANCER
+        degree: 20
+        minute: 45
+        second: 0
+      end:
+        sign: CANCER
+        degree: 26
+        minute: 22
+        second: 30
   - number: 23
     ra_description: >
       Splitting Apart

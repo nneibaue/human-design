@@ -6,14 +6,27 @@ from 64keys.com with proper authentication.
 """
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import typer
+
+try:
+    import boto3
+    from rich.console import Console
+    from rich.table import Table
+
+    AWS_AVAILABLE = True
+except ImportError:
+    AWS_AVAILABLE = False
 
 from .api import bodygraph_to_summary, get_gate, get_gates, get_home_page
 from .models import BirthInfo, LocalTime, RawBodyGraph
 
 app = typer.Typer(help="Scraper for 64keys.com Human Design data")
+
+# AWS sub-commands
+aws_app = typer.Typer(help="AWS infrastructure commands")
+app.add_typer(aws_app, name="aws")
 
 
 @app.command()
@@ -242,6 +255,217 @@ def home() -> None:
     except Exception as e:
         typer.echo(f"\n❌ Error: {e}", err=True)
         raise typer.Exit(code=1) from None
+
+
+# AWS Commands
+@aws_app.command("jobs")
+def aws_jobs(
+    queue: str = typer.Option("transcribe-queue", "--queue", "-q", help="Job queue name"),
+    limit: int = typer.Option(20, "--limit", "-n", help="Number of jobs to show"),
+    status: str = typer.Option(
+        "ALL", "--status", "-s", help="Filter by status (RUNNING, SUCCEEDED, FAILED, ALL)"
+    ),
+) -> None:
+    """
+    Monitor AWS Batch jobs for transcription.
+
+    Examples:
+        hd aws jobs                           # Show all recent jobs
+        hd aws jobs --status RUNNING          # Show only running jobs
+        hd aws jobs --limit 50                # Show last 50 jobs
+    """
+    if not AWS_AVAILABLE:
+        typer.echo("❌ Error: boto3 and rich are required. Install with: pip install -e '.[dev]'", err=True)
+        raise typer.Exit(code=1)
+
+    try:
+        console = Console()
+        batch = boto3.client("batch")
+
+        # Determine which statuses to query
+        if status.upper() == "ALL":
+            statuses = ["SUBMITTED", "PENDING", "RUNNABLE", "STARTING", "RUNNING", "SUCCEEDED", "FAILED"]
+        else:
+            statuses = [status.upper()]
+
+        # Fetch jobs
+        console.print(f"🔍 Fetching jobs from queue: [cyan]{queue}[/cyan]...")
+        all_jobs = []
+
+        for job_status in statuses:
+            try:
+                response = batch.list_jobs(
+                    jobQueue=queue, jobStatus=job_status, maxResults=min(limit, 100)
+                )
+                all_jobs.extend(response.get("jobSummaryList", []))
+            except Exception as e:
+                console.print(f"[yellow]⚠ Could not fetch {job_status} jobs: {e}[/yellow]")
+
+        if not all_jobs:
+            console.print(f"[yellow]No jobs found in queue '{queue}'[/yellow]")
+            return
+
+        # Sort by creation time (newest first)
+        all_jobs.sort(key=lambda x: x.get("createdAt", 0), reverse=True)
+        all_jobs = all_jobs[:limit]
+
+        # Create table
+        table = Table(title=f"AWS Batch Jobs - {queue}", show_header=True, header_style="bold magenta")
+        table.add_column("Job Name", style="cyan", width=40)
+        table.add_column("Status", justify="center", width=12)
+        table.add_column("Created", width=20)
+        table.add_column("Duration", justify="right", width=12)
+
+        for job in all_jobs:
+            job_name = job["jobName"]
+            job_status_display = job["status"]
+
+            # Color code status
+            if job_status_display == "SUCCEEDED":
+                status_display = f"[green]{job_status_display}[/green]"
+            elif job_status_display == "FAILED":
+                status_display = f"[red]{job_status_display}[/red]"
+            elif job_status_display == "RUNNING":
+                status_display = f"[yellow]{job_status_display}[/yellow]"
+            else:
+                status_display = f"[blue]{job_status_display}[/blue]"
+
+            # Format timestamps
+            created_at = datetime.fromtimestamp(job["createdAt"] / 1000)
+            created_str = created_at.strftime("%Y-%m-%d %H:%M:%S")
+
+            # Calculate duration if available
+            if "startedAt" in job:
+                started = datetime.fromtimestamp(job["startedAt"] / 1000)
+                if "stoppedAt" in job:
+                    stopped = datetime.fromtimestamp(job["stoppedAt"] / 1000)
+                    duration = stopped - started
+                else:
+                    duration = datetime.now() - started
+                duration_str = str(duration).split(".")[0]  # Remove microseconds
+            else:
+                duration_str = "-"
+
+            table.add_row(job_name, status_display, created_str, duration_str)
+
+        console.print(table)
+
+        # Summary stats
+        status_counts = {}
+        for job in all_jobs:
+            s = job["status"]
+            status_counts[s] = status_counts.get(s, 0) + 1
+
+        console.print("\n[bold]Summary:[/bold]")
+        for s, count in sorted(status_counts.items()):
+            console.print(f"  {s}: {count}")
+
+    except Exception as e:
+        typer.echo(f"❌ Error: {e}", err=True)
+        raise typer.Exit(code=1) from e
+
+
+@aws_app.command("billing")
+def aws_billing(
+    days: int = typer.Option(30, "--days", "-d", help="Number of days to show"),
+    breakdown: bool = typer.Option(True, "--breakdown/--no-breakdown", help="Show service breakdown"),
+) -> None:
+    """
+    Show AWS billing and cost breakdown.
+
+    Examples:
+        hd aws billing                    # Show last 30 days
+        hd aws billing --days 7           # Show last 7 days
+        hd aws billing --no-breakdown     # Hide service breakdown
+    """
+    if not AWS_AVAILABLE:
+        typer.echo("❌ Error: boto3 and rich are required. Install with: pip install -e '.[dev]'", err=True)
+        raise typer.Exit(code=1)
+
+    try:
+        console = Console()
+        ce = boto3.client("ce", region_name="us-east-1")  # Cost Explorer is us-east-1 only
+
+        # Calculate date range
+        end_date = datetime.now().date()
+        start_date = end_date - timedelta(days=days)
+
+        console.print(f"💰 Fetching billing data from [cyan]{start_date}[/cyan] to [cyan]{end_date}[/cyan]...")
+
+        # Get total cost
+        response = ce.get_cost_and_usage(
+            TimePeriod={"Start": str(start_date), "End": str(end_date)},
+            Granularity="MONTHLY",
+            Metrics=["UnblendedCost"],
+        )
+
+        total_cost = 0.0
+        for result in response["ResultsByTime"]:
+            amount = float(result["Total"]["UnblendedCost"]["Amount"])
+            total_cost += amount
+
+        console.print(f"\n[bold]Total Cost ({days} days):[/bold] [green]${total_cost:.2f}[/green]")
+
+        # Get service breakdown if requested
+        if breakdown:
+            response_by_service = ce.get_cost_and_usage(
+                TimePeriod={"Start": str(start_date), "End": str(end_date)},
+                Granularity="MONTHLY",
+                Metrics=["UnblendedCost"],
+                GroupBy=[{"Type": "DIMENSION", "Key": "SERVICE"}],
+            )
+
+            # Parse service costs
+            service_costs = {}
+            for result in response_by_service["ResultsByTime"]:
+                for group in result["Groups"]:
+                    service = group["Keys"][0]
+                    amount = float(group["Metrics"]["UnblendedCost"]["Amount"])
+                    if amount > 0:  # Only show services with cost
+                        service_costs[service] = service_costs.get(service, 0) + amount
+
+            if service_costs:
+                # Sort by cost (descending)
+                sorted_services = sorted(service_costs.items(), key=lambda x: x[1], reverse=True)
+
+                # Create table
+                table = Table(
+                    title=f"Service Breakdown ({days} days)",
+                    show_header=True,
+                    header_style="bold magenta",
+                )
+                table.add_column("Service", style="cyan", width=50)
+                table.add_column("Cost", justify="right", style="green", width=15)
+                table.add_column("% of Total", justify="right", width=12)
+
+                for service, cost in sorted_services:
+                    pct = (cost / total_cost * 100) if total_cost > 0 else 0
+                    table.add_row(service, f"${cost:.2f}", f"{pct:.1f}%")
+
+                console.print("\n")
+                console.print(table)
+            else:
+                console.print("\n[yellow]No service breakdown available[/yellow]")
+
+        # Show forecast if available
+        try:
+            forecast_response = ce.get_cost_forecast(
+                TimePeriod={
+                    "Start": str(end_date),
+                    "End": str(end_date + timedelta(days=30)),
+                },
+                Metric="UNBLENDED_COST",
+                Granularity="MONTHLY",
+            )
+            forecast_amount = float(forecast_response["Total"]["Amount"])
+            console.print(f"\n[bold]30-day Forecast:[/bold] [yellow]${forecast_amount:.2f}[/yellow]")
+        except Exception:
+            pass  # Forecast not always available
+
+    except Exception as e:
+        typer.echo(f"❌ Error: {e}", err=True)
+        typer.echo("\n💡 Tip: Make sure Cost Explorer is enabled in your AWS account", err=True)
+        raise typer.Exit(code=1) from e
 
 
 if __name__ == "__main__":

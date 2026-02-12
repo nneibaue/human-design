@@ -12,7 +12,7 @@ from typing import Self
 from pydantic import BaseModel, ConfigDict, Field
 
 from .bodygraph import CenterDefinition, GateDefinition, RawActivation
-from .core import GateLineNumber, GateNumber, Planet, PlanetField
+from .core import GateLineNumber, PlanetField
 
 
 class GateLineSummary64Keys(BaseModel):

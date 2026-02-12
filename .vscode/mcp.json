@@ -1,0 +1,40 @@
+{
+    "servers": {
+        "64keys": {
+            "type": "stdio",
+            "command": "python",
+            "args": [
+                "-m",
+                "mcp_server_64keys.server"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/src"
+            }
+        },
+        "ra-transcription": {
+            "type": "stdio",
+            "command": "${workspaceFolder}/hd-env/bin/python",
+            "args": [
+                "-m",
+                "mcp_server_ra.server"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/src"
+            }
+        },
+        "pdf-processing": {
+            "type": "stdio",
+            "command": "python",
+            "args": [
+                "-m",
+                "mcp_server_pdf.server"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/src"
+            }
+        }
+    }
+}

@@ -123,7 +123,7 @@ dmypy.json
 .pyre/
 
 # IDE
-.vscode/
+# .vscode/
 .idea/
 *.swp
 *.swo
@@ -132,3 +132,19 @@ dmypy.json
 
 # Work-in-progress artifacts
 wip/
+.cache/
+
+# Whisper models (large files, download locally)
+models/
+
+# CDK
+cdk.out/
+cdk/package-lock.json
+
+# Local venvs
+hd-env/
+
+# Junk / scratch
+junk_drawer/
+plans/
+--raw

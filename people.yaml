@@ -28,3 +28,13 @@ people:
     birth_date: "1972-11-13"
     birth_time: "07:00"
     birth_location: "Salt Lake City, United States"
+
+  - name: "Addy Neibauer"
+    birth_date: "1994-10-27"
+    birth_time: "22:45"
+    birth_location: "Albuquerque, United States"
+
+  - name: "Jon Manly"
+    birth_date: "1990-12-11"
+    birth_time: "01:59"
+    birth_location: "Boulder, CO"

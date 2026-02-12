@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Academy - Memorize the 64 Gates</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Quicksand:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --deep-purple: #4a2c6a;
+            --mystic-purple: #6b4190;
+            --soft-purple: #9d7bb5;
+            --twilight-purple: #2d1b3d;
+            --golden-amber: #d4a853;
+            --warm-gold: #c9943a;
+            --forest-green: #4a6741;
+            --sage-green: #7d9a6f;
+            --cream: #faf6f0;
+            --earth-brown: #8b7355;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, var(--twilight-purple) 0%, var(--deep-purple) 50%, #3d2654 100%);
+            min-height: 100vh;
+            color: var(--cream);
+            margin: 0;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(ellipse at 20% 80%, rgba(74, 103, 65, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(212, 168, 83, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container { position: relative; z-index: 1; }
+
+        h1, h2, h3, h4, h5 { font-family: 'Cormorant Garamond', serif; }
+
+        /* Navigation */
+        .top-nav {
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(212, 168, 83, 0.3);
+        }
+
+        .top-nav a {
+            color: var(--soft-purple);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .top-nav a:hover { color: var(--golden-amber); }
+
+        .top-nav .brand {
+            color: var(--golden-amber);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        /* Header */
+        .page-header {
+            text-align: center;
+            padding: 1.5rem 0 1rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.2rem;
+            color: var(--golden-amber);
+            text-shadow: 0 2px 20px rgba(212, 168, 83, 0.3);
+            margin-bottom: 0.25rem;
+        }
+
+        .page-header p {
+            color: var(--soft-purple);
+            font-style: italic;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* Mode selector */
+        .mode-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .mode-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--soft-purple);
+            background: transparent;
+            color: var(--soft-purple);
+        }
+
+        .mode-btn:hover {
+            background: rgba(157, 123, 181, 0.2);
+            border-color: var(--golden-amber);
+            color: var(--golden-amber);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--mystic-purple) 0%, var(--deep-purple) 100%);
+            border-color: var(--golden-amber);
+            color: var(--cream);
+            box-shadow: 0 0 15px rgba(157, 123, 181, 0.4);
+        }
+
+        /* Card container */
+        .card-wrapper {
+            background: linear-gradient(145deg, rgba(45, 27, 61, 0.9) 0%, rgba(74, 44, 106, 0.85) 100%);
+            border: 1px solid rgba(212, 168, 83, 0.25);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Flash card */
+        .flash-card-container {
+            perspective: 1000px;
+            max-width: 550px;
+            margin: 0 auto 1.5rem;
+            min-height: 320px;
+        }
+
+        .flash-card {
+            width: 100%;
+            min-height: 320px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .flash-card.flipped { transform: rotateY(180deg); }
+
+        .flash-card-face {
+            position: absolute;
+            width: 100%;
+            min-height: 320px;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .flash-card-front {
+            background: linear-gradient(145deg, var(--deep-purple) 0%, var(--mystic-purple) 100%);
+            border: 2px solid var(--golden-amber);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .flash-card-back {
+            background: linear-gradient(145deg, #3d2654 0%, var(--deep-purple) 100%);
+            border: 2px solid var(--soft-purple);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .gate-number {
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--golden-amber);
+            font-family: 'Cormorant Garamond', serif;
+            line-height: 1;
+        }
+
+        .gate-name {
+            font-size: 1.5rem;
+            color: var(--cream);
+            font-family: 'Cormorant Garamond', serif;
+            margin-top: 0.5rem;
+        }
+
+        .gate-center {
+            font-size: 0.9rem;
+            color: var(--soft-purple);
+            margin-top: 0.5rem;
+        }
+
+        .flip-hint {
+            font-size: 0.8rem;
+            color: rgba(250, 246, 240, 0.4);
+            margin-top: 1rem;
+        }
+
+        .back-detail {
+            width: 100%;
+            text-align: left;
+        }
+
+        .back-detail h4 {
+            color: var(--golden-amber);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid rgba(157, 123, 181, 0.15);
+            font-size: 0.9rem;
+        }
+
+        .detail-label { color: var(--soft-purple); }
+        .detail-value { color: var(--cream); font-weight: 500; }
+
+        .memory-hook {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(212, 168, 83, 0.1);
+            border-left: 3px solid var(--golden-amber);
+            border-radius: 0 8px 8px 0;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: rgba(250, 246, 240, 0.85);
+            font-style: italic;
+        }
+
+        /* Quiz mode */
+        .quiz-question {
+            font-size: 1.3rem;
+            color: var(--cream);
+            font-family: 'Cormorant Garamond', serif;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            border-radius: 10px;
+            background: rgba(45, 27, 61, 0.8);
+            border: 1px solid var(--soft-purple);
+            color: var(--cream);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--golden-amber);
+            background: rgba(107, 65, 144, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--sage-green);
+            background: rgba(74, 103, 65, 0.4);
+            box-shadow: 0 0 15px rgba(125, 154, 111, 0.3);
+        }
+
+        .quiz-option.incorrect {
+            border-color: #b54040;
+            background: rgba(181, 64, 64, 0.3);
+        }
+
+        .quiz-option.disabled { pointer-events: none; }
+
+        .quiz-feedback {
+            max-width: 550px;
+            margin: 1rem auto 0;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .quiz-feedback.show { display: block; }
+
+        .quiz-feedback.correct-feedback {
+            background: rgba(74, 103, 65, 0.3);
+            border: 1px solid var(--sage-green);
+        }
+
+        .quiz-feedback.incorrect-feedback {
+            background: rgba(181, 64, 64, 0.2);
+            border: 1px solid #b54040;
+        }
+
+        /* Navigation buttons */
+        .card-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .nav-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--soft-purple);
+            background: transparent;
+            color: var(--soft-purple);
+        }
+
+        .nav-btn:hover {
+            background: rgba(157, 123, 181, 0.2);
+            border-color: var(--golden-amber);
+            color: var(--golden-amber);
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(135deg, var(--golden-amber) 0%, var(--warm-gold) 100%);
+            border-color: var(--golden-amber);
+            color: var(--twilight-purple);
+            font-weight: 600;
+        }
+
+        .nav-btn.primary:hover {
+            background: linear-gradient(135deg, #e5b964 0%, var(--golden-amber) 100%);
+            box-shadow: 0 0 20px rgba(212, 168, 83, 0.5);
+        }
+
+        /* Progress sidebar */
+        .progress-panel {
+            background: linear-gradient(145deg, rgba(45, 27, 61, 0.9) 0%, rgba(74, 44, 106, 0.85) 100%);
+            border: 1px solid rgba(212, 168, 83, 0.25);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+
+        .progress-panel h4 {
+            color: var(--golden-amber);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar-custom {
+            height: 8px;
+            background: rgba(45, 27, 61, 0.8);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--golden-amber) 0%, var(--warm-gold) 100%);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-stat {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .progress-stat .label { color: var(--soft-purple); }
+        .progress-stat .value { color: var(--cream); font-weight: 500; }
+
+        .confidence-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+            margin-top: 1rem;
+        }
+
+        .gate-dot {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .gate-dot:hover {
+            transform: scale(1.2);
+            z-index: 2;
+        }
+
+        .gate-dot.not-reviewed {
+            background: rgba(45, 27, 61, 0.8);
+            border: 1px solid rgba(157, 123, 181, 0.3);
+            color: rgba(250, 246, 240, 0.3);
+        }
+
+        .gate-dot.low {
+            background: rgba(181, 64, 64, 0.5);
+            border: 1px solid #b54040;
+            color: var(--cream);
+        }
+
+        .gate-dot.medium {
+            background: rgba(212, 168, 83, 0.4);
+            border: 1px solid var(--golden-amber);
+            color: var(--cream);
+        }
+
+        .gate-dot.high {
+            background: rgba(74, 103, 65, 0.5);
+            border: 1px solid var(--sage-green);
+            color: var(--cream);
+        }
+
+        /* Difficulty stars */
+        .difficulty { color: var(--golden-amber); letter-spacing: 2px; }
+
+        /* Circuit badge */
+        .circuit-badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .circuit-individual {
+            background: rgba(157, 123, 181, 0.3);
+            border: 1px solid var(--soft-purple);
+            color: var(--soft-purple);
+        }
+
+        .circuit-collective {
+            background: rgba(96, 133, 163, 0.3);
+            border: 1px solid #6085A3;
+            color: #8ab4d4;
+        }
+
+        .circuit-tribal {
+            background: rgba(212, 168, 83, 0.2);
+            border: 1px solid var(--golden-amber);
+            color: var(--golden-amber);
+        }
+
+        .circuit-integration {
+            background: rgba(74, 103, 65, 0.3);
+            border: 1px solid var(--sage-green);
+            color: var(--sage-green);
+        }
+
+        /* Session counter */
+        .session-stats {
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--soft-purple);
+        }
+
+        .session-stats strong { color: var(--golden-amber); }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(212, 168, 83, 0.2);
+            color: rgba(250, 246, 240, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: var(--soft-purple);
+            text-decoration: none;
+        }
+
+        .footer a:hover { color: var(--golden-amber); }
+
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 1.6rem; }
+            .quiz-options { grid-template-columns: 1fr; }
+            .confidence-grid { grid-template-columns: repeat(8, 1fr); }
+            .flash-card-face { padding: 1.25rem; }
+            .gate-number { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="top-nav">
+        <a href="/" class="brand">Jolly Alchemy Labs</a>
+        <div>
+            <a href="/">People Explorer</a>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 1100px; padding: 0 1rem;">
+        <header class="page-header">
+            <h1>Memory Academy</h1>
+            <p>Memorize the 64 Gates, Channels & Connections</p>
+        </header>
+
+        <!-- Mode selector -->
+        <div class="mode-selector">
+            <button class="mode-btn active" onclick="setMode('flip')" id="mode-flip">Flip Cards</button>
+            <button class="mode-btn" onclick="setMode('quiz-gate')" id="mode-quiz-gate">Quiz: Gate to Channel</button>
+            <button class="mode-btn" onclick="setMode('quiz-channel')" id="mode-quiz-channel">Quiz: Channel to Gates</button>
+            <button class="mode-btn" onclick="setMode('spaced')" id="mode-spaced">Spaced Repetition</button>
+        </div>
+
+        <div class="row">
+            <!-- Main content area -->
+            <div class="col-lg-8">
+                <div class="card-wrapper">
+                    <div class="session-stats" id="sessionStats">
+                        Gate <strong id="currentIndex">1</strong> of <strong>64</strong>
+                        &nbsp;&middot;&nbsp;
+                        Session: <strong id="sessionCorrect">0</strong> correct,
+                        <strong id="sessionTotal">0</strong> total
+                    </div>
+
+                    <!-- Flash card area -->
+                    <div id="flashCardArea">
+                        <div class="flash-card-container">
+                            <div class="flash-card" id="flashCard" onclick="flipCard()">
+                                <div class="flash-card-face flash-card-front" id="cardFront">
+                                    <div class="gate-number" id="gateNum">1</div>
+                                    <div class="gate-name" id="gateName">Originality</div>
+                                    <div class="gate-center" id="gateCenter">Identity Center</div>
+                                    <div class="flip-hint">click to reveal</div>
+                                </div>
+                                <div class="flash-card-face flash-card-back" id="cardBack">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-nav" id="flipNav">
+                            <button class="nav-btn" onclick="prevGate()">&larr; Previous</button>
+                            <button class="nav-btn" onclick="markResult('incorrect')">Needs Work</button>
+                            <button class="nav-btn primary" onclick="markResult('correct')">Got It!</button>
+                            <button class="nav-btn" onclick="nextGate()">Next &rarr;</button>
+                        </div>
+                    </div>
+
+                    <!-- Quiz area -->
+                    <div id="quizArea" style="display: none;">
+                        <div class="quiz-question" id="quizQuestion"></div>
+                        <div class="quiz-options" id="quizOptions"></div>
+                        <div class="quiz-feedback" id="quizFeedback"></div>
+                        <div class="card-nav" id="quizNav" style="margin-top: 1rem;">
+                            <button class="nav-btn primary" onclick="nextQuiz()" id="nextQuizBtn" style="display: none;">Next Question &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress sidebar -->
+            <div class="col-lg-4">
+                <div class="progress-panel">
+                    <h4>Your Progress</h4>
+
+                    <div class="progress-stat">
+                        <span class="label">Gates Reviewed</span>
+                        <span class="value" id="reviewedCount">0 / 64</span>
+                    </div>
+                    <div class="progress-bar-custom">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+
+                    <div class="progress-stat">
+                        <span class="label">Avg Confidence</span>
+                        <span class="value" id="avgConfidence">-</span>
+                    </div>
+
+                    <div class="progress-stat">
+                        <span class="label">Due for Review</span>
+                        <span class="value" id="dueCount">-</span>
+                    </div>
+
+                    <h4 style="margin-top: 1.25rem;">Gate Confidence</h4>
+                    <div class="confidence-grid" id="confidenceGrid">
+                        <!-- 64 gate dots -->
+                    </div>
+
+                    <div style="margin-top: 0.75rem; display: flex; gap: 0.75rem; font-size: 0.7rem; color: var(--soft-purple); flex-wrap: wrap;">
+                        <span><span class="gate-dot not-reviewed" style="display: inline-block; width: 12px; height: 12px;"></span> Not reviewed</span>
+                        <span><span class="gate-dot low" style="display: inline-block; width: 12px; height: 12px;"></span> Needs work</span>
+                        <span><span class="gate-dot medium" style="display: inline-block; width: 12px; height: 12px;"></span> Getting there</span>
+                        <span><span class="gate-dot high" style="display: inline-block; width: 12px; height: 12px;"></span> Confident</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>
+                Made with love for <a href="https://jollyalchemy.com" target="_blank">Jolly Alchemy</a>
+                &middot; Based on <em>Memorize the 64 Gates</em> study guide
+            </p>
+            <p style="font-style: italic; opacity: 0.7;">
+                "The BodyGraph isn't just a chart &mdash; it's a treasure map."
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // ========================================================
+        // State
+        // ========================================================
+        let gatesData = {};
+        let channelsData = {};
+        let progressData = {};
+        let gatesDue = [];
+        let currentMode = 'flip';
+        let currentGateIndex = 0; // index into gateOrder
+        let gateOrder = []; // gate numbers in current order
+        let sessionCorrect = 0;
+        let sessionTotal = 0;
+        let channelNames = []; // for quiz
+
+        // ========================================================
+        // Init
+        // ========================================================
+        async function init() {
+            const [gatesRes, channelsRes, progressRes] = await Promise.all([
+                fetch('/api/gates').then(r => r.json()),
+                fetch('/api/channels').then(r => r.json()),
+                fetch('/api/learning/progress').then(r => r.json()),
+            ]);
+
+            gatesData = gatesRes.gates;
+            channelsData = channelsRes.channels;
+            progressData = progressRes.all_progress || {};
+            gatesDue = progressRes.gates_due_for_review || [];
+            channelNames = Object.keys(channelsData);
+
+            // Default order: 1-64
+            gateOrder = Array.from({ length: 64 }, (_, i) => i + 1);
+            currentGateIndex = 0;
+
+            buildConfidenceGrid();
+            updateProgressUI();
+            showCurrentCard();
+        }
+
+        // ========================================================
+        // Mode switching
+        // ========================================================
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('mode-' + mode.replace('-', '-')).classList.add('active');
+
+            const flashArea = document.getElementById('flashCardArea');
+            const quizArea = document.getElementById('quizArea');
+
+            if (mode === 'flip') {
+                flashArea.style.display = 'block';
+                quizArea.style.display = 'none';
+                showCurrentCard();
+            } else if (mode === 'spaced') {
+                flashArea.style.display = 'block';
+                quizArea.style.display = 'none';
+                // Reorder to due gates first
+                if (gatesDue.length > 0) {
+                    const dueSet = new Set(gatesDue);
+                    const due = gateOrder.filter(g => dueSet.has(g));
+                    const rest = gateOrder.filter(g => !dueSet.has(g));
+                    gateOrder = [...due, ...rest];
+                }
+                currentGateIndex = 0;
+                showCurrentCard();
+            } else {
+                flashArea.style.display = 'none';
+                quizArea.style.display = 'block';
+                generateQuiz();
+            }
+        }
+
+        // ========================================================
+        // Flip Card Mode
+        // ========================================================
+        function showCurrentCard() {
+            const gateNum = gateOrder[currentGateIndex];
+            const gate = gatesData[gateNum];
+            if (!gate) return;
+
+            // Reset flip
+            document.getElementById('flashCard').classList.remove('flipped');
+
+            // Front
+            document.getElementById('gateNum').textContent = gateNum;
+            document.getElementById('gateName').textContent = gate.name_64keys;
+            document.getElementById('gateCenter').textContent = gate.center + ' Center';
+
+            // Back
+            const partners = gate.partner_gates.map(p => {
+                const pg = gatesData[p];
+                return pg ? `${p} (${pg.name_64keys})` : p;
+            }).join(', ');
+
+            const channels = gate.channel_names.join(', ');
+            const circuits = gate.circuits.join(', ');
+            const diffStars = '\u2605'.repeat(gate.difficulty) + '\u2606'.repeat(3 - gate.difficulty);
+
+            const circuitClass = getCircuitClass(gate.circuits[0]);
+
+            document.getElementById('cardBack').innerHTML = `
+                <div class="back-detail">
+                    <h4>Gate ${gateNum}: ${gate.name_64keys}</h4>
+                    <div class="detail-row">
+                        <span class="detail-label">Ra Name</span>
+                        <span class="detail-value">${gate.name_ra}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Center</span>
+                        <span class="detail-value">${gate.center}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Partner Gates</span>
+                        <span class="detail-value">${partners}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Channels</span>
+                        <span class="detail-value">${channels}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Circuit</span>
+                        <span class="detail-value"><span class="circuit-badge ${circuitClass}">${circuits}</span></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Difficulty</span>
+                        <span class="detail-value difficulty">${diffStars}</span>
+                    </div>
+                    <div class="memory-hook">${gate.memory_hook}</div>
+                </div>
+            `;
+
+            // Update counter
+            document.getElementById('currentIndex').textContent = currentGateIndex + 1;
+        }
+
+        function flipCard() {
+            document.getElementById('flashCard').classList.toggle('flipped');
+        }
+
+        function nextGate() {
+            currentGateIndex = (currentGateIndex + 1) % gateOrder.length;
+            showCurrentCard();
+        }
+
+        function prevGate() {
+            currentGateIndex = (currentGateIndex - 1 + gateOrder.length) % gateOrder.length;
+            showCurrentCard();
+        }
+
+        async function markResult(result) {
+            const gateNum = gateOrder[currentGateIndex];
+            sessionTotal++;
+            if (result === 'correct') sessionCorrect++;
+
+            document.getElementById('sessionCorrect').textContent = sessionCorrect;
+            document.getElementById('sessionTotal').textContent = sessionTotal;
+
+            try {
+                const res = await fetch('/api/learning/progress', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        gate_number: gateNum,
+                        result: result,
+                        mode: currentMode === 'spaced' ? 'spaced' : 'flip',
+                    }),
+                });
+                const data = await res.json();
+                if (data.progress) {
+                    progressData[String(gateNum)] = data.progress;
+                    updateProgressUI();
+                }
+            } catch (e) {
+                console.error('Failed to save progress:', e);
+            }
+
+            nextGate();
+        }
+
+        // ========================================================
+        // Quiz Mode
+        // ========================================================
+        let quizGateNum = null;
+        let quizAnswered = false;
+
+        function generateQuiz() {
+            quizAnswered = false;
+            document.getElementById('quizFeedback').classList.remove('show');
+            document.getElementById('nextQuizBtn').style.display = 'none';
+
+            if (currentMode === 'quiz-gate') {
+                generateGateToChannelQuiz();
+            } else if (currentMode === 'quiz-channel') {
+                generateChannelToGatesQuiz();
+            }
+        }
+
+        function generateGateToChannelQuiz() {
+            // Pick a random gate (excluding multi-partner mega-hubs for cleaner questions)
+            const singlePartnerGates = Object.keys(gatesData).filter(g => {
+                return gatesData[g].partner_gates.length === 1;
+            }).map(Number);
+
+            quizGateNum = singlePartnerGates[Math.floor(Math.random() * singlePartnerGates.length)];
+            const gate = gatesData[quizGateNum];
+
+            document.getElementById('quizQuestion').innerHTML = `
+                Gate <strong>${quizGateNum}</strong> (${gate.name_64keys}) connects to which gate?
+            `;
+
+            const correctPartner = gate.partner_gates[0];
+            const correctGateData = gatesData[correctPartner];
+            const correctAnswer = `${correctPartner} (${correctGateData.name_64keys})`;
+
+            // Generate distractors - other gates from different centers
+            const allGateNums = Object.keys(gatesData).map(Number).filter(g =>
+                g !== quizGateNum && !gate.partner_gates.includes(g)
+            );
+            const shuffled = allGateNums.sort(() => Math.random() - 0.5);
+            const distractors = shuffled.slice(0, 3).map(g =>
+                `${g} (${gatesData[g].name_64keys})`
+            );
+
+            const options = [correctAnswer, ...distractors].sort(() => Math.random() - 0.5);
+
+            renderQuizOptions(options, correctAnswer, gate);
+        }
+
+        function generateChannelToGatesQuiz() {
+            // Pick a random channel
+            const channelName = channelNames[Math.floor(Math.random() * channelNames.length)];
+            const channel = channelsData[channelName];
+
+            document.getElementById('quizQuestion').innerHTML = `
+                Which gates form the <strong>"${channelName}"</strong> channel?
+            `;
+
+            const correctGates = channel.gates.sort((a, b) => a - b);
+            const correctAnswer = correctGates.map(g =>
+                `${g} (${gatesData[g].name_64keys})`
+            ).join(' & ');
+
+            // Generate distractors - other channel gate pairs
+            const otherChannels = channelNames.filter(c => c !== channelName);
+            const shuffledChannels = otherChannels.sort(() => Math.random() - 0.5);
+            const distractors = shuffledChannels.slice(0, 3).map(c => {
+                const gates = channelsData[c].gates.sort((a, b) => a - b);
+                return gates.map(g => `${g} (${gatesData[g].name_64keys})`).join(' & ');
+            });
+
+            const options = [correctAnswer, ...distractors].sort(() => Math.random() - 0.5);
+            quizGateNum = correctGates[0]; // for progress tracking
+
+            renderQuizOptions(options, correctAnswer, { memory_hook: channel.memory_hook });
+        }
+
+        function renderQuizOptions(options, correctAnswer, gateOrChannel) {
+            const container = document.getElementById('quizOptions');
+            container.innerHTML = options.map(opt => `
+                <div class="quiz-option" onclick="selectQuizOption(this, '${escapeAttr(opt)}', '${escapeAttr(correctAnswer)}')"
+                    data-answer="${escapeAttr(opt)}">
+                    ${opt}
+                </div>
+            `).join('');
+        }
+
+        function escapeAttr(str) {
+            return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+
+        async function selectQuizOption(el, selected, correct) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+
+            const isCorrect = selected === correct;
+            const feedback = document.getElementById('quizFeedback');
+
+            // Mark all options
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.add('disabled');
+                if (opt.dataset.answer === correct) {
+                    opt.classList.add('correct');
+                }
+            });
+
+            if (!isCorrect) {
+                el.classList.add('incorrect');
+            }
+
+            // Show feedback with memory hook
+            const gate = gatesData[quizGateNum];
+            const hook = gate ? gate.memory_hook : '';
+            feedback.className = `quiz-feedback show ${isCorrect ? 'correct-feedback' : 'incorrect-feedback'}`;
+            feedback.innerHTML = `
+                <strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong>
+                ${hook ? `<div class="memory-hook" style="margin-top: 0.75rem;">${hook}</div>` : ''}
+            `;
+
+            document.getElementById('nextQuizBtn').style.display = 'inline-block';
+
+            // Track progress
+            sessionTotal++;
+            if (isCorrect) sessionCorrect++;
+            document.getElementById('sessionCorrect').textContent = sessionCorrect;
+            document.getElementById('sessionTotal').textContent = sessionTotal;
+
+            try {
+                const res = await fetch('/api/learning/progress', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        gate_number: quizGateNum,
+                        result: isCorrect ? 'correct' : 'incorrect',
+                        mode: currentMode,
+                    }),
+                });
+                const data = await res.json();
+                if (data.progress) {
+                    progressData[String(quizGateNum)] = data.progress;
+                    updateProgressUI();
+                }
+            } catch (e) {
+                console.error('Failed to save progress:', e);
+            }
+        }
+
+        function nextQuiz() {
+            generateQuiz();
+        }
+
+        // ========================================================
+        // Progress UI
+        // ========================================================
+        function buildConfidenceGrid() {
+            const grid = document.getElementById('confidenceGrid');
+            grid.innerHTML = '';
+            for (let i = 1; i <= 64; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'gate-dot not-reviewed';
+                dot.textContent = i;
+                dot.id = `gate-dot-${i}`;
+                dot.title = `Gate ${i}`;
+                dot.onclick = () => jumpToGate(i);
+                grid.appendChild(dot);
+            }
+        }
+
+        function updateProgressUI() {
+            let reviewed = 0;
+            let totalConfidence = 0;
+
+            for (let i = 1; i <= 64; i++) {
+                const key = String(i);
+                const dot = document.getElementById(`gate-dot-${i}`);
+                if (!dot) continue;
+
+                if (progressData[key] && progressData[key].review_count > 0) {
+                    reviewed++;
+                    const conf = progressData[key].confidence || 0;
+                    totalConfidence += conf;
+
+                    dot.className = 'gate-dot';
+                    if (conf >= 0.7) {
+                        dot.classList.add('high');
+                    } else if (conf >= 0.4) {
+                        dot.classList.add('medium');
+                    } else {
+                        dot.classList.add('low');
+                    }
+                    dot.title = `Gate ${i}: ${Math.round(conf * 100)}% confidence`;
+                } else {
+                    dot.className = 'gate-dot not-reviewed';
+                    dot.title = `Gate ${i}: not reviewed`;
+                }
+            }
+
+            document.getElementById('reviewedCount').textContent = `${reviewed} / 64`;
+            document.getElementById('progressFill').style.width = `${(reviewed / 64) * 100}%`;
+
+            if (reviewed > 0) {
+                document.getElementById('avgConfidence').textContent =
+                    Math.round((totalConfidence / reviewed) * 100) + '%';
+            } else {
+                document.getElementById('avgConfidence').textContent = '-';
+            }
+
+            document.getElementById('dueCount').textContent =
+                gatesDue.length > 0 ? gatesDue.length : 'All caught up!';
+        }
+
+        function jumpToGate(gateNum) {
+            const idx = gateOrder.indexOf(gateNum);
+            if (idx >= 0) {
+                currentGateIndex = idx;
+                if (currentMode === 'flip' || currentMode === 'spaced') {
+                    showCurrentCard();
+                }
+            }
+        }
+
+        function getCircuitClass(circuit) {
+            if (!circuit) return '';
+            if (circuit.startsWith('Individual') || circuit === 'Integration') return 'circuit-individual';
+            if (circuit === 'Integration') return 'circuit-integration';
+            if (circuit.startsWith('Collective')) return 'circuit-collective';
+            if (circuit.startsWith('Tribal')) return 'circuit-tribal';
+            return '';
+        }
+
+        // ========================================================
+        // Keyboard navigation
+        // ========================================================
+        document.addEventListener('keydown', (e) => {
+            if (currentMode === 'flip' || currentMode === 'spaced') {
+                if (e.key === 'ArrowRight' || e.key === 'n') nextGate();
+                else if (e.key === 'ArrowLeft' || e.key === 'p') prevGate();
+                else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
+                else if (e.key === 'g') markResult('correct');
+                else if (e.key === 'w') markResult('incorrect');
+            }
+        });
+
+        // ========================================================
+        // Boot
+        // ========================================================
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

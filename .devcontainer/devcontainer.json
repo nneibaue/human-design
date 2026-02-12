@@ -3,7 +3,7 @@
   "build": {
     "dockerfile": "../Dockerfile",
     "context": "..",
-    "target": "development",
+    "target": "dev",
     "args": {
       "USER": "${localEnv:USER}"
     }
@@ -11,7 +11,8 @@
 
   "containerEnv": {
     "HD_USERNAME": "${localEnv:HD_USERNAME}",
-    "HD_PASSWORD": "${localEnv:HD_PASSWORD}"
+    "HD_PASSWORD": "${localEnv:HD_PASSWORD}",
+    "OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY}"
   },
 
   "remoteUser": "${localEnv:USER}",
@@ -19,7 +20,9 @@
   "initializeCommand": "mkdir -p ${localEnv:HOME}/.ssh",
 
   "mounts": [
-    "source=${localEnv:HOME}/.ssh,target=/home/${localEnv:USER}/.ssh,type=bind"
+    "source=${localEnv:HOME}/.ssh,target=/home/${localEnv:USER}/.ssh,type=bind",
+    "source=${localEnv:HOME}/HD,target=/home/${localEnv:USER}/hd_info,type=bind",
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
   ],
 
   "customizations": {
@@ -31,7 +34,11 @@
         "ms-python.python",
         "ms-python.mypy-type-checker",
         "charliermarsh.ruff",
-        "tamasfe.even-better-toml"
+        "tamasfe.even-better-toml",
+        "ms-vscode.remote-explorer",
+        "ms-vscode-remote.remote-containers",
+        "ms-vscode.docker",
+        "Anthropic.claude-code"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python",
@@ -42,5 +49,12 @@
     }
   },
 
-  "postCreateCommand": "pip install --no-deps -e ."
+  "postCreateCommand": "pip install -e '.[dev]' && curl -fsSL https://claude.ai/install.sh | bash",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "mobyVersion": "latest",
+      "installDockerCompose": true
+    }
+  }
 }

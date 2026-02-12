@@ -1,0 +1,110 @@
+# Human Design Channels
+# Connections between two gates forming the channels in the bodygraph
+
+- name: Inspiration
+  gates: [1, 8]
+
+- name: The Beat
+  gates: [2, 14]
+
+- name: Mutation
+  gates: [3, 60]
+
+- name: Logic
+  gates: [4, 63]
+
+- name: Rhythm
+  gates: [5, 15]
+
+- name: Mating
+  gates: [6, 59]
+
+- name: The Alpha
+  gates: [7, 31]
+
+- name: Concentration
+  gates: [9, 52]
+
+- name: Awakening
+  gates: [10, 20]
+
+- name: Exploration
+  gates: [10, 34]
+
+- name: Perfected Form
+  gates: [10, 57]
+
+- name: Curiosity
+  gates: [11, 56]
+
+- name: Openness
+  gates: [12, 22]
+
+- name: The Prodigal
+  gates: [13, 33]
+
+- name: The Wave Length
+  gates: [16, 48]
+
+- name: Acceptance
+  gates: [17, 62]
+
+- name: Judgment
+  gates: [18, 58]
+
+- name: Synthesis
+  gates: [19, 49]
+
+- name: Charisma
+  gates: [20, 34]
+
+- name: The Brain Wave
+  gates: [20, 57]
+
+- name: Money
+  gates: [21, 45]
+
+- name: Structuring
+  gates: [23, 43]
+
+- name: Awareness
+  gates: [24, 61]
+
+- name: Initiation
+  gates: [25, 51]
+
+- name: Surrender
+  gates: [26, 44]
+
+- name: Preservation
+  gates: [27, 50]
+
+- name: Struggle
+  gates: [28, 38]
+
+- name: Discovery
+  gates: [29, 46]
+
+- name: Recognition
+  gates: [30, 41]
+
+- name: Transformation
+  gates: [32, 54]
+
+- name: Power
+  gates: [34, 57]
+
+- name: Transitoriness
+  gates: [35, 36]
+
+- name: Community
+  gates: [37, 40]
+
+- name: Emoting
+  gates: [39, 55]
+
+- name: Maturation
+  gates: [42, 53]
+
+- name: Abstraction
+  gates: [47, 64]
