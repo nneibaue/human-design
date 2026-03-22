@@ -1,0 +1,224 @@
+{
+  "seed_version": "1.0",
+  "problem": "Design and validate Rebecca Energy color palette for Human Design chart visualization with semantic mappings, accessibility compliance, and cozy autumnal forest aesthetic",
+
+  "goal": "Produce production-ready COLOR_PALETTE_rebecca_energy.json at ontology/COLOR_PALETTE_rebecca_energy.json with complete hex codes, semantic mappings, functional colors, usage examples, and WCAG AA accessibility validation",
+
+  "context": {
+    "rebecca_energy_philosophy": {
+      "aesthetic": "Cozy autumnal forest, twilight magic, whimsical yet grounded",
+      "tone": "Warm and approachable, playful metaphors, treasure map for 7-year journey",
+      "color_themes": [
+        "Deep purples (mystical, twilight, consciousness)",
+        "Gold/amber (autumn warmth, activation, energy)",
+        "Forest greens (grounded, natural, growth)",
+        "Earth tones (stability, foundation, presence)"
+      ],
+      "philosophy_source": ".github/copilot-instructions.md"
+    },
+
+    "from_review_strand_d5a05df6": {
+      "priority": "MEDIUM",
+      "timeline": "Week 3 (2-3 days effort)",
+      "specification_source": "strand-results/active/SPEC_coordinator.md phase_6_rebecca_energy_palette"
+    },
+
+    "functional_requirements": {
+      "semantic_mappings": [
+        "Conscious activations (personality) vs Unconscious (design)",
+        "Defined centers (consistent energy) vs Undefined (conditioning)",
+        "Active channels vs Inactive channels",
+        "Gate activations (specific degrees)",
+        "Interaction/composite overlays (whose energy is whose)"
+      ],
+      "ui_states": [
+        "Default/resting state",
+        "Hover state",
+        "Active/selected state",
+        "Disabled state",
+        "Focus state (keyboard navigation)"
+      ],
+      "accessibility": "WCAG AA contrast ratios (4.5:1 for text, 3:1 for UI components)"
+    },
+
+    "design_constraints": {
+      "format": "JSON with hex codes, RGB values, semantic keys",
+      "structure": "Primary palette, functional colors, semantic mappings, usage rules",
+      "validation": "All color pairs tested for WCAG AA compliance",
+      "examples": "CSS classes, usage patterns, do/don't guidelines"
+    }
+  },
+
+  "agents": [
+    "architect",
+    "fair_witness",
+    "coordinator"
+  ],
+
+  "constraints": [
+    "Work in strand fork space (automatic isolation branch)",
+    "WCAG AA compliance for all text/background combinations",
+    "Embody Rebecca Energy philosophy (cozy autumnal forest aesthetic)",
+    "Support both light and dark mode color schemes",
+    "JSON format suitable for programmatic access",
+    "Include usage examples and guidelines",
+    "Validate contrast ratios with accessibility tools"
+  ],
+
+  "success_criteria": [
+    "Primary palette: mystical purple, autumn gold, forest green, earth brown (hex codes)",
+    "Semantic color mappings for HD concepts (conscious/unconscious, defined/undefined)",
+    "Functional colors for UI states (hover, active, disabled, focus)",
+    "All color combinations pass WCAG AA contrast tests",
+    "Usage examples: CSS classes, component patterns",
+    "Accessibility notes document contrast ratios",
+    "JSON schema for validation",
+    "Design rationale explains color choices",
+    "Light and dark mode variants",
+    "Rebecca Energy aesthetic strongly embodied"
+  ],
+
+  "expected_artifacts": [
+    "ontology/COLOR_PALETTE_rebecca_energy.json",
+    "ontology/COLOR_PALETTE_schema.json",
+    "docs/COLOR_PALETTE_USAGE.md",
+    "DESIGN_RATIONALE_rebecca_energy_colors.md",
+    "ACCESSIBILITY_REPORT_wcag_validation.md"
+  ],
+
+  "phases": {
+    "1_palette_design": {
+      "description": "Design primary color palette with Rebecca Energy aesthetic",
+      "agents": ["architect"],
+      "tasks": [
+        {
+          "agent_index": 0,
+          "task": "Design primary color palette embodying 'cozy autumnal forest, twilight magic' aesthetic. Define: mystical purples (consciousness, twilight), autumn gold/amber (activation, warmth), forest greens (grounded, growth), earth browns (stability). Create light and dark mode variants. Generate hex codes, RGB, HSL values.",
+          "inputs": [".github/copilot-instructions.md (Rebecca Energy philosophy)"],
+          "outputs": ["PRIMARY_PALETTE_rebecca_energy.json"]
+        }
+      ],
+      "dependencies": [],
+      "parallel": false
+    },
+
+    "2_semantic_mapping": {
+      "description": "Map colors to Human Design semantic concepts",
+      "agents": ["architect"],
+      "tasks": [
+        {
+          "agent_index": 1,
+          "task": "Design semantic color mappings for HD concepts: conscious (gold) vs unconscious (purple), defined (saturated) vs undefined (muted), active channels (green), electromagnetic connections (amber), transits (twilight purple). Include interaction chart colors (person A, person B, composite).",
+          "inputs": ["PRIMARY_PALETTE_rebecca_energy.json"],
+          "outputs": ["SEMANTIC_MAPPINGS_hd_concepts.json"]
+        }
+      ],
+      "dependencies": ["1_palette_design"],
+      "parallel": false
+    },
+
+    "3_functional_colors": {
+      "description": "Define functional UI colors for interactive states",
+      "agents": ["architect"],
+      "tasks": [
+        {
+          "agent_index": 2,
+          "task": "Design functional color system: backgrounds (light/dark), text (primary/secondary/muted), borders, hover states, active/selected states, disabled states, focus indicators. Ensure consistency with primary palette and Rebecca Energy aesthetic.",
+          "inputs": ["PRIMARY_PALETTE_rebecca_energy.json"],
+          "outputs": ["FUNCTIONAL_COLORS_ui_states.json"]
+        }
+      ],
+      "dependencies": ["1_palette_design"],
+      "parallel": false
+    },
+
+    "4_accessibility_validation": {
+      "description": "Validate all color combinations for WCAG AA compliance",
+      "agents": ["fair_witness"],
+      "tasks": [
+        {
+          "agent_index": 3,
+          "task": "Validate ALL color combinations for WCAG AA contrast ratios: text on backgrounds (4.5:1), UI components (3:1). Test light and dark modes. Document passing/failing combinations. Suggest adjustments for failing combinations while maintaining Rebecca Energy aesthetic.",
+          "validation_targets": [
+            "Text/background combinations",
+            "UI component contrasts",
+            "Interactive state visibility",
+            "Light mode compliance",
+            "Dark mode compliance"
+          ],
+          "outputs": ["ACCESSIBILITY_REPORT_wcag_validation.md"]
+        }
+      ],
+      "dependencies": ["2_semantic_mapping", "3_functional_colors"],
+      "parallel": false
+    },
+
+    "5_synthesis": {
+      "description": "Synthesize complete color palette JSON with usage guide",
+      "agents": ["coordinator"],
+      "tasks": [
+        {
+          "agent_index": 4,
+          "task": "Synthesize ontology/COLOR_PALETTE_rebecca_energy.json with: primary palette, semantic mappings, functional colors, accessibility notes, usage examples (CSS classes), design rationale. Create JSON schema for validation. Generate docs/COLOR_PALETTE_USAGE.md with guidelines and do/don't examples.",
+          "inputs": ["All phase outputs", "ACCESSIBILITY_REPORT"],
+          "outputs": [
+            "ontology/COLOR_PALETTE_rebecca_energy.json",
+            "ontology/COLOR_PALETTE_schema.json",
+            "docs/COLOR_PALETTE_USAGE.md",
+            "DESIGN_RATIONALE_rebecca_energy_colors.md"
+          ]
+        }
+      ],
+      "dependencies": ["4_accessibility_validation"],
+      "parallel": false
+    }
+  },
+
+  "validation_rules": {
+    "aesthetic": [
+      "Colors embody 'cozy autumnal forest' feeling",
+      "Twilight magic atmosphere present",
+      "Whimsical yet grounded balance achieved",
+      "Warm and approachable tone throughout",
+      "Avoids clinical/sterile appearance"
+    ],
+
+    "accessibility": [
+      "WCAG AA 4.5:1 contrast for text on backgrounds",
+      "WCAG AA 3:1 contrast for UI components",
+      "Both light and dark modes compliant",
+      "Focus indicators clearly visible",
+      "No color-only information encoding"
+    ],
+
+    "technical": [
+      "Valid JSON format (RFC 8259)",
+      "All hex codes 6 digits (#RRGGBB)",
+      "RGB values 0-255 range",
+      "HSL values correct ranges (H: 0-360, S/L: 0-100%)",
+      "JSON schema validates structure",
+      "Semantic keys use snake_case naming"
+    ],
+
+    "semantic": [
+      "Conscious (personality) distinctly different from Unconscious (design)",
+      "Defined (consistent) distinctly different from Undefined (open)",
+      "Active channels visually prominent",
+      "Interaction chart person differentiation clear",
+      "Transit overlays distinguishable from natal"
+    ]
+  },
+
+  "metadata": {
+    "created": "2026-03-21",
+    "seed_type": "design_and_validation",
+    "strand_type": "IMPLEMENTATION",
+    "priority": "MEDIUM",
+    "effort_estimate": "6-8 agent-hours (2-3 days)",
+    "target_repo": "/Users/nathan.neibauer/code/human-design",
+    "output_dir": "strand-results/active",
+    "isolation": "automatic git fork and branch creation",
+    "parent_strand": "d5a05df6 (review strand)",
+    "enables": ["Chart visualization system", "Web UI styling", "SVG renderer color application"]
+  }
+}

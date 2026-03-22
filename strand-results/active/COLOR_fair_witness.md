@@ -1,0 +1,4 @@
+{
+  "error": "status_code: 400, model_name: us-gov.anthropic.claude-sonnet-4-5-20250929-v1:0, body: {'Error': {'Message': 'The model returned the following errors: prompt is too long: 204952 tokens > 200000 maximum', 'Code': 'ValidationException'}, 'ResponseMetadata': {'RequestId': '0ffffe7e-3c20-4c70-993e-6b85a649c677', 'HTTPStatusCode': 400, 'HTTPHeaders': {'date': 'Sun, 22 Mar 2026 02:28:59 GMT', 'content-type': 'application/json', 'content-length': '105', 'connection': 'keep-alive', 'x-amzn-requestid': '0ffffe7e-3c20-4c70-993e-6b85a649c677', 'x-amzn-errortype': 'ValidationException:http://internal.amazon.com/coral/com.amazon.bedrock/'}, 'RetryAttempts': 0}, 'message': 'The model returned the following errors: prompt is too long: 204952 tokens > 200000 maximum'}",
+  "status": "failed"
+}

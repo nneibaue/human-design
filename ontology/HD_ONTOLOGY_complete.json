@@ -1,0 +1,1524 @@
+{
+  "schema_version": "1.0.0",
+  "ontology_standard": "64keys",
+  "generated_at": "2024-01-15T00:00:00Z",
+  "metadata": {
+    "description": "Comprehensive Human Design ontology with 64keys↔traditional terminology mappings",
+    "purpose": "Programmatic access and UI generation for chart interpretation",
+    "data_sources": [
+      "src/human_design/bodygraph.yaml",
+      "src/human_design/channels.yaml",
+      "src/human_design/centers.yaml",
+      "src/human_design/models/core.py"
+    ]
+  },
+  "types": [
+    {
+      "id": "Initiator",
+      "traditional_name": "Manifestor",
+      "percentage": "~8%",
+      "strategy": "Inform before initiating",
+      "not_self_theme": "Anger",
+      "signature": "Peace",
+      "aura": "Closed and repelling",
+      "description": "Independent initiators designed to impact and catalyze change. Natural leaders who work best when informing others before taking action.",
+      "calculation_logic": {
+        "rules": [
+          "Motor center connected to Throat (channels 12-22, 35-36, or via channel from Heart/Solar Plexus/Sacral/Root to Throat)",
+          "Sacral NOT defined OR defined but motor-to-throat connection bypasses Sacral response",
+          "At least one motor (Heart, Solar Plexus, Sacral, Root) defined"
+        ],
+        "motors": ["WILLPOWER", "EMOTION", "LIFEFORCE", "DRIVE"],
+        "throat": "EXPRESSION"
+      }
+    },
+    {
+      "id": "Builder",
+      "traditional_name": "Generator",
+      "percentage": "~37%",
+      "strategy": "Wait to respond",
+      "not_self_theme": "Frustration",
+      "signature": "Satisfaction",
+      "aura": "Open and enveloping",
+      "description": "Life force energy that powers the world. Designed to respond to life and find satisfaction through doing work they love.",
+      "calculation_logic": {
+        "rules": [
+          "Sacral center (LIFEFORCE) defined",
+          "NO motor-to-throat connection (distinguishes from Specialist/Manifesting Generator)"
+        ],
+        "sacral_gates": [5, 14, 29, 59, 9, 3, 42, 27, 34]
+      }
+    },
+    {
+      "id": "Specialist",
+      "traditional_name": "Manifesting Generator",
+      "percentage": "~33%",
+      "strategy": "Wait to respond, then inform before acting",
+      "not_self_theme": "Frustration and Anger",
+      "signature": "Satisfaction and Peace",
+      "aura": "Open and enveloping",
+      "description": "Multi-talented hybrid type combining Generator response with Manifestor initiation. Designed to respond, then move quickly into action.",
+      "calculation_logic": {
+        "rules": [
+          "Sacral center (LIFEFORCE) defined",
+          "Motor-to-throat connection present (can manifest after responding)",
+          "Combination of Generator's sacral response and Manifestor's initiating capacity"
+        ],
+        "sacral_gates": [5, 14, 29, 59, 9, 3, 42, 27, 34],
+        "throat": "EXPRESSION"
+      }
+    },
+    {
+      "id": "Coordinator",
+      "traditional_name": "Projector",
+      "percentage": "~21%",
+      "strategy": "Wait for invitation and recognition",
+      "not_self_theme": "Bitterness",
+      "signature": "Success",
+      "aura": "Focused and absorbing",
+      "description": "Natural guides and coordinators designed to see the big picture and direct others' energy. Most successful when recognized and invited.",
+      "calculation_logic": {
+        "rules": [
+          "Sacral center (LIFEFORCE) NOT defined",
+          "At least one energy center defined (not a Reflector)",
+          "Designed to guide and manage others' energy"
+        ],
+        "undefined_sacral": true
+      }
+    },
+    {
+      "id": "Observer",
+      "traditional_name": "Reflector",
+      "percentage": "~1%",
+      "strategy": "Wait a lunar cycle (28 days) for major decisions",
+      "not_self_theme": "Disappointment",
+      "signature": "Surprise",
+      "aura": "Resistant and sampling",
+      "description": "Rare mirrors of their environment with all centers undefined. Designed to sample and reflect the energy around them.",
+      "calculation_logic": {
+        "rules": [
+          "ALL 9 centers undefined",
+          "No consistent definition in chart",
+          "Completely open to conditioning"
+        ],
+        "all_centers_undefined": true
+      }
+    }
+  ],
+  "authorities": [
+    {
+      "id": "Emotional",
+      "hierarchy_rank": 1,
+      "center_dependencies": ["EMOTION"],
+      "decision_strategy": "Wait for emotional clarity over time (full wave cycle)",
+      "description": "Emotional authority requires riding the emotional wave before making decisions. No truth in the now - clarity comes with time.",
+      "type_compatibility": ["Initiator", "Builder", "Specialist", "Coordinator"],
+      "time_frame": "Days to weeks depending on wave"
+    },
+    {
+      "id": "Sacral",
+      "hierarchy_rank": 2,
+      "center_dependencies": ["LIFEFORCE"],
+      "decision_strategy": "Listen to gut response (uh-huh/unh-uh sounds)",
+      "description": "Immediate gut response that is reliable in the present moment. Sacral sounds (yes/no) provide clear direction.",
+      "type_compatibility": ["Builder", "Specialist"],
+      "time_frame": "Immediate response in the moment",
+      "prerequisites": ["EMOTION center must be undefined"]
+    },
+    {
+      "id": "Splenic",
+      "hierarchy_rank": 3,
+      "center_dependencies": ["INTUITION"],
+      "decision_strategy": "Trust spontaneous intuitive knowing in the moment",
+      "description": "Instantaneous intuitive awareness that speaks once. Must be trusted in the moment or the opportunity passes.",
+      "type_compatibility": ["Initiator", "Coordinator"],
+      "time_frame": "Spontaneous, once only",
+      "prerequisites": ["EMOTION and LIFEFORCE centers undefined"]
+    },
+    {
+      "id": "Ego",
+      "hierarchy_rank": 4,
+      "center_dependencies": ["WILLPOWER"],
+      "decision_strategy": "Make decisions based on what you want and what you'll commit to",
+      "description": "Heart-centered authority for manifested decisions. Trust what your willpower commits to.",
+      "type_compatibility": ["Initiator", "Coordinator"],
+      "time_frame": "Present moment willpower",
+      "subtypes": {
+        "Ego Manifested": "Heart connected to Throat",
+        "Ego Projected": "Heart defined but not connected to Throat"
+      },
+      "prerequisites": ["EMOTION, LIFEFORCE, and INTUITION centers undefined"]
+    },
+    {
+      "id": "Self-Projected",
+      "hierarchy_rank": 5,
+      "center_dependencies": ["IDENTITY", "EXPRESSION"],
+      "decision_strategy": "Hear yourself speak truth through conversation with trusted others",
+      "description": "Identity speaks through the throat. Clarity comes through hearing your own voice in dialogue.",
+      "type_compatibility": ["Coordinator"],
+      "time_frame": "Through conversation over time",
+      "prerequisites": ["EMOTION, LIFEFORCE, INTUITION, and WILLPOWER centers undefined", "IDENTITY and EXPRESSION defined"]
+    },
+    {
+      "id": "Mental",
+      "hierarchy_rank": 6,
+      "center_dependencies": ["MIND", "EXPRESSION"],
+      "decision_strategy": "Process thoughts through trusted advisors - outer authority",
+      "description": "Mental authority requires sounding board of trusted others. Never decide from the mind alone.",
+      "type_compatibility": ["Coordinator"],
+      "time_frame": "Through discussion with trusted advisors",
+      "prerequisites": ["No motor or awareness centers defined", "MIND and EXPRESSION defined"],
+      "note": "Also called 'Outer Authority' or 'Environmental Authority'"
+    },
+    {
+      "id": "Lunar",
+      "hierarchy_rank": 7,
+      "center_dependencies": [],
+      "decision_strategy": "Wait a full lunar cycle (28 days) and sample environment",
+      "description": "Reflector-only authority. Wait 28 days through full moon cycle while discussing with trusted advisors.",
+      "type_compatibility": ["Observer"],
+      "time_frame": "Full lunar cycle (approximately 28 days)",
+      "prerequisites": ["All centers undefined"],
+      "note": "Also called 'None' authority - Reflectors have no internal authority"
+    }
+  ],
+  "profiles": [
+    {
+      "id": "1/3",
+      "name": "Investigator/Martyr",
+      "conscious_line": 1,
+      "unconscious_line": 3,
+      "conscious_theme": "Foundation - Need for investigation and solid knowledge base",
+      "unconscious_theme": "Experimentation - Learning through trial and error",
+      "description": "Introspective investigator who learns through direct experience. Needs security of knowledge combined with resilience from experimentation.",
+      "archetype": "The researcher who tests theories in practice",
+      "life_path": "Building foundations through investigation while learning what doesn't work"
+    },
+    {
+      "id": "1/4",
+      "name": "Investigator/Opportunist",
+      "conscious_line": 1,
+      "unconscious_line": 4,
+      "conscious_theme": "Foundation - Need for investigation and solid knowledge base",
+      "unconscious_theme": "Network - Building relationships and community",
+      "description": "Investigator with natural networking ability. Solid knowledge shared through trusted relationships.",
+      "archetype": "The researcher with influential network",
+      "life_path": "Deep investigation shared through network of trusted connections"
+    },
+    {
+      "id": "2/4",
+      "name": "Hermit/Opportunist",
+      "conscious_line": 2,
+      "unconscious_line": 4,
+      "conscious_theme": "Hermit - Natural genius that needs alone time",
+      "unconscious_theme": "Network - Building relationships and community",
+      "description": "Natural talent that emerges through recognition. Balance between withdrawal and social networking.",
+      "archetype": "The talented hermit called out by their network",
+      "life_path": "Alternating between solitude and social engagement, called by the right people"
+    },
+    {
+      "id": "2/5",
+      "name": "Hermit/Heretic",
+      "conscious_line": 2,
+      "unconscious_line": 5,
+      "conscious_theme": "Hermit - Natural genius that needs alone time",
+      "unconscious_theme": "Projection - Others project expectations onto you",
+      "description": "Natural talent with universal reputation. Must manage projections while honoring need for solitude.",
+      "archetype": "The natural genius with universal reputation to manage",
+      "life_path": "Balancing natural gifts with others' projections and expectations"
+    },
+    {
+      "id": "3/5",
+      "name": "Martyr/Heretic",
+      "conscious_line": 3,
+      "unconscious_line": 5,
+      "conscious_theme": "Experimentation - Learning through trial and error",
+      "unconscious_theme": "Projection - Others project expectations onto you",
+      "description": "Resilient experimenter with practical solutions for others. Learns through direct experience while managing projections.",
+      "archetype": "The practical problem-solver discovered through trial and error",
+      "life_path": "Finding what works through experimentation while meeting others' expectations for solutions"
+    },
+    {
+      "id": "3/6",
+      "name": "Martyr/Role Model",
+      "conscious_line": 3,
+      "unconscious_line": 6,
+      "conscious_theme": "Experimentation - Learning through trial and error",
+      "unconscious_theme": "Transition - Three life phases (experimentation, withdrawal, embodiment)",
+      "description": "Experimental first phase leading to wisdom and role modeling later in life. Three distinct life phases.",
+      "archetype": "The evolving role model who learns through experience",
+      "life_path": "Phase 1 (0-30): Experimentation, Phase 2 (30-50): On the roof observing, Phase 3 (50+): Embodied role model",
+      "life_phases": {
+        "phase_1": "Birth to Saturn Return (~30 years): Trial and error experimentation",
+        "phase_2": "Saturn Return to Chiron Return (~30-50 years): Withdrawal and observation",
+        "phase_3": "Chiron Return onward (~50+ years): Living example and role model"
+      }
+    },
+    {
+      "id": "4/6",
+      "name": "Opportunist/Role Model",
+      "conscious_line": 4,
+      "unconscious_line": 6,
+      "conscious_theme": "Network - Building relationships and community",
+      "unconscious_theme": "Transition - Three life phases (experimentation, withdrawal, embodiment)",
+      "description": "Network builder who becomes role model through life phases. Friendship foundation supporting wisdom.",
+      "archetype": "The friendly role model with trusted network",
+      "life_path": "Building network while evolving through three distinct life phases",
+      "life_phases": {
+        "phase_1": "Birth to Saturn Return (~30 years): Experimenting in relationships",
+        "phase_2": "Saturn Return to Chiron Return (~30-50 years): Selective networking",
+        "phase_3": "Chiron Return onward (~50+ years): Role model through authentic friendships"
+      }
+    },
+    {
+      "id": "4/1",
+      "name": "Opportunist/Investigator",
+      "conscious_line": 4,
+      "unconscious_line": 1,
+      "conscious_theme": "Network - Building relationships and community",
+      "unconscious_theme": "Foundation - Need for investigation and solid knowledge base",
+      "description": "Networker with deep need for solid foundation. Shares knowledge through trusted relationships.",
+      "archetype": "The networked investigator with influence",
+      "life_path": "Building network on foundation of secure knowledge and investigation"
+    },
+    {
+      "id": "5/1",
+      "name": "Heretic/Investigator",
+      "conscious_line": 5,
+      "unconscious_line": 1,
+      "conscious_theme": "Projection - Others project expectations onto you",
+      "unconscious_theme": "Foundation - Need for investigation and solid knowledge base",
+      "description": "Universal reputation supported by solid research. Practical solutions grounded in investigation.",
+      "archetype": "The practical problem-solver with solid foundation",
+      "life_path": "Meeting projections with well-researched, practical solutions"
+    },
+    {
+      "id": "5/2",
+      "name": "Heretic/Hermit",
+      "conscious_line": 5,
+      "unconscious_line": 2,
+      "conscious_theme": "Projection - Others project expectations onto you",
+      "unconscious_theme": "Hermit - Natural genius that needs alone time",
+      "description": "Universal reputation with natural talent. Must balance being called out with need for solitude.",
+      "archetype": "The reluctant hero called to provide solutions",
+      "life_path": "Managing projections while honoring need for withdrawal and natural rhythm"
+    },
+    {
+      "id": "6/2",
+      "name": "Role Model/Hermit",
+      "conscious_line": 6,
+      "unconscious_line": 2,
+      "conscious_theme": "Transition - Three life phases (experimentation, withdrawal, embodiment)",
+      "unconscious_theme": "Hermit - Natural genius that needs alone time",
+      "description": "Role model with natural gifts requiring solitude. Three life phases with strong need for alone time.",
+      "archetype": "The wise hermit who embodies authentic living",
+      "life_path": "Evolving through three phases while maintaining healthy withdrawal periods",
+      "life_phases": {
+        "phase_1": "Birth to Saturn Return (~30 years): Experimenting with natural gifts",
+        "phase_2": "Saturn Return to Chiron Return (~30-50 years): Extended withdrawal and observation",
+        "phase_3": "Chiron Return onward (~50+ years): Embodied authenticity inspiring others"
+      }
+    },
+    {
+      "id": "6/3",
+      "name": "Role Model/Martyr",
+      "conscious_line": 6,
+      "unconscious_line": 3,
+      "conscious_theme": "Transition - Three life phases (experimentation, withdrawal, embodiment)",
+      "unconscious_theme": "Experimentation - Learning through trial and error",
+      "description": "Intense experimentation in first phase leading to wisdom. Role model earned through direct experience.",
+      "archetype": "The hard-earned wisdom bearer",
+      "life_path": "Deep experimentation phase followed by observation and eventual embodied authenticity",
+      "life_phases": {
+        "phase_1": "Birth to Saturn Return (~30 years): Intense trial and error",
+        "phase_2": "Saturn Return to Chiron Return (~30-50 years): Processing experiences",
+        "phase_3": "Chiron Return onward (~50+ years): Living testament to learned wisdom"
+      }
+    }
+  ],
+  "channels": [
+    {
+      "id": "1-8",
+      "name": "Inspiration",
+      "gate1": 1,
+      "gate2": 8,
+      "centers": ["IDENTITY", "EXPRESSION"],
+      "circuit": "Individual",
+      "sub_circuit": "Knowing",
+      "description": "Creative inspiration and unique self-expression through individual contribution",
+      "theme": "The channel of the creative role model - bringing unique inspiration into form"
+    },
+    {
+      "id": "2-14",
+      "name": "The Beat",
+      "gate1": 2,
+      "gate2": 14,
+      "centers": ["IDENTITY", "LIFEFORCE"],
+      "circuit": "Individual",
+      "sub_circuit": "Knowing",
+      "description": "Direction and resources for the self - power of skill and values",
+      "theme": "The channel of the keeper of keys - direction through knowing what you have"
+    },
+    {
+      "id": "3-60",
+      "name": "Mutation",
+      "gate1": 3,
+      "gate2": 60,
+      "centers": ["LIFEFORCE", "DRIVE"],
+      "circuit": "Individual",
+      "sub_circuit": "Knowing",
+      "description": "Energy for starting new things and initiating mutation",
+      "theme": "The channel of mutation - pulse of new beginnings and transformation"
+    },
+    {
+      "id": "4-63",
+      "name": "Logic",
+      "gate1": 4,
+      "gate2": 63,
+      "centers": ["MIND", "INSPIRATION"],
+      "circuit": "Collective",
+      "sub_circuit": "Logic",
+      "description": "Mental pressure to resolve doubt through logical thinking",
+      "theme": "The channel of logic - answering life's questions through mental clarity"
+    },
+    {
+      "id": "5-15",
+      "name": "Rhythm",
+      "gate1": 5,
+      "gate2": 15,
+      "centers": ["LIFEFORCE", "IDENTITY"],
+      "circuit": "Collective",
+      "sub_circuit": "Sensing",
+      "description": "Natural rhythm and flow of life - being in the flow of correct timing",
+      "theme": "The channel of rhythm - universal love through natural patterns"
+    },
+    {
+      "id": "6-59",
+      "name": "Mating",
+      "gate1": 6,
+      "gate2": 59,
+      "centers": ["EMOTION", "LIFEFORCE"],
+      "circuit": "Tribal",
+      "sub_circuit": "Defense",
+      "description": "Intimacy and reproduction - creating new life and deep bonds",
+      "theme": "The channel of mating - intimacy and the power to create"
+    },
+    {
+      "id": "7-31",
+      "name": "The Alpha",
+      "gate1": 7,
+      "gate2": 31,
+      "centers": ["IDENTITY", "EXPRESSION"],
+      "circuit": "Collective",
+      "sub_circuit": "Sensing",
+      "description": "Leadership through influence - voice of democratic leadership",
+      "theme": "The channel of the alpha - leading through contribution and influence"
+    },
+    {
+      "id": "9-52",
+      "name": "Concentration",
+      "gate1": 9,
+      "gate2": 52,
+      "centers": ["LIFEFORCE", "DRIVE"],
+      "circuit": "Collective",
+      "sub_circuit": "Logic",
+      "description": "Focus and determination - ability to concentrate on details",
+      "theme": "The channel of concentration - focus on the sensory experience of now"
+    },
+    {
+      "id": "10-20",
+      "name": "Awakening",
+      "gate1": 10,
+      "gate2": 20,
+      "centers": ["IDENTITY", "EXPRESSION"],
+      "circuit": "Individual",
+      "sub_circuit": "Integration",
+      "description": "Commitment to higher principles and authentic behavior",
+      "theme": "The channel of awakening - living your truth in the present moment"
+    },
+    {
+      "id": "10-34",
+      "name": "Exploration",
+      "gate1": 10,
+      "gate2": 34,
+      "centers": ["IDENTITY", "LIFEFORCE"],
+      "circuit": "Individual",
+      "sub_circuit": "Centering",
+      "description": "Power to be oneself - following one's own path independently",
+      "theme": "The channel of exploration - power of the individual to survive"
+    },
+    {
+      "id": "10-57",
+      "name": "Perfected Form",
+      "gate1": 10,
+      "gate2": 57,
+      "centers": ["IDENTITY", "INTUITION"],
+      "circuit": "Individual",
+      "sub_circuit": "Integration",
+      "description": "Survival through intuitive self-love and self-care",
+      "theme": "The channel of perfected form - intuitive clarity for survival in the now"
+    },
+    {
+      "id": "11-56",
+      "name": "Curiosity",
+      "gate1": 11,
+      "gate2": 56,
+      "centers": ["MIND", "EXPRESSION"],
+      "circuit": "Collective",
+      "sub_circuit": "Logic",
+      "description": "Seeking and sharing ideas and stimulation through storytelling",
+      "theme": "The channel of curiosity - the seeker of stimulation through storytelling"
+    },
+    {
+      "id": "12-22",
+      "name": "Openness",
+      "gate1": 12,
+      "gate2": 22,
+      "centers": ["EXPRESSION", "EMOTION"],
+      "circuit": "Individual",
+      "sub_circuit": "Knowing",
+      "description": "Emotional expression and social interaction - grace under pressure",
+      "theme": "The channel of openness - being available for emotional experience"
+    },
+    {
+      "id": "13-33",
+      "name": "The Prodigal",
+      "gate1": 13,
+      "gate2": 33,
+      "centers": ["IDENTITY", "EXPRESSION"],
+      "circuit": "Collective",
+      "sub_circuit": "Sensing",
+      "description": "Witness and memory - recording and sharing human experience",
+      "theme": "The channel of the prodigal - learning through experience and sharing the story"
+    },
+    {
+      "id": "16-48",
+      "name": "The Wave Length",
+      "gate1": 16,
+      "gate2": 48,
+      "centers": ["EXPRESSION", "INTUITION"],
+      "circuit": "Collective",
+      "sub_circuit": "Logic",
+      "description": "Mastery through depth of understanding and repetition",
+      "theme": "The channel of wavelength - developing talent through practice and depth"
+    },
+    {
+      "id": "17-62",
+      "name": "Acceptance",
+      "gate1": 17,
+      "gate2": 62,
+      "centers": ["MIND", "EXPRESSION"],
+      "circuit": "Collective",
+      "sub_circuit": "Logic",
+      "description": "Organizing information and expressing logical opinions",
+      "theme": "The channel of acceptance - the voice of organized logical patterns"
+    },
+    {
+      "id": "18-58",
+      "name": "Judgment",
+      "gate1": 18,
+      "gate2": 58,
+      "centers": ["INTUITION", "DRIVE"],
+      "circuit": "Collective",
+      "sub_circuit": "Logic",
+      "description": "Correcting patterns to achieve perfection and joy in life",
+      "theme": "The channel of judgment - correction and joy through refinement"
+    },
+    {
+      "id": "19-49",
+      "name": "Synthesis",
+      "gate1": 19,
+      "gate2": 49,
+      "centers": ["DRIVE", "EMOTION"],
+      "circuit": "Tribal",
+      "sub_circuit": "Ego",
+      "description": "Sensitivity to needs and principles governing relationships",
+      "theme": "The channel of synthesis - sensitivity to the needs of the tribe"
+    },
+    {
+      "id": "20-34",
+      "name": "Charisma",
+      "gate1": 20,
+      "gate2": 34,
+      "centers": ["EXPRESSION", "LIFEFORCE"],
+      "circuit": "Individual",
+      "sub_circuit": "Centering",
+      "description": "Pure manifestor energy - power to act in the moment",
+      "theme": "The channel of charisma - instant manifestation and busy-ness"
+    },
+    {
+      "id": "20-57",
+      "name": "The Brain Wave",
+      "gate1": 20,
+      "gate2": 57,
+      "centers": ["EXPRESSION", "INTUITION"],
+      "circuit": "Individual",
+      "sub_circuit": "Integration",
+      "description": "Penetrating awareness in the now - intuitive clarity expressed",
+      "theme": "The channel of the brainwave - penetrating clarity in the moment"
+    },
+    {
+      "id": "21-45",
+      "name": "Money",
+      "gate1": 21,
+      "gate2": 45,
+      "centers": ["WILLPOWER", "EXPRESSION"],
+      "circuit": "Tribal",
+      "sub_circuit": "Ego",
+      "description": "Control of resources and material possessions - tribal leadership",
+      "theme": "The channel of money - management of resources for the tribe"
+    },
+    {
+      "id": "23-43",
+      "name": "Structuring",
+      "gate1": 23,
+      "gate2": 43,
+      "centers": ["EXPRESSION", "MIND"],
+      "circuit": "Individual",
+      "sub_circuit": "Knowing",
+      "description": "Individual knowing and insight that breaks through to the collective",
+      "theme": "The channel of structuring - individual insight seeking expression"
+    },
+    {
+      "id": "24-61",
+      "name": "Awareness",
+      "gate1": 24,
+      "gate2": 61,
+      "centers": ["MIND", "INSPIRATION"],
+      "circuit": "Individual",
+      "sub_circuit": "Knowing",
+      "description": "Thinking and inner truth - rationalization of mysteries",
+      "theme": "The channel of awareness - the thinker returning to inner knowing"
+    },
+    {
+      "id": "25-51",
+      "name": "Initiation",
+      "gate1": 25,
+      "gate2": 51,
+      "centers": ["IDENTITY", "WILLPOWER"],
+      "circuit": "Individual",
+      "sub_circuit": "Centering",
+      "description": "Love of spirit and will - transcending material plane",
+      "theme": "The channel of initiation - the spiritual warrior's will"
+    },
+    {
+      "id": "26-44",
+      "name": "Surrender",
+      "gate1": 26,
+      "gate2": 44,
+      "centers": ["WILLPOWER", "INTUITION"],
+      "circuit": "Tribal",
+      "sub_circuit": "Ego",
+      "description": "Transmission of tribal values and memories through storytelling",
+      "theme": "The channel of surrender - surrendering ego to serve the tribe"
+    },
+    {
+      "id": "27-50",
+      "name": "Preservation",
+      "gate1": 27,
+      "gate2": 50,
+      "centers": ["LIFEFORCE", "INTUITION"],
+      "circuit": "Tribal",
+      "sub_circuit": "Defense",
+      "description": "Caring for and nourishing others - custodian of tribal values",
+      "theme": "The channel of preservation - responsibility for the tribe's wellbeing"
+    },
+    {
+      "id": "28-38",
+      "name": "Struggle",
+      "gate1": 28,
+      "gate2": 38,
+      "centers": ["INTUITION", "DRIVE"],
+      "circuit": "Individual",
+      "sub_circuit": "Knowing",
+      "description": "Struggle for purpose and meaning - finding what's worth fighting for",
+      "theme": "The channel of struggle - stubbornness in pursuit of individual purpose"
+    },
+    {
+      "id": "29-46",
+      "name": "Discovery",
+      "gate1": 29,
+      "gate2": 46,
+      "centers": ["LIFEFORCE", "IDENTITY"],
+      "circuit": "Collective",
+      "sub_circuit": "Sensing",
+      "description": "Determination and serendipity - commitment leading to success",
+      "theme": "The channel of discovery - succeeding through commitment and love of the body"
+    },
+    {
+      "id": "30-41",
+      "name": "Recognition",
+      "gate1": 30,
+      "gate2": 41,
+      "centers": ["EMOTION", "DRIVE"],
+      "circuit": "Collective",
+      "sub_circuit": "Sensing",
+      "description": "Desire and feeling - fuel for new experiences and fantasies",
+      "theme": "The channel of recognition - feeling fuels desire for new experience"
+    },
+    {
+      "id": "32-54",
+      "name": "Transformation",
+      "gate1": 32,
+      "gate2": 54,
+      "centers": ["INTUITION", "DRIVE"],
+      "circuit": "Tribal",
+      "sub_circuit": "Ego",
+      "description": "Ambition and transformation - drive to improve status and position",
+      "theme": "The channel of transformation - ambition driving material success"
+    },
+    {
+      "id": "34-57",
+      "name": "Power",
+      "gate1": 34,
+      "gate2": 57,
+      "centers": ["LIFEFORCE", "INTUITION"],
+      "circuit": "Individual",
+      "sub_circuit": "Centering",
+      "description": "Raw power and intuitive clarity - archetype of strength",
+      "theme": "The channel of power - pure sacral power guided by splenic awareness"
+    },
+    {
+      "id": "35-36",
+      "name": "Transitoriness",
+      "gate1": 35,
+      "gate2": 36,
+      "centers": ["EXPRESSION", "EMOTION"],
+      "circuit": "Collective",
+      "sub_circuit": "Sensing",
+      "description": "Experience and learning through crisis and adventure",
+      "theme": "The channel of transitoriness - jack of all trades through experience"
+    },
+    {
+      "id": "37-40",
+      "name": "Community",
+      "gate1": 37,
+      "gate2": 40,
+      "centers": ["EMOTION", "WILLPOWER"],
+      "circuit": "Tribal",
+      "sub_circuit": "Ego",
+      "description": "Bargaining and agreements - foundation of tribal community",
+      "theme": "The channel of community - making and keeping agreements"
+    },
+    {
+      "id": "39-55",
+      "name": "Emoting",
+      "gate1": 39,
+      "gate2": 55,
+      "centers": ["DRIVE", "EMOTION"],
+      "circuit": "Individual",
+      "sub_circuit": "Knowing",
+      "description": "Spirit and moodiness - the channel of emotional depth and intensity",
+      "theme": "The channel of emoting - moody depth seeking emotional truth"
+    },
+    {
+      "id": "42-53",
+      "name": "Maturation",
+      "gate1": 42,
+      "gate2": 53,
+      "centers": ["LIFEFORCE", "DRIVE"],
+      "circuit": "Collective",
+      "sub_circuit": "Sensing",
+      "description": "Cycles of beginning and completion - growth through natural timing",
+      "theme": "The channel of maturation - balanced development through natural cycles"
+    },
+    {
+      "id": "47-64",
+      "name": "Abstraction",
+      "gate1": 47,
+      "gate2": 64,
+      "centers": ["MIND", "INSPIRATION"],
+      "circuit": "Collective",
+      "sub_circuit": "Logic",
+      "description": "Mental pressure to make sense of the past and envision the future",
+      "theme": "The channel of abstraction - confusion seeking clarity through mental pressure"
+    }
+  ],
+  "centers": [
+    {
+      "id": "INSPIRATION",
+      "traditional_name": "Head/Crown",
+      "type": "Pressure",
+      "gates": [64, 61, 63],
+      "defined_description": "Consistent mental pressure and inspiration. Fixed way of being inspired and pressured to answer questions. Can handle mental pressure without overwhelm.",
+      "undefined_description": "Takes in and amplifies mental pressure from others. Flexible in inspiration and questioning. Can become overwhelmed trying to answer unanswerable questions. Wisdom in not knowing.",
+      "function": "Mental pressure to inspire thinking and questioning. Source of inspiration and mental contemplation.",
+      "questions": [
+        "What am I thinking about?",
+        "What inspires me?",
+        "What questions drive me?"
+      ]
+    },
+    {
+      "id": "MIND",
+      "traditional_name": "Ajna",
+      "type": "Awareness",
+      "gates": [47, 24, 4, 11, 43, 17],
+      "defined_description": "Fixed and reliable way of processing and conceptualizing information. Consistent mental awareness and thinking patterns. Trustworthy mental perspective.",
+      "undefined_description": "Flexible mental processing that takes in multiple perspectives. Can see things in many different ways. Mental openness but potential for mental uncertainty. Wisdom in not being attached to fixed concepts.",
+      "function": "Conceptualization, research, opinions, and mental awareness. Processes and organizes thoughts and information.",
+      "questions": [
+        "How do I conceptualize?",
+        "What is my mental perspective?",
+        "Am I certain about this?"
+      ]
+    },
+    {
+      "id": "EXPRESSION",
+      "traditional_name": "Throat",
+      "type": "Manifestation",
+      "gates": [62, 23, 56, 35, 12, 45, 33, 8, 31, 20, 16],
+      "defined_description": "Consistent mode of communication and manifestation. Natural ability to express and take action. Voice that manifests thoughts, feelings, or identity into the world.",
+      "undefined_description": "Flexible communication style that adapts to others. Takes in and amplifies voices around you. Can speak for others but may not know what to say for yourself. Wisdom in listening and speaking only when truly moved.",
+      "function": "Communication, manifestation, and action. Where internal experiences become external reality through voice and action.",
+      "questions": [
+        "What am I here to communicate?",
+        "How do I manifest?",
+        "When should I speak or act?"
+      ]
+    },
+    {
+      "id": "IDENTITY",
+      "traditional_name": "G-Center/Self",
+      "type": "Identity",
+      "gates": [7, 1, 13, 25, 46, 2, 15, 10],
+      "defined_description": "Fixed sense of identity, direction, and love. Know who you are and where you're going. Consistent self-expression and life direction.",
+      "undefined_description": "Fluid and flexible sense of self and direction. Take in and sample different identities and directions. May feel lost or search for identity. Wisdom in being comfortable with not knowing who you are or where you're going.",
+      "function": "Love, identity, and direction. Core of self and life path. Magnetic monopole that holds us in our geometry.",
+      "questions": [
+        "Who am I?",
+        "What is my direction?",
+        "Where is love in my life?"
+      ]
+    },
+    {
+      "id": "WILLPOWER",
+      "traditional_name": "Heart/Ego",
+      "type": "Motor",
+      "gates": [21, 51, 26, 40],
+      "defined_description": "Consistent willpower, self-worth, and ability to make commitments. Natural access to promises and tribe leadership. Knows own value and can commit reliably.",
+      "undefined_description": "Inconsistent willpower and sense of self-worth. Takes in and amplifies ego energy from others. May try to prove worth or make promises that can't be kept. Wisdom in not making commitments or proving anything.",
+      "function": "Willpower, ego strength, self-worth, and tribal commitments. Motor energy for making and keeping promises.",
+      "questions": [
+        "What is my worth?",
+        "What do I commit to?",
+        "What can I promise?"
+      ]
+    },
+    {
+      "id": "EMOTION",
+      "traditional_name": "Solar Plexus",
+      "type": "Motor and Awareness",
+      "gates": [36, 22, 37, 6, 49, 55, 30],
+      "defined_description": "Consistent emotional wave and motor energy. Natural emotional authority and depth. Ride emotional waves from hope to pain - no truth in the now, only over time. Most powerful motor and awareness center.",
+      "undefined_description": "Takes in and amplifies emotional energy from environment. Empathic and sensitive to others' emotions. Can feel emotionally overwhelmed. Wisdom in avoiding confrontation and releasing emotions that aren't yours.",
+      "function": "Emotions, feelings, passion, and depth. Motor for emotional experiences and emotional awareness over time.",
+      "questions": [
+        "What am I feeling?",
+        "Whose emotion is this?",
+        "Do I have emotional clarity over time?"
+      ],
+      "note": "Only awareness center that operates over time, not in the moment"
+    },
+    {
+      "id": "DRIVE",
+      "traditional_name": "Root",
+      "type": "Pressure and Motor",
+      "gates": [41, 39, 19, 52, 60, 53, 54, 38, 58],
+      "defined_description": "Consistent pressure to act and get things started or done. Reliable motor energy for beginning new cycles and handling stress. Can manage pressure naturally.",
+      "undefined_description": "Takes in and amplifies pressure from environment. Rushes to relieve pressure that isn't yours. May hurry or feel pressured unnecessarily. Wisdom in not being rushed and understanding pressure is temporary.",
+      "function": "Pressure to evolve, stress, and adrenaline-fueled motor energy. Drive to begin and complete cycles.",
+      "questions": [
+        "What is the pressure I'm feeling?",
+        "Am I rushing to relieve pressure?",
+        "Is this my pressure or someone else's?"
+      ]
+    },
+    {
+      "id": "LIFEFORCE",
+      "traditional_name": "Sacral",
+      "type": "Motor",
+      "gates": [5, 14, 29, 59, 9, 3, 42, 27, 34],
+      "defined_description": "Consistent life force energy and power to work. Pure generator energy - sustainable when responding to what you love. Natural capacity for mastery through repetition. Most powerful motor for sustained work.",
+      "undefined_description": "No consistent access to life force or work energy. Not designed for exhausting work - need to use energy wisely. Takes in sacral energy from others. Wisdom in knowing when to stop and rest.",
+      "function": "Life force, sexuality, work energy, and vitality. Motor for sustaining work and generating energy through response.",
+      "questions": [
+        "What do I respond to?",
+        "Am I working at what I love?",
+        "Am I exhausting myself?"
+      ],
+      "note": "Only motor not driven by fuel - pure generator energy through response"
+    },
+    {
+      "id": "INTUITION",
+      "traditional_name": "Spleen",
+      "type": "Awareness",
+      "gates": [48, 57, 44, 50, 32, 28, 18],
+      "defined_description": "Consistent intuitive awareness and instinct for survival. Natural capacity for spontaneous knowing in the moment. Reliable body-centered intelligence and health awareness.",
+      "undefined_description": "Inconsistent intuitive hits. Takes in and samples different survival strategies. May hold onto what's not healthy. Wisdom in recognizing intuition speaks once and not holding onto people or things.",
+      "function": "Survival, health, intuition, and spontaneous awareness in the now. Body-centered existential intelligence.",
+      "questions": [
+        "What is my intuition telling me?",
+        "Am I holding onto what's not healthy?",
+        "Am I honoring spontaneous awareness?"
+      ],
+      "note": "Only awareness center that operates in the present moment - intuition speaks once"
+    }
+  ],
+  "gates": [
+    {
+      "number": 1,
+      "i_ching_name": "The Creative",
+      "center": "IDENTITY",
+      "complement": 2,
+      "quarter": "Q2",
+      "description": "Individual creative expression and unique contribution",
+      "keywords": ["creativity", "self-expression", "purpose", "direction"]
+    },
+    {
+      "number": 2,
+      "i_ching_name": "The Receptive",
+      "center": "IDENTITY",
+      "complement": 1,
+      "quarter": "Q3",
+      "description": "Direction through receptivity and knowing what you have",
+      "keywords": ["receptivity", "direction", "resources", "higher knowing"]
+    },
+    {
+      "number": 3,
+      "i_ching_name": "Difficulty at the Beginning",
+      "center": "LIFEFORCE",
+      "complement": 50,
+      "quarter": "Q1",
+      "description": "Mutation and starting new things - ordering chaos",
+      "keywords": ["innovation", "mutation", "new beginnings", "chaos to order"]
+    },
+    {
+      "number": 4,
+      "i_ching_name": "Youthful Folly",
+      "center": "MIND",
+      "complement": 63,
+      "quarter": "Q2",
+      "description": "Mental clarity through answers and solutions",
+      "keywords": ["answers", "formulas", "mental clarity", "logic"]
+    },
+    {
+      "number": 5,
+      "i_ching_name": "Waiting",
+      "center": "LIFEFORCE",
+      "complement": 15,
+      "quarter": "Q1",
+      "description": "Natural rhythm and patterns - waiting for right timing",
+      "keywords": ["rhythm", "timing", "patterns", "natural flow"]
+    },
+    {
+      "number": 6,
+      "i_ching_name": "Conflict",
+      "center": "EMOTION",
+      "complement": 59,
+      "quarter": "Q2",
+      "description": "Intimacy and reproduction - friction leading to bonding",
+      "keywords": ["intimacy", "fertility", "bonding", "emotional depth"]
+    },
+    {
+      "number": 7,
+      "i_ching_name": "The Army",
+      "center": "IDENTITY",
+      "complement": 13,
+      "quarter": "Q1",
+      "description": "Leadership through democratic interaction and future direction",
+      "keywords": ["leadership", "democracy", "guidance", "direction"]
+    },
+    {
+      "number": 8,
+      "i_ching_name": "Holding Together",
+      "center": "EXPRESSION",
+      "complement": 1,
+      "quarter": "Q1",
+      "description": "Creative contribution and unique self-expression",
+      "keywords": ["contribution", "creativity", "modeling", "individuality"]
+    },
+    {
+      "number": 9,
+      "i_ching_name": "Small Taming",
+      "center": "LIFEFORCE",
+      "complement": 52,
+      "quarter": "Q1",
+      "description": "Focus on details and sensory experience",
+      "keywords": ["focus", "details", "concentration", "determination"]
+    },
+    {
+      "number": 10,
+      "i_ching_name": "Treading",
+      "center": "IDENTITY",
+      "complement": 15,
+      "quarter": "Q3",
+      "description": "Behavior of self and commitment to higher principles",
+      "keywords": ["behavior", "love of self", "principles", "authenticity"]
+    },
+    {
+      "number": 11,
+      "i_ching_name": "Peace",
+      "center": "MIND",
+      "complement": 56,
+      "quarter": "Q1",
+      "description": "Ideas seeking stimulation and sharing",
+      "keywords": ["ideas", "peace", "stimulation", "concepts"]
+    },
+    {
+      "number": 12,
+      "i_ching_name": "Standstill",
+      "center": "EXPRESSION",
+      "complement": 22,
+      "quarter": "Q1",
+      "description": "Emotional expression through caution and articulation",
+      "keywords": ["caution", "articulation", "mood", "expression"]
+    },
+    {
+      "number": 13,
+      "i_ching_name": "Fellowship",
+      "center": "IDENTITY",
+      "complement": 7,
+      "quarter": "Q2",
+      "description": "Listening and witnessing experience to preserve history",
+      "keywords": ["listening", "witness", "secrets", "history"]
+    },
+    {
+      "number": 14,
+      "i_ching_name": "Great Possessing",
+      "center": "LIFEFORCE",
+      "complement": 2,
+      "quarter": "Q2",
+      "description": "Power skills and material resources",
+      "keywords": ["power", "resources", "skills", "materialism"]
+    },
+    {
+      "number": 15,
+      "i_ching_name": "Modesty",
+      "center": "IDENTITY",
+      "complement": 10,
+      "quarter": "Q3",
+      "description": "Rhythm and extremes - balance of being human",
+      "keywords": ["rhythm", "extremes", "modesty", "humanity"]
+    },
+    {
+      "number": 16,
+      "i_ching_name": "Enthusiasm",
+      "center": "EXPRESSION",
+      "complement": 9,
+      "quarter": "Q2",
+      "description": "Skills and enthusiasm expressed through experimentation",
+      "keywords": ["enthusiasm", "skills", "talent", "identification"]
+    },
+    {
+      "number": 17,
+      "i_ching_name": "Following",
+      "center": "MIND",
+      "complement": 62,
+      "quarter": "Q3",
+      "description": "Opinions and organized thinking",
+      "keywords": ["opinions", "organization", "following", "service"]
+    },
+    {
+      "number": 18,
+      "i_ching_name": "Work on the Decayed",
+      "center": "INTUITION",
+      "complement": 58,
+      "quarter": "Q4",
+      "description": "Correction and challenge to improve patterns",
+      "keywords": ["correction", "challenge", "perfection", "authority"]
+    },
+    {
+      "number": 19,
+      "i_ching_name": "Approach",
+      "center": "DRIVE",
+      "complement": 49,
+      "quarter": "Q1",
+      "description": "Sensitivity to needs and basic requirements",
+      "keywords": ["needs", "sensitivity", "approach", "principles"]
+    },
+    {
+      "number": 20,
+      "i_ching_name": "Contemplation",
+      "center": "EXPRESSION",
+      "complement": 34,
+      "quarter": "Q3",
+      "description": "Present moment awareness and knowing",
+      "keywords": ["now", "awareness", "contemplation", "action"]
+    },
+    {
+      "number": 21,
+      "i_ching_name": "Biting Through",
+      "center": "WILLPOWER",
+      "complement": 45,
+      "quarter": "Q1",
+      "description": "Control and management through willpower",
+      "keywords": ["control", "management", "authority", "willpower"]
+    },
+    {
+      "number": 22,
+      "i_ching_name": "Grace",
+      "center": "EMOTION",
+      "complement": 12,
+      "quarter": "Q4",
+      "description": "Grace and openness through emotional expression",
+      "keywords": ["grace", "openness", "listening", "social"]
+    },
+    {
+      "number": 23,
+      "i_ching_name": "Splitting Apart",
+      "center": "EXPRESSION",
+      "complement": 43,
+      "quarter": "Q2",
+      "description": "Individual knowing seeking expression",
+      "keywords": ["knowing", "assimilation", "insight", "explanation"]
+    },
+    {
+      "number": 24,
+      "i_ching_name": "Return",
+      "center": "MIND",
+      "complement": 61,
+      "quarter": "Q1",
+      "description": "Rationalization returning to inner truth",
+      "keywords": ["rationalization", "return", "knowing", "thoughts"]
+    },
+    {
+      "number": 25,
+      "i_ching_name": "Innocence",
+      "center": "IDENTITY",
+      "complement": 46,
+      "quarter": "Q2",
+      "description": "Love of spirit and innocence of self",
+      "keywords": ["innocence", "spirit", "universal love", "acceptance"]
+    },
+    {
+      "number": 26,
+      "i_ching_name": "Great Taming",
+      "center": "WILLPOWER",
+      "complement": 45,
+      "quarter": "Q1",
+      "description": "Egoist and trickster - managing and transmitting",
+      "keywords": ["ego", "trickster", "transmission", "selling"]
+    },
+    {
+      "number": 27,
+      "i_ching_name": "Nourishment",
+      "center": "LIFEFORCE",
+      "complement": 50,
+      "quarter": "Q1",
+      "description": "Caring and nourishment for others",
+      "keywords": ["nourishment", "caring", "responsibility", "teaching"]
+    },
+    {
+      "number": 28,
+      "i_ching_name": "Great Exceeding",
+      "center": "INTUITION",
+      "complement": 27,
+      "quarter": "Q4",
+      "description": "Struggle for purpose and meaning",
+      "keywords": ["purpose", "struggle", "risk", "challenge"]
+    },
+    {
+      "number": 29,
+      "i_ching_name": "The Abysmal",
+      "center": "LIFEFORCE",
+      "complement": 46,
+      "quarter": "Q1",
+      "description": "Commitment and perseverance through challenges",
+      "keywords": ["commitment", "perseverance", "saying yes", "determination"]
+    },
+    {
+      "number": 30,
+      "i_ching_name": "The Clinging Fire",
+      "center": "EMOTION",
+      "complement": 41,
+      "quarter": "Q1",
+      "description": "Recognition of feelings and desires",
+      "keywords": ["feelings", "desire", "fates", "recognition"]
+    },
+    {
+      "number": 31,
+      "i_ching_name": "Influence",
+      "center": "EXPRESSION",
+      "complement": 7,
+      "quarter": "Q4",
+      "description": "Leadership through influence and contribution",
+      "keywords": ["influence", "leadership", "democracy", "alpha"]
+    },
+    {
+      "number": 32,
+      "i_ching_name": "Duration",
+      "center": "INTUITION",
+      "complement": 42,
+      "quarter": "Q4",
+      "description": "Continuity and conservation - intuitive knowing of what endures",
+      "keywords": ["continuity", "conservation", "failure", "success"]
+    },
+    {
+      "number": 33,
+      "i_ching_name": "Retreat",
+      "center": "EXPRESSION",
+      "complement": 13,
+      "quarter": "Q3",
+      "description": "Privacy and retreat - reflecting on experience",
+      "keywords": ["privacy", "retreat", "reflection", "withdrawal"]
+    },
+    {
+      "number": 34,
+      "i_ching_name": "Great Power",
+      "center": "LIFEFORCE",
+      "complement": 20,
+      "quarter": "Q3",
+      "description": "Power of the individual - raw sacral force",
+      "keywords": ["power", "strength", "charisma", "force"]
+    },
+    {
+      "number": 35,
+      "i_ching_name": "Progress",
+      "center": "EXPRESSION",
+      "complement": 36,
+      "quarter": "Q2",
+      "description": "Progress through change and experience",
+      "keywords": ["change", "progress", "experience", "adventure"]
+    },
+    {
+      "number": 36,
+      "i_ching_name": "Darkening of the Light",
+      "center": "EMOTION",
+      "complement": 35,
+      "quarter": "Q2",
+      "description": "Crisis and experience leading to mastery",
+      "keywords": ["crisis", "experience", "darkening", "mastery"]
+    },
+    {
+      "number": 37,
+      "i_ching_name": "The Family",
+      "center": "EMOTION",
+      "complement": 40,
+      "quarter": "Q2",
+      "description": "Friendship and tribal bonds - family structure",
+      "keywords": ["family", "friendship", "tribe", "agreements"]
+    },
+    {
+      "number": 38,
+      "i_ching_name": "Opposition",
+      "center": "DRIVE",
+      "complement": 28,
+      "quarter": "Q4",
+      "description": "Fighter opposing for individual purpose",
+      "keywords": ["opposition", "fighter", "purpose", "struggle"]
+    },
+    {
+      "number": 39,
+      "i_ching_name": "Obstruction",
+      "center": "DRIVE",
+      "complement": 55,
+      "quarter": "Q1",
+      "description": "Provocation and spirit - emotional depth",
+      "keywords": ["provocation", "spirit", "mood", "emotion"]
+    },
+    {
+      "number": 40,
+      "i_ching_name": "Deliverance",
+      "center": "WILLPOWER",
+      "complement": 37,
+      "quarter": "Q1",
+      "description": "Aloneness and delivery - will to be alone or in community",
+      "keywords": ["aloneness", "delivery", "bargain", "will"]
+    },
+    {
+      "number": 41,
+      "i_ching_name": "Decrease",
+      "center": "DRIVE",
+      "complement": 30,
+      "quarter": "Q1",
+      "description": "Contraction and decrease - pressure of imagination",
+      "keywords": ["decrease", "contraction", "fantasy", "imagination"]
+    },
+    {
+      "number": 42,
+      "i_ching_name": "Increase",
+      "center": "LIFEFORCE",
+      "complement": 32,
+      "quarter": "Q1",
+      "description": "Growth and increase through completion",
+      "keywords": ["increase", "growth", "completion", "cycles"]
+    },
+    {
+      "number": 43,
+      "i_ching_name": "Breakthrough",
+      "center": "MIND",
+      "complement": 23,
+      "quarter": "Q2",
+      "description": "Insight and breakthrough - individual knowing",
+      "keywords": ["breakthrough", "insight", "deafness", "structure"]
+    },
+    {
+      "number": 44,
+      "i_ching_name": "Coming to Meet",
+      "center": "INTUITION",
+      "complement": 24,
+      "quarter": "Q3",
+      "description": "Alertness and coming to meet - tribal memory",
+      "keywords": ["alertness", "memory", "patterns", "recognition"]
+    },
+    {
+      "number": 45,
+      "i_ching_name": "Gathering Together",
+      "center": "EXPRESSION",
+      "complement": 26,
+      "quarter": "Q1",
+      "description": "Gatherer and king/queen - tribal leadership",
+      "keywords": ["gathering", "king", "queen", "leadership"]
+    },
+    {
+      "number": 46,
+      "i_ching_name": "Pushing Upward",
+      "center": "IDENTITY",
+      "complement": 25,
+      "quarter": "Q2",
+      "description": "Determination and serendipity - push of self",
+      "keywords": ["determination", "serendipity", "luck", "body"]
+    },
+    {
+      "number": 47,
+      "i_ching_name": "Oppression",
+      "center": "MIND",
+      "complement": 64,
+      "quarter": "Q2",
+      "description": "Realization and oppression - making sense of confusion",
+      "keywords": ["oppression", "realization", "sense", "confusion"]
+    },
+    {
+      "number": 48,
+      "i_ching_name": "The Well",
+      "center": "INTUITION",
+      "complement": 21,
+      "quarter": "Q3",
+      "description": "Depth and the well - mastery through repetition",
+      "keywords": ["depth", "well", "mastery", "inadequacy"]
+    },
+    {
+      "number": 49,
+      "i_ching_name": "Revolution",
+      "center": "EMOTION",
+      "complement": 19,
+      "quarter": "Q3",
+      "description": "Revolution and principles - emotional sensitivity",
+      "keywords": ["revolution", "principles", "rejection", "sensitivity"]
+    },
+    {
+      "number": 50,
+      "i_ching_name": "The Cauldron",
+      "center": "INTUITION",
+      "complement": 3,
+      "quarter": "Q3",
+      "description": "Values and the cauldron - guardian of tribal values",
+      "keywords": ["values", "cauldron", "responsibility", "laws"]
+    },
+    {
+      "number": 51,
+      "i_ching_name": "The Arousing",
+      "center": "WILLPOWER",
+      "complement": 25,
+      "quarter": "Q2",
+      "description": "Shock and arousing - initiating through will",
+      "keywords": ["shock", "arousing", "competition", "will"]
+    },
+    {
+      "number": 52,
+      "i_ching_name": "Keeping Still",
+      "center": "DRIVE",
+      "complement": 9,
+      "quarter": "Q1",
+      "description": "Stillness and inaction - concentrated focus",
+      "keywords": ["stillness", "focus", "concentration", "rest"]
+    },
+    {
+      "number": 53,
+      "i_ching_name": "Development",
+      "center": "DRIVE",
+      "complement": 42,
+      "quarter": "Q1",
+      "description": "Beginnings and development - starting cycles",
+      "keywords": ["beginnings", "development", "starting", "maturation"]
+    },
+    {
+      "number": 54,
+      "i_ching_name": "The Marrying Maiden",
+      "center": "DRIVE",
+      "complement": 53,
+      "quarter": "Q4",
+      "description": "Ambition and transformation - drive upward",
+      "keywords": ["ambition", "transformation", "drive", "ascension"]
+    },
+    {
+      "number": 55,
+      "i_ching_name": "Abundance",
+      "center": "EMOTION",
+      "complement": 39,
+      "quarter": "Q3",
+      "description": "Spirit and abundance - emotional moodiness",
+      "keywords": ["abundance", "spirit", "mood", "melancholy"]
+    },
+    {
+      "number": 56,
+      "i_ching_name": "The Wanderer",
+      "center": "EXPRESSION",
+      "complement": 11,
+      "quarter": "Q3",
+      "description": "Stimulation and the wanderer - storytelling",
+      "keywords": ["stimulation", "wanderer", "stories", "communication"]
+    },
+    {
+      "number": 57,
+      "i_ching_name": "The Gentle",
+      "center": "INTUITION",
+      "complement": 51,
+      "quarter": "Q3",
+      "description": "Intuitive clarity and gentle penetration",
+      "keywords": ["intuition", "gentle", "clarity", "survival"]
+    },
+    {
+      "number": 58,
+      "i_ching_name": "The Joyous",
+      "center": "DRIVE",
+      "complement": 18,
+      "quarter": "Q4",
+      "description": "Vitality and joyousness - correction bringing joy",
+      "keywords": ["joy", "vitality", "correction", "aliveness"]
+    },
+    {
+      "number": 59,
+      "i_ching_name": "Dispersion",
+      "center": "LIFEFORCE",
+      "complement": 6,
+      "quarter": "Q2",
+      "description": "Intimacy and dispersion - breaking down barriers",
+      "keywords": ["intimacy", "dispersion", "sexuality", "barriers"]
+    },
+    {
+      "number": 60,
+      "i_ching_name": "Limitation",
+      "center": "DRIVE",
+      "complement": 3,
+      "quarter": "Q4",
+      "description": "Limitation and acceptance - mutative pulse",
+      "keywords": ["limitation", "acceptance", "mutation", "restrictions"]
+    },
+    {
+      "number": 61,
+      "i_ching_name": "Inner Truth",
+      "center": "INSPIRATION",
+      "complement": 24,
+      "quarter": "Q4",
+      "description": "Inner truth and knowing - mystery",
+      "keywords": ["inner truth", "knowing", "mystery", "wonder"]
+    },
+    {
+      "number": 62,
+      "i_ching_name": "Small Exceeding",
+      "center": "EXPRESSION",
+      "complement": 17,
+      "quarter": "Q3",
+      "description": "Details and small exceeding - organizational thinking",
+      "keywords": ["details", "organization", "processing", "expression"]
+    },
+    {
+      "number": 63,
+      "i_ching_name": "After Completion",
+      "center": "INSPIRATION",
+      "complement": 4,
+      "quarter": "Q3",
+      "description": "Doubt and after completion - questioning",
+      "keywords": ["doubt", "completion", "logic", "questioning"]
+    },
+    {
+      "number": 64,
+      "i_ching_name": "Before Completion",
+      "center": "INSPIRATION",
+      "complement": 47,
+      "quarter": "Q2",
+      "description": "Confusion and before completion - pressure for clarity",
+      "keywords": ["confusion", "pressure", "clarity", "transition"]
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Single",
+      "description": "All defined centers are connected in one continuous definition. Consistent and reliable energy flow throughout the chart.",
+      "calculation": "Graph traversal shows all defined centers form a single connected component through channels",
+      "implications": "Most consistent definition type. Fixed and reliable in how energy flows. May have difficulty understanding split definition types.",
+      "percentage": "~41%"
+    },
+    {
+      "id": "Split",
+      "description": "Two separate areas of definition in the chart. Need something external to bridge the gap between the two parts.",
+      "calculation": "Graph traversal shows exactly two separate connected components of defined centers",
+      "implications": "Need others, transits, or specific environments to bridge the split. May feel incomplete alone. More flexible than single definition.",
+      "percentage": "~46%",
+      "bridge_note": "The split creates a magnetic attraction to what bridges it - people, experiences, or environments that connect the two parts"
+    },
+    {
+      "id": "Triple Split",
+      "description": "Three separate areas of definition in the chart. Need multiple bridges to connect all parts.",
+      "calculation": "Graph traversal shows exactly three separate connected components of defined centers",
+      "implications": "Highly flexible and adaptable. Need variety of people and experiences to feel whole. Can be the most flexible definition type.",
+      "percentage": "~11%"
+    },
+    {
+      "id": "Quadruple Split",
+      "description": "Four separate areas of definition in the chart. Maximum fragmentation requiring multiple bridges.",
+      "calculation": "Graph traversal shows four separate connected components of defined centers",
+      "implications": "Extremely rare and highly flexible. Need diverse environments and connections to integrate all parts. Most adaptable definition type.",
+      "percentage": "~1%",
+      "note": "Rarest definition type"
+    },
+    {
+      "id": "None",
+      "description": "No definition - all centers open. Reflector only.",
+      "calculation": "No gates activated, therefore no centers defined and no connected components",
+      "implications": "Completely open to conditioning. Samples and reflects environment. Lunar cycle timing for major decisions.",
+      "percentage": "~1%",
+      "exclusive_to": "Observer/Reflector type only"
+    }
+  ],
+  "quarters": [
+    {
+      "id": "Q1",
+      "name": "Initiation",
+      "theme": "Purpose fulfilled through Mind",
+      "description": "Quarter of initiation through mental awareness and understanding. Gates that initiate through thought and concept.",
+      "gate_range": "Gates 13-24 (Aries 0° to Cancer 0°)",
+      "archetype": "The Thinker",
+      "purpose": "Initiate through mind and mental awareness"
+    },
+    {
+      "id": "Q2",
+      "name": "Civilization",
+      "theme": "Purpose fulfilled through Form",
+      "description": "Quarter of civilization through material form and manifestation. Gates that build structure and form in the world.",
+      "gate_range": "Gates 2, 23, 8, 20, 16, 35, 45, 12, 15, 52, 39, 53 (Cancer 0° to Libra 0°)",
+      "archetype": "The Builder",
+      "purpose": "Manifest through form and material world"
+    },
+    {
+      "id": "Q3",
+      "name": "Duality",
+      "theme": "Purpose fulfilled through Bonding",
+      "description": "Quarter of duality through relationships and bonds with others. Gates that connect and relate.",
+      "gate_range": "Gates 7, 4, 29, 59, 40, 64, 47, 6, 46, 18, 48, 57 (Libra 0° to Capricorn 0°)",
+      "archetype": "The Connector",
+      "purpose": "Fulfill purpose through relationship and bonding"
+    },
+    {
+      "id": "Q4",
+      "name": "Mutation",
+      "theme": "Purpose fulfilled through Transformation",
+      "description": "Quarter of mutation through transformation and change. Gates that mutate and transform consciousness.",
+      "gate_range": "Gates 44, 1, 43, 14, 34, 9, 5, 26, 11, 10, 58, 38 (Capricorn 0° to Aries 0°)",
+      "archetype": "The Transformer",
+      "purpose": "Transform through mutation and evolution"
+    }
+  ]
+}

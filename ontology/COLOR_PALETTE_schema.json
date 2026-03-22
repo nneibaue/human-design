@@ -1,0 +1,167 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://jollyalchemy.com/schemas/color-palette-v1.json",
+  "title": "Rebecca Energy Color Palette Schema",
+  "description": "JSON Schema for validating Rebecca Energy color palette structure",
+  "type": "object",
+  "required": [
+    "version",
+    "name",
+    "description",
+    "philosophy",
+    "primary_palette",
+    "semantic_mappings",
+    "functional_colors",
+    "accessibility"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Reference to this schema file"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version (MAJOR.MINOR.PATCH)"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable palette name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of palette purpose and aesthetic"
+    },
+    "philosophy": {
+      "type": "object",
+      "required": ["aesthetic", "tone", "themes"],
+      "properties": {
+        "aesthetic": {
+          "type": "string",
+          "description": "Overall aesthetic description"
+        },
+        "tone": {
+          "type": "string",
+          "description": "Emotional tone and voice"
+        },
+        "themes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of thematic color concepts"
+        }
+      }
+    },
+    "primary_palette": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z_]+$": {
+          "type": "object",
+          "required": ["name", "description", "hex", "rgb", "hsl", "usage"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Human-readable color name"
+            },
+            "description": {
+              "type": "string",
+              "description": "Detailed description of color purpose"
+            },
+            "hex": {
+              "type": "string",
+              "pattern": "^#[0-9A-F]{6}$",
+              "description": "6-digit hexadecimal color code"
+            },
+            "rgb": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 255
+              },
+              "minItems": 3,
+              "maxItems": 3,
+              "description": "RGB values [R, G, B]"
+            },
+            "hsl": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 360,
+                  "description": "Hue (0-360°)"
+                },
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100,
+                  "description": "Saturation (0-100%)"
+                },
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100,
+                  "description": "Lightness (0-100%)"
+                }
+              ],
+              "minItems": 3,
+              "maxItems": 3,
+              "description": "HSL values [H, S, L]"
+            },
+            "usage": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of recommended usage contexts"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "semantic_mappings": {
+      "type": "object",
+      "description": "Color mappings for semantic concepts"
+    },
+    "functional_colors": {
+      "type": "object",
+      "description": "Functional UI colors for interactive states"
+    },
+    "accessibility": {
+      "type": "object",
+      "required": ["wcag_aa_compliance", "validated_combinations", "notes"],
+      "properties": {
+        "wcag_aa_compliance": {
+          "type": "object",
+          "description": "WCAG AA compliance requirements"
+        },
+        "validated_combinations": {
+          "type": "object",
+          "description": "Pre-validated color combinations with contrast ratios"
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Accessibility notes and guidelines"
+        }
+      }
+    },
+    "usage_examples": {
+      "type": "object",
+      "description": "Code examples for implementing the palette"
+    },
+    "design_guidelines": {
+      "type": "object",
+      "description": "Best practices and usage guidelines"
+    },
+    "technical_notes": {
+      "type": "object",
+      "description": "Technical implementation details"
+    }
+  }
+}

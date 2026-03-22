@@ -1,0 +1,192 @@
+{
+  "seed_version": "1.0",
+  "problem": "Implement channel formation detection logic and center definition calculation for Human Design bodygraphs - CRITICAL foundation blocking ALL multi-chart work",
+
+  "goal": "Produce production-ready channel formation system at src/human_design/models/channel.py with ChannelDefinition model, get_formed_channels() logic, RawBodyGraph.active_channels computed property, and comprehensive test suite",
+
+  "context": {
+    "architectural_foundation": {
+      "existing_patterns": [
+        "src/human_design/models/bodygraph.py - RawBodyGraph with Pydantic v2",
+        "src/human_design/models/core.py - GateNumber, CenterName, Planet Literal types",
+        "channels.yaml - 36 channels as gate pairs with names",
+        "src/human_design/centers.yaml - 9 centers with gate assignments"
+      ],
+      "calculation_logic": "Two gates activate a channel when BOTH gates are activated in a bodygraph (individual or composite). Channels connect centers. Centers are defined when they have at least one active channel.",
+      "raw_vs_semantic": "Channel formation is RAW calculation - independent of any interpretation system"
+    },
+
+    "from_review_strand_d5a05df6": {
+      "priority": "CRITICAL",
+      "timeline": "Week 1 (2-3 days effort)",
+      "blocking_for": "ALL multi-chart work (interaction, penta, transit overlays)",
+      "specification_source": "strand-results/active/SPEC_coordinator.md phase_1_channel_formation"
+    },
+
+    "technical_requirements": {
+      "models": [
+        "ChannelDefinition(channel_id, gate_a, gate_b, name, center_a, center_b, circuit)",
+        "ChannelRegistry.load_from_yaml() singleton pattern",
+        "CenterRegistry for gate→center lookup"
+      ],
+      "computed_properties": [
+        "RawBodyGraph.active_channels: list[ChannelDefinition]",
+        "RawBodyGraph.defined_centers: set[CenterName]"
+      ],
+      "algorithm": "Iterate all 36 channels, check if both gates present in activations, collect matches"
+    }
+  },
+
+  "agents": [
+    "architect",
+    "implementer",
+    "test_engineer",
+    "fair_witness",
+    "coordinator"
+  ],
+
+  "constraints": [
+    "Work in strand fork space (automatic isolation branch)",
+    "Follow RawBodyGraph architectural pattern (Pydantic v2, computed properties)",
+    "Use existing GateNumber, CenterName Literal types from core.py",
+    "Parse channels.yaml without modification",
+    "Maintain raw vs semantic separation (no 64keys content in models)",
+    "mypy strict mode compliance",
+    "100% test coverage for channel detection logic"
+  ],
+
+  "success_criteria": [
+    "ChannelDefinition model with all fields typed",
+    "ChannelRegistry singleton loads all 36 channels from channels.yaml",
+    "CenterRegistry maps all 64 gates to their centers",
+    "RawBodyGraph.active_channels detects channels correctly",
+    "RawBodyGraph.defined_centers computed from active channels",
+    "Comprehensive pytest suite with parametrized tests",
+    "Edge cases tested: zero channels, all channels, partial activations",
+    "Validates against known bodygraphs (compare to 64keys data)",
+    "mypy --strict passes on all new code",
+    "Zero breaking changes to existing RawBodyGraph API"
+  ],
+
+  "expected_artifacts": [
+    "src/human_design/models/channel.py",
+    "tests/test_channel_formation.py",
+    "IMPLEMENTATION_NOTES_channel_formation.md",
+    "VALIDATION_REPORT_channel_logic.md"
+  ],
+
+  "phases": {
+    "1_architecture_design": {
+      "description": "Design ChannelDefinition model and registry pattern",
+      "agents": ["architect"],
+      "tasks": [
+        {
+          "agent_index": 0,
+          "task": "Design ChannelDefinition Pydantic model, ChannelRegistry singleton, CenterRegistry gate→center lookup. Specify computed property integration with RawBodyGraph. Reference: bodygraph.py patterns, channels.yaml structure, centers.yaml structure.",
+          "outputs": ["DESIGN_channel_formation_models.md"]
+        }
+      ],
+      "dependencies": [],
+      "parallel": false
+    },
+
+    "2_implementation": {
+      "description": "Implement channel models and integrate with RawBodyGraph",
+      "agents": ["implementer"],
+      "tasks": [
+        {
+          "agent_index": 1,
+          "task": "Implement src/human_design/models/channel.py with ChannelDefinition, ChannelRegistry, CenterRegistry. Add RawBodyGraph.active_channels and RawBodyGraph.defined_centers computed properties. Follow Pydantic v2 patterns, use Literal types, maintain type safety.",
+          "inputs": ["DESIGN_channel_formation_models.md", "channels.yaml", "centers.yaml"],
+          "outputs": ["src/human_design/models/channel.py", "modified: src/human_design/models/bodygraph.py"]
+        }
+      ],
+      "dependencies": ["1_architecture_design"],
+      "parallel": false
+    },
+
+    "3_test_suite": {
+      "description": "Build comprehensive test suite for channel detection",
+      "agents": ["test_engineer"],
+      "tasks": [
+        {
+          "agent_index": 2,
+          "task": "Create tests/test_channel_formation.py with pytest.mark.parametrize patterns. Test cases: known bodygraphs, edge cases (zero/all channels), gate pairs, center definition. Validate against 64keys data for accuracy.",
+          "inputs": ["src/human_design/models/channel.py"],
+          "outputs": ["tests/test_channel_formation.py"]
+        }
+      ],
+      "dependencies": ["2_implementation"],
+      "parallel": false
+    },
+
+    "4_validation": {
+      "description": "Validate implementation against existing patterns and requirements",
+      "agents": ["fair_witness"],
+      "tasks": [
+        {
+          "agent_index": 3,
+          "task": "Audit channel formation implementation for architectural consistency, type safety, test coverage, edge case handling. Validate computed properties don't break existing RawBodyGraph usage. Check mypy --strict compliance.",
+          "validation_targets": ["Model design", "Algorithm correctness", "Test coverage", "Type safety", "API compatibility"],
+          "outputs": ["VALIDATION_REPORT_channel_logic.md"]
+        }
+      ],
+      "dependencies": ["3_test_suite"],
+      "parallel": false
+    },
+
+    "5_synthesis": {
+      "description": "Synthesize implementation notes and integration guide",
+      "agents": ["coordinator"],
+      "tasks": [
+        {
+          "agent_index": 4,
+          "task": "Synthesize complete implementation notes documenting: channel formation algorithm, integration points, test strategy, known limitations, next steps (InteractionChart integration). Include usage examples and API reference.",
+          "inputs": ["All phase outputs", "VALIDATION_REPORT"],
+          "outputs": ["IMPLEMENTATION_NOTES_channel_formation.md"]
+        }
+      ],
+      "dependencies": ["4_validation"],
+      "parallel": false
+    }
+  },
+
+  "validation_rules": {
+    "structural": [
+      "All models use Pydantic v2 BaseModel",
+      "GateNumber type from core.py (Literal[1, 2, ..., 64])",
+      "CenterName type from core.py (exact match)",
+      "Computed properties use @property decorator",
+      "Singleton pattern for registries"
+    ],
+
+    "semantic": [
+      "All 36 channels from channels.yaml loaded",
+      "Channel gate pairs match channels.yaml exactly",
+      "Gate-to-center assignments match centers.yaml exactly",
+      "Channel detection: both gates required, no partial matches",
+      "Center definition: at least one active channel required"
+    ],
+
+    "testing": [
+      "pytest.mark.parametrize for channel detection tests",
+      "Known bodygraphs validate against 64keys data",
+      "Edge cases: zero channels, all channels, single gate",
+      "Test both active_channels and defined_centers properties",
+      "mypy --strict passes on all code"
+    ]
+  },
+
+  "metadata": {
+    "created": "2026-03-21",
+    "seed_type": "implementation",
+    "strand_type": "IMPLEMENTATION",
+    "priority": "CRITICAL",
+    "effort_estimate": "8-10 agent-hours (2-3 days)",
+    "target_repo": "/Users/nathan.neibauer/code/human-design",
+    "output_dir": "strand-results/active",
+    "isolation": "automatic git fork and branch creation",
+    "parent_strand": "d5a05df6 (review strand)",
+    "blocks": ["InteractionChart", "PentaChart", "TransitOverlay", "Type calculation", "Definition calculation"]
+  }
+}

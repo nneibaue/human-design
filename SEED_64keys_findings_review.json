@@ -1,0 +1,184 @@
+{
+  "seed_version": "1.0",
+  "problem": "Review and synthesize the 64keys reverse engineering strand findings (3f0f38f7) to produce actionable implementation specifications for chart combinations, HD ontology, and visualization system",
+  "goal": "Transform raw strand findings into concrete: (1) Implementation roadmap, (2) Python API specifications, (3) HD ontology JSON, (4) Chart visualization design spec, (5) Rebecca Energy color palette",
+  "context": {
+    "parent_strand": {
+      "strand_id": "3f0f38f7-e469-44c8-a4ae-49c8534af212",
+      "status": "completed",
+      "findings_location": "strand-results/active/STRAND_64keys_reverse_engineering_3f0f38f7.json",
+      "agents_succeeded": ["researcher", "ontologist", "fair_witness", "coordinator"],
+      "agents_failed": ["architect (schema version mismatch)"]
+    },
+    "key_discoveries": {
+      "implemented": [
+        "64 gates with zodiac coordinates (bodygraph.yaml)",
+        "36 channels as gate pairs (channels.yaml)",
+        "9 centers (centers.yaml)",
+        "RawBodyGraph with Swiss Ephemeris calculations",
+        "64keys API integration for semantic overlays",
+        "Clean raw vs semantic separation pattern"
+      ],
+      "missing": [
+        "Chart combinations (interaction, penta, multichart, transits)",
+        "Channel formation detection logic",
+        "Type/Authority/Profile calculations",
+        "Chart visualization system (SVG renderer)",
+        "Rebecca Energy color palette",
+        "64keys chart combination endpoints"
+      ]
+    },
+    "review_tasks": [
+      "Extract concrete API specifications from researcher findings",
+      "Design InteractionChart, PentaChart, TransitOverlay models",
+      "Create comprehensive HD ontology JSON from all findings",
+      "Specify channel formation logic and definition calculation",
+      "Design Rebecca Energy color palette (deep purples, gold/amber, forest greens)",
+      "Outline SVG chart visualization architecture",
+      "Prioritize implementation roadmap (5-week plan)"
+    ],
+    "output_requirements": {
+      "format": "Production-ready specifications, not analysis documents",
+      "detail_level": "Sufficient for implementation without further research",
+      "code_examples": "Include Python class signatures and logic pseudocode",
+      "validation": "Cross-check against existing codebase patterns"
+    }
+  },
+  "agents": [
+    "architect",
+    "architect",
+    "ontologist",
+    "fair_witness",
+    "coordinator"
+  ],
+  "constraints": [
+    "Work in git fork space (automatic isolation branch)",
+    "Use findings from strand 3f0f38f7 as primary input",
+    "Maintain raw vs semantic separation pattern",
+    "Align with existing codebase architecture (Pydantic models, type hints)",
+    "All artifacts committed to fork, NOT main branch"
+  ],
+  "success_criteria": [
+    "InteractionChart/PentaChart/TransitOverlay models specified with full API",
+    "HD ontology JSON covers Types, Authorities, Profiles, Channels, Definitions",
+    "Channel formation logic fully specified (when do gates form channels?)",
+    "Rebecca Energy color palette defined with hex codes and usage rules",
+    "SVG chart visualization architecture documented",
+    "5-week implementation roadmap with priorities and dependencies",
+    "All specifications validated against existing patterns"
+  ],
+  "expected_artifacts": [
+    "API_DESIGN_chart_combinations.md",
+    "MODELS_InteractionChart_PentaChart_TransitOverlay.py",
+    "HD_ONTOLOGY_complete.json",
+    "CHANNEL_FORMATION_LOGIC.md",
+    "COLOR_PALETTE_rebecca_energy.json",
+    "CHART_VISUALIZATION_architecture.md",
+    "IMPLEMENTATION_ROADMAP_5weeks.md",
+    "VALIDATION_REPORT_architecture_alignment.md",
+    "COORDINATOR_SYNTHESIS_actionable_plan.md"
+  ],
+  "phases": {
+    "1_api_architecture": {
+      "description": "Design chart combination API architecture",
+      "agents": ["architect"],
+      "tasks": [
+        {
+          "agent_index": 0,
+          "task": "Design InteractionChart, PentaChart, TransitOverlay models with full API. Specify: __init__ methods, calculation logic, serialization. Include GateAPI methods: get_interaction(), get_penta(), overlay_transit(). Maintain raw vs semantic separation.",
+          "input_context": "strand-results/active/STRAND_64keys_reverse_engineering_3f0f38f7.json",
+          "reference_patterns": [
+            "src/human_design/models/bodygraph.py (RawBodyGraph pattern)",
+            "src/human_design/models/summaries_64keys.py (semantic overlay pattern)",
+            "src/human_design/api.py (GateAPI pattern)"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "parallel": false
+    },
+    "2_ontology_construction": {
+      "description": "Build comprehensive HD ontology JSON",
+      "agents": ["ontologist"],
+      "tasks": [
+        {
+          "agent_index": 1,
+          "task": "Create HD_ONTOLOGY_complete.json covering: Types (Manifestor/Generator/ManGen/Projector/Reflector), Authorities (Sacral/Emotional/Splenic/etc), Profiles (1/3, 2/4, etc), Channels (36 with semantics), Definitions (Single/Split/Triple/Quad), Quarters, Angles. Include 64keys terminology mappings.",
+          "input_context": "strand-results/active/STRAND_64keys_reverse_engineering_3f0f38f7.json",
+          "format": "Structured JSON suitable for programmatic access and UI generation"
+        }
+      ],
+      "dependencies": [],
+      "parallel": false
+    },
+    "3_channel_logic_specification": {
+      "description": "Specify channel formation and definition calculation logic",
+      "agents": ["architect"],
+      "tasks": [
+        {
+          "agent_index": 2,
+          "task": "Document channel formation rules: When do two gates create a defined channel? How are electromagnetic connections detected (same gate in two charts)? How to calculate definition types (Single/Split/Triple/Quad)? Provide pseudocode and edge cases.",
+          "input_context": "channels.yaml, researcher findings on interaction mechanics",
+          "output_format": "Executable logic specification with test cases"
+        }
+      ],
+      "dependencies": ["2_ontology_construction"],
+      "parallel": false
+    },
+    "4_visual_design": {
+      "description": "Design color palette and chart visualization architecture",
+      "agents": ["architect"],
+      "tasks": [
+        {
+          "agent_index": 3,
+          "task": "Create Rebecca Energy color palette (JSON with hex codes, semantic meanings, usage rules). Design SVG chart visualization architecture: element hierarchy, coordinate system, responsive layout, interaction states. Reference researcher findings on Rebecca Energy aesthetic.",
+          "input_context": ".github/copilot-instructions.md (Rebecca Energy philosophy)",
+          "deliverables": ["COLOR_PALETTE_rebecca_energy.json", "CHART_VISUALIZATION_architecture.md"]
+        }
+      ],
+      "dependencies": [],
+      "parallel": false
+    },
+    "5_validation": {
+      "description": "Validate all specifications against existing architecture",
+      "agents": ["fair_witness"],
+      "tasks": [
+        {
+          "agent_index": 4,
+          "task": "Cross-check API design, ontology, and specifications against existing patterns: Pydantic model conventions, type hints, raw vs semantic separation, GateAPI patterns. Identify any architectural inconsistencies or missing considerations.",
+          "validation_targets": ["API design", "Model specifications", "Ontology structure", "Channel logic"],
+          "reference_architecture": [
+            "src/human_design/models/bodygraph.py",
+            "src/human_design/models/core.py",
+            "src/human_design/api.py"
+          ]
+        }
+      ],
+      "dependencies": ["1_api_architecture", "2_ontology_construction", "3_channel_logic_specification"],
+      "parallel": false
+    },
+    "6_synthesis": {
+      "description": "Synthesize all specifications into actionable implementation roadmap",
+      "agents": ["coordinator"],
+      "tasks": [
+        {
+          "agent_index": 5,
+          "task": "Create 5-week implementation roadmap: Week 1 (Channel logic + InteractionChart), Week 2 (PentaChart + Type/Authority), Week 3 (SVG renderer + colors), Week 4 (64keys endpoints + MCP tools), Week 5 (UI integration + testing). Include dependencies, priorities, validation checkpoints.",
+          "synthesis_inputs": ["All phase artifacts", "Parent strand findings", "Validation report"],
+          "output_format": "Actionable plan with clear acceptance criteria per week"
+        }
+      ],
+      "dependencies": ["5_validation"],
+      "parallel": false
+    }
+  },
+  "metadata": {
+    "created": "2026-03-21",
+    "seed_type": "synthesis_and_specification",
+    "pattern": "Findings review → Actionable implementation specs",
+    "parent_strand": "3f0f38f7-e469-44c8-a4ae-49c8534af212",
+    "target_repo": "/Users/nathan.neibauer/code/human-design",
+    "output_dir": "strand-results/active",
+    "isolation": "automatic git fork and branch creation"
+  }
+}

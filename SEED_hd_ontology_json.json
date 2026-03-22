@@ -1,0 +1,174 @@
+{
+  "seed_version": "1.0",
+  "problem": "Generate comprehensive HD_ONTOLOGY_complete.json file containing all Human Design concepts (Types, Authorities, Profiles, Channels, Centers, Gates, Definitions, Quarters) with 64keys↔traditional terminology mappings, structured for programmatic access and UI generation",
+
+  "goal": "Produce production-ready HD_ONTOLOGY_complete.json at /Users/nathan.neibauer/code/human-design/ontology/HD_ONTOLOGY_complete.json with complete, validated ontological data enabling chart interpretation, UI labels, and educational content generation",
+
+  "context": {
+    "architectural_foundation": {
+      "existing_data_sources": [
+        "src/human_design/bodygraph.yaml - 64 gates with zodiac coordinates and Ra descriptions",
+        "src/human_design/channels.yaml - 36 channels as gate pairs with names",
+        "src/human_design/centers.yaml - 9 centers with gate mappings",
+        "src/human_design/models/core.py - Type-safe Literal definitions (GateNumber, CenterName, GateLineNumber)"
+      ],
+      "pattern": "Raw calculations separate from semantic content - ontology provides semantic layer for interpretations",
+      "terminology_standard": "Primary: 64keys (Initiator/Builder/Specialist/Coordinator/Observer), Secondary: Traditional (Manifestor/Generator/etc) in traditional_name fields"
+    },
+
+    "from_review_strand_d5a05df6": {
+      "priority": "HIGH",
+      "timeline": "Week 2-3 (3-5 days effort)",
+      "rationale": "Required for Type/Authority/Profile calculations and complete chart interpretations",
+      "partial_structure_provided": "Review strand spec includes skeleton structure for types, authorities, profiles, channels, centers, quarters"
+    },
+
+    "rebecca_energy_context": {
+      "tone": "Whimsical yet grounded, cozy autumnal forest, twilight magic",
+      "use_case": "Rebecca switches rapidly between chart combinations during sessions - needs fast access to interpretation data"
+    }
+  },
+
+  "agents": [
+    "ontologist",
+    "ontologist",
+    "architect",
+    "fair_witness",
+    "coordinator"
+  ],
+
+  "constraints": [
+    "Work in strand fork space (automatic isolation branch)",
+    "Source data from existing YAML files (bodygraph.yaml, channels.yaml, centers.yaml)",
+    "Maintain 64keys terminology as primary throughout",
+    "JSON must be valid RFC 8259 (strict syntax)",
+    "File size target: <1MB uncompressed",
+    "Human-readable formatting (2-space indent)",
+    "UTF-8 encoding"
+  ],
+
+  "success_criteria": [
+    "HD_ONTOLOGY_complete.json validates against JSON Schema",
+    "All 5 Types with calculation logic, strategies, not-self themes",
+    "All 7 Authorities with hierarchy and decision strategies",
+    "All 12 Profiles with line meanings",
+    "All 36 Channels with gate pairs, centers, circuits",
+    "All 9 Centers with 64keys↔traditional mappings",
+    "All 64 Gates with I Ching names and center assignments",
+    "4 Quarters with gate ranges and themes",
+    "Terminology consistency: 100% match with core.py types",
+    "Data integrity: gate-to-center mappings validated against centers.yaml",
+    "Channel gate pairs validated against channels.yaml"
+  ],
+
+  "expected_artifacts": [
+    "ontology/HD_ONTOLOGY_complete.json",
+    "ontology/HD_ONTOLOGY_schema.json",
+    "docs/ONTOLOGY_USAGE.md",
+    "IMPLEMENTATION_NOTES_ontology.md",
+    "VALIDATION_REPORT_ontology_integrity.md"
+  ],
+
+  "phases": {
+    "1_domain_research": {
+      "description": "Extract and structure HD concepts from existing codebase and domain knowledge",
+      "agents": ["ontologist", "ontologist"],
+      "tasks": [
+        {
+          "agent_index": 0,
+          "task": "Research and document Types, Authorities, Profiles, Definitions with calculation logic and interpretation content. Reference: Review strand SPEC_ontologist.md, HD reference materials.",
+          "outputs": ["PHASE_1_types_authorities_profiles.json"]
+        },
+        {
+          "agent_index": 1,
+          "task": "Extract and enrich Gates, Channels, Centers, Quarters from YAML files with circuit mappings and themes. Reference: bodygraph.yaml, channels.yaml, centers.yaml.",
+          "outputs": ["PHASE_1_gates_channels_centers.json"]
+        }
+      ],
+      "dependencies": [],
+      "parallel": true
+    },
+
+    "2_schema_design": {
+      "description": "Design JSON schema structure, relationships, and validation rules",
+      "agents": ["architect"],
+      "tasks": [
+        {
+          "agent_index": 2,
+          "task": "Design complete JSON Schema v7 definition with proper typing, enums, relationships, and extensibility hooks. Inputs: PHASE_1 outputs.",
+          "outputs": ["HD_ONTOLOGY_schema.json", "SCHEMA_DESIGN_RATIONALE.md"]
+        }
+      ],
+      "dependencies": ["1_domain_research"]
+    },
+
+    "3_validation": {
+      "description": "Validate ontology completeness, consistency, and accuracy against codebase",
+      "agents": ["fair_witness"],
+      "tasks": [
+        {
+          "agent_index": 3,
+          "task": "Audit ontology data for completeness, validate against existing YAML/Python code, check terminology consistency. Check: core.py, bodygraph.yaml, channels.yaml, centers.yaml.",
+          "outputs": ["VALIDATION_REPORT_ontology_integrity.md", "DISCREPANCY_LOG.json"]
+        }
+      ],
+      "dependencies": ["2_schema_design"]
+    },
+
+    "4_synthesis": {
+      "description": "Produce final artifacts with documentation and implementation guidance",
+      "agents": ["coordinator"],
+      "tasks": [
+        {
+          "agent_index": 4,
+          "task": "Synthesize validated ontology into production files, generate documentation, recommend implementation patterns and tests. Inputs: All phase outputs, VALIDATION_REPORT.",
+          "outputs": [
+            "ontology/HD_ONTOLOGY_complete.json",
+            "ontology/HD_ONTOLOGY_schema.json",
+            "docs/ONTOLOGY_USAGE.md",
+            "IMPLEMENTATION_NOTES_ontology.md"
+          ]
+        }
+      ],
+      "dependencies": ["3_validation"]
+    }
+  },
+
+  "validation_rules": {
+    "structural": [
+      "Valid JSON syntax (RFC 8259)",
+      "Validates against JSON Schema v7",
+      "All required fields present"
+    ],
+
+    "semantic": [
+      "All 64 GateNumbers (1-64) present with unique entries",
+      "All 9 CenterNames match core.py Literal type exactly",
+      "All 36 channel gate pairs match channels.yaml",
+      "All gate-to-center assignments match centers.yaml",
+      "All 5 Type names use 64keys terminology",
+      "Profile format: '{conscious_line}/{unconscious_line}'"
+    ],
+
+    "completeness": [
+      "5 Type definitions (no more, no less)",
+      "7 Authority definitions (no more, no less)",
+      "12 Profile definitions (no more, no less)",
+      "36 Channel definitions (no more, no less)",
+      "9 Center definitions (no more, no less)",
+      "64 Gate definitions (no more, no less)",
+      "4 Quarter definitions (no more, no less)"
+    ]
+  },
+
+  "metadata": {
+    "created": "2026-03-21",
+    "seed_type": "implementation",
+    "strand_type": "IMPLEMENTATION",
+    "priority": "HIGH",
+    "effort_estimate": "12-15 agent-hours (3-5 days)",
+    "target_repo": "/Users/nathan.neibauer/code/human-design",
+    "output_dir": "strand-results/active",
+    "isolation": "automatic git fork and branch creation"
+  }
+}

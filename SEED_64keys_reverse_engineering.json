@@ -1,0 +1,225 @@
+{
+  "seed_version": "1.0",
+  "problem": "Reverse-engineer 64keys.com chart combination features (interaction, penta, multichart, transits) and build comprehensive Human Design ontology to enable ergonomic multi-chart calculations during Rebecca's consultation sessions",
+  "goal": "Produce actionable specifications for implementing arbitrary chart combinations with Rebecca Energy aesthetic, including complete HD ontology, API design, and chart visualization system",
+  "context": {
+    "current_state": {
+      "implemented": [
+        "Individual chart calculation (RawBodyGraph)",
+        "64keys API for single gates",
+        "MCP server for 64keys browsing",
+        "Raw vs semantic separation pattern"
+      ],
+      "missing": [
+        "Interaction charts (2 people)",
+        "Penta charts (3-5 people)",
+        "Multichart (2-16 people)",
+        "Transit overlays on any chart type",
+        "Chart visualization system",
+        "Complete HD ontology"
+      ]
+    },
+    "rebecca_workflow": {
+      "pain_point": "During sessions, constantly switches between chart combinations - needs speed and ergonomics",
+      "example_flow": [
+        "Show Sandy's chart",
+        "Show Sandy + Heath interaction",
+        "Add their daughter (penta)",
+        "Overlay today's transit",
+        "Compare to 6 months ago transit"
+      ],
+      "requirement": "One-click access to any chart combination from group view"
+    },
+    "exploration_method": "MCP server browsing of 64keys.com pages to extract patterns",
+    "ontology_scope": "Comprehensive (types, authorities, profiles, centers, channels, gates, lines, quarters, angles, variables, terminology mappings)",
+    "color_scheme_goal": "Document 64keys palette, propose Rebecca Energy alternative (deep purples, gold/amber, forest greens, earth tones)",
+    "chart_visualization_goal": "Deep understanding of 64keys rendering to inform our own SVG-based system"
+  },
+  "agents": [
+    "researcher",
+    "researcher",
+    "researcher",
+    "researcher",
+    "ontologist",
+    "ontologist",
+    "architect",
+    "fair_witness",
+    "coordinator"
+  ],
+  "constraints": [
+    "Work in git fork space (automatic isolation branch)",
+    "Use existing MCP tools (browse_page, analyze_page, get_chart, get_people)",
+    "Respect 64keys.com (crawl delay already in SessionManager)",
+    "Maintain raw vs semantic separation pattern",
+    "All artifacts committed to fork, NOT main branch"
+  ],
+  "success_criteria": [
+    "64keys endpoints documented with request/response patterns",
+    "Interaction chart logic specified (gate overlap, channel formation, definition calculation)",
+    "Complete HD ontology in structured JSON format",
+    "Python API design for chart combinations",
+    "Color scheme research completed (64keys + Rebecca Energy proposal)",
+    "Chart visualization specification detailed enough to implement SVG renderer",
+    "All findings enable synthesizing a 'chart expert' agent"
+  ],
+  "expected_artifacts": [
+    "PHASE_1_64KEYS_ENDPOINTS.md",
+    "PHASE_1_CHART_PAGES_INVENTORY.md",
+    "PHASE_2_INTERACTION_LOGIC.md",
+    "PHASE_2_TRANSIT_MECHANICS.md",
+    "PHASE_2_CHART_VISUALIZATION_PATTERNS.md",
+    "PHASE_3_HD_ONTOLOGY.json",
+    "PHASE_3_TERMINOLOGY_MAPPINGS.json",
+    "PHASE_4_COLOR_SCHEME_RESEARCH.md",
+    "PHASE_4_REBECCA_ENERGY_PALETTE.json",
+    "PHASE_5_API_DESIGN.md",
+    "PHASE_5_MODEL_SPECIFICATIONS.md",
+    "PHASE_6_VALIDATION_REPORT.md",
+    "PHASE_7_SYNTHESIS.md",
+    "PHASE_7_IMPLEMENTATION_PLAN.md"
+  ],
+  "phases": {
+    "1_endpoint_discovery": {
+      "description": "Map 64keys chart-related endpoints and page structures",
+      "agents": ["researcher", "researcher"],
+      "tasks": [
+        {
+          "agent_index": 0,
+          "task": "Use MCP browse_page to explore /chart, /interaction, /penta endpoints. Document URL patterns, query parameters, session requirements.",
+          "tools": ["mcp__64keys__browse_page", "mcp__64keys__get_links", "mcp__64keys__analyze_page"]
+        },
+        {
+          "agent_index": 1,
+          "task": "Use MCP get_people and get_chart to understand how charts are loaded. Document person ID patterns, authentication flow.",
+          "tools": ["mcp__64keys__get_people", "mcp__64keys__get_chart", "mcp__64keys__get_current_transit"]
+        }
+      ],
+      "dependencies": [],
+      "parallel": true
+    },
+    "2_chart_logic_reverse_engineering": {
+      "description": "Reverse-engineer how 64keys calculates and renders chart combinations",
+      "agents": ["researcher", "researcher"],
+      "tasks": [
+        {
+          "agent_index": 2,
+          "task": "Deep dive into interaction chart logic: how two RawBodyGraphs combine (gate overlap, channel formation, definition calculation). Extract HTML patterns showing composite activations.",
+          "tools": ["mcp__64keys__browse_page", "mcp__64keys__find_text"]
+        },
+        {
+          "agent_index": 3,
+          "task": "Study chart visualization: SVG structure, element positioning, color application, responsive layout, interactive states. Document coordinate systems, visual encoding patterns. GOAL: Expertise to synthesize chart expert agent.",
+          "tools": ["mcp__64keys__browse_page", "mcp__64keys__analyze_page"]
+        }
+      ],
+      "dependencies": ["1_endpoint_discovery"],
+      "parallel": true
+    },
+    "3_ontology_construction": {
+      "description": "Build comprehensive Human Design ontology from existing codebase and 64keys content",
+      "agents": ["ontologist", "ontologist"],
+      "tasks": [
+        {
+          "agent_index": 4,
+          "task": "Construct HD concept taxonomy from bodygraph.yaml, channels.yaml, centers.yaml, and codebase models. Include types, authorities, profiles, centers, channels, gates, lines, quarters.",
+          "context_files": [
+            "src/human_design/bodygraph.yaml",
+            "src/human_design/channels.yaml",
+            "src/human_design/centers.yaml",
+            "src/human_design/models/core.py",
+            "src/human_design/models/bodygraph.py"
+          ]
+        },
+        {
+          "agent_index": 5,
+          "task": "Map terminology: 64keys (Initiator, Builder, Specialist, Coordinator, Observer) ↔ traditional HD (Manifestor, Generator, ManGen, Projector, Reflector). Extract from docs and 64keys pages.",
+          "context_files": [
+            ".github/copilot-instructions.md",
+            "docs/conversations/2026-01-30-rebecca-feedback-session.md"
+          ],
+          "tools": ["mcp__64keys__search_64keys"]
+        }
+      ],
+      "dependencies": [],
+      "parallel": true
+    },
+    "4_visual_design_research": {
+      "description": "Research color schemes and visual design patterns",
+      "agents": ["researcher"],
+      "tasks": [
+        {
+          "agent_index": 6,
+          "task": "Document 64keys color palette (defined/undefined centers, channels, gates). Research HD standard conventions. Propose Rebecca Energy palette (deep purples, gold/amber, forest greens, earth tones) aligned with whimsical-yet-grounded aesthetic.",
+          "context_files": [".github/copilot-instructions.md"],
+          "tools": ["mcp__64keys__browse_page"]
+        }
+      ],
+      "dependencies": ["2_chart_logic_reverse_engineering"],
+      "parallel": false
+    },
+    "5_api_architecture": {
+      "description": "Design Python API for chart combinations",
+      "agents": ["architect"],
+      "tasks": [
+        {
+          "agent_index": 7,
+          "task": "Design API for InteractionChart, PentaChart, TransitOverlay. Maintain raw vs semantic separation. Propose ergonomic builder pattern for Rebecca's workflow. Integration with existing RawBodyGraph architecture.",
+          "context_files": [
+            "src/human_design/api.py",
+            "src/human_design/models/bodygraph.py",
+            "src/human_design/models/summaries_64keys.py"
+          ]
+        }
+      ],
+      "dependencies": ["2_chart_logic_reverse_engineering", "3_ontology_construction"],
+      "parallel": false
+    },
+    "6_validation": {
+      "description": "Cross-check findings against existing codebase patterns",
+      "agents": ["fair_witness"],
+      "tasks": [
+        {
+          "agent_index": 8,
+          "task": "Validate that API design maintains architectural patterns (raw vs semantic separation, Pydantic models, SwissEph usage). Check that ontology doesn't contradict existing types. Verify feasibility of implementation.",
+          "context_files": [
+            "src/human_design/models/bodygraph.py",
+            "src/human_design/models/core.py",
+            "CLAUDE.md"
+          ]
+        }
+      ],
+      "dependencies": ["5_api_architecture", "3_ontology_construction"],
+      "parallel": false
+    },
+    "7_synthesis": {
+      "description": "Integrate all findings into actionable implementation plan",
+      "agents": ["coordinator"],
+      "tasks": [
+        {
+          "agent_index": 9,
+          "task": "Synthesize all phase outputs into coherent plan: (1) 64keys endpoint docs, (2) interaction logic spec, (3) HD ontology, (4) API design, (5) color scheme, (6) chart viz spec. Output implementation roadmap with priorities.",
+          "output_sections": [
+            "Executive Summary",
+            "64keys Integration Specification",
+            "Human Design Ontology",
+            "Chart Combination API Design",
+            "Visual Design System (Rebecca Energy)",
+            "Implementation Roadmap (5-week plan)",
+            "Agent Synthesis Guide (for chart expert agent)"
+          ]
+        }
+      ],
+      "dependencies": ["6_validation"],
+      "parallel": false
+    }
+  },
+  "metadata": {
+    "created": "2026-03-21",
+    "seed_type": "reverse_engineering_with_ontology",
+    "pattern": "Multi-agent exploratory research with synthesis",
+    "target_repo": "/Users/nathan.neibauer/code/human-design",
+    "dodo_source": "/Users/nathan.neibauer/code/claude (local-mcp branch)",
+    "output_dir": "strand-results/active",
+    "isolation": "automatic git fork and branch creation"
+  }
+}

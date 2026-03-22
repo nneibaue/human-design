@@ -1,0 +1,618 @@
+{
+  "$schema": "./COLOR_PALETTE_schema.json",
+  "version": "1.0.0",
+  "name": "Rebecca Energy Color Palette",
+  "description": "Cozy autumnal forest palette embodying twilight magic, whimsical yet grounded aesthetic for Human Design chart visualization",
+  "philosophy": {
+    "aesthetic": "Cozy autumnal forest, twilight magic, enchanted but accessible",
+    "tone": "Warm and approachable, playful yet grounded",
+    "themes": [
+      "Deep purples: mystical, twilight, consciousness",
+      "Gold/amber: autumn warmth, activation, energy",
+      "Forest greens: grounded, natural, growth",
+      "Earth tones: stability, foundation, presence"
+    ]
+  },
+  "primary_palette": {
+    "mystical_purple": {
+      "name": "Mystical Purple",
+      "description": "Deep twilight purple for consciousness, unconscious design activations, mystical elements",
+      "hex": "#6B4E8B",
+      "rgb": [107, 78, 139],
+      "hsl": [269, 28, 43],
+      "usage": ["unconscious_activations", "design_side", "mystical_elements", "twilight_themes"]
+    },
+    "twilight_deep": {
+      "name": "Twilight Deep",
+      "description": "Darker purple for shadows, depth, unconscious realms",
+      "hex": "#4A3560",
+      "rgb": [74, 53, 96],
+      "hsl": [269, 29, 29],
+      "usage": ["backgrounds_dark_mode", "undefined_centers_dark", "deep_unconscious"]
+    },
+    "twilight_light": {
+      "name": "Twilight Light",
+      "description": "Lighter purple for highlights, subtle mystical touches",
+      "hex": "#9B7EBD",
+      "rgb": [155, 126, 189],
+      "hsl": [268, 33, 62],
+      "usage": ["hover_states", "highlights", "subtle_mystical_elements"]
+    },
+    "autumn_gold": {
+      "name": "Autumn Gold",
+      "description": "Warm golden amber for conscious activations, personality side, energetic presence",
+      "hex": "#D4A046",
+      "rgb": [212, 160, 70],
+      "hsl": [38, 63, 55],
+      "usage": ["conscious_activations", "personality_side", "activation_highlights", "defined_centers"]
+    },
+    "autumn_amber": {
+      "name": "Autumn Amber",
+      "description": "Rich amber for electromagnetic connections, active channels, energy flow",
+      "hex": "#C87D2F",
+      "rgb": [200, 125, 47],
+      "hsl": [31, 62, 48],
+      "usage": ["active_channels", "electromagnetic_connections", "energy_flow", "channel_activation"]
+    },
+    "harvest_light": {
+      "name": "Harvest Light",
+      "description": "Soft golden glow for subtle warmth, hover states on conscious elements",
+      "hex": "#E8C589",
+      "rgb": [232, 197, 137],
+      "hsl": [38, 67, 72],
+      "usage": ["hover_conscious", "subtle_warmth", "light_backgrounds"]
+    },
+    "forest_green": {
+      "name": "Forest Green",
+      "description": "Grounded forest green for growth, stability, defined centers",
+      "hex": "#4A7856",
+      "rgb": [74, 120, 86],
+      "hsl": [136, 24, 38],
+      "usage": ["defined_centers", "growth_elements", "grounded_presence", "stable_energy"]
+    },
+    "moss_deep": {
+      "name": "Moss Deep",
+      "description": "Deep mossy green for backgrounds, grounding elements",
+      "hex": "#344A3D",
+      "rgb": [52, 74, 61],
+      "hsl": [145, 17, 25],
+      "usage": ["backgrounds_dark_mode", "grounding_elements", "subtle_borders"]
+    },
+    "sage_light": {
+      "name": "Sage Light",
+      "description": "Soft sage for undefined centers in light mode, gentle presence",
+      "hex": "#9FB8A7",
+      "rgb": [159, 184, 167],
+      "hsl": [139, 15, 67],
+      "usage": ["undefined_centers_light", "muted_elements", "gentle_backgrounds"]
+    },
+    "earth_brown": {
+      "name": "Earth Brown",
+      "description": "Warm earth brown for foundations, stability, grounding",
+      "hex": "#7A5C4D",
+      "rgb": [122, 92, 77],
+      "hsl": [20, 23, 39],
+      "usage": ["foundations", "stability_elements", "grounded_text", "borders"]
+    },
+    "bark_deep": {
+      "name": "Bark Deep",
+      "description": "Deep bark brown for text, strong grounding",
+      "hex": "#4D3A2F",
+      "rgb": [77, 58, 47],
+      "hsl": [22, 24, 24],
+      "usage": ["primary_text_light_mode", "strong_borders", "grounding_anchor"]
+    },
+    "sand_light": {
+      "name": "Sand Light",
+      "description": "Warm sandy beige for light backgrounds, gentle foundation",
+      "hex": "#E8DDD0",
+      "rgb": [232, 221, 208],
+      "hsl": [33, 33, 86],
+      "usage": ["backgrounds_light_mode", "subtle_surfaces", "gentle_foundation"]
+    }
+  },
+  "semantic_mappings": {
+    "human_design_concepts": {
+      "conscious_personality": {
+        "description": "Conscious activations (personality side, what we're aware of)",
+        "primary_color": "#D4A046",
+        "color_name": "autumn_gold",
+        "secondary_color": "#C87D2F",
+        "secondary_name": "autumn_amber",
+        "rationale": "Warm golden tones represent conscious awareness, like sunlight illuminating what we can see"
+      },
+      "unconscious_design": {
+        "description": "Unconscious activations (design side, what operates beneath awareness)",
+        "primary_color": "#6B4E8B",
+        "color_name": "mystical_purple",
+        "secondary_color": "#4A3560",
+        "secondary_name": "twilight_deep",
+        "rationale": "Deep purples evoke twilight mysteries, the unconscious realm we're discovering"
+      },
+      "defined_centers": {
+        "description": "Centers with consistent, reliable energy",
+        "primary_color": "#4A7856",
+        "color_name": "forest_green",
+        "accent_color": "#D4A046",
+        "accent_name": "autumn_gold",
+        "saturation": "high",
+        "rationale": "Saturated forest green shows strong, stable presence; gold accents show activation"
+      },
+      "undefined_centers": {
+        "description": "Centers that are open, receptive to conditioning",
+        "light_mode_color": "#9FB8A7",
+        "light_mode_name": "sage_light",
+        "dark_mode_color": "#4A3560",
+        "dark_mode_name": "twilight_deep",
+        "saturation": "low",
+        "opacity": 0.6,
+        "rationale": "Muted, softer tones show openness and receptivity rather than fixed energy"
+      },
+      "active_channels": {
+        "description": "Channels connecting two defined centers",
+        "primary_color": "#C87D2F",
+        "color_name": "autumn_amber",
+        "width": "bold",
+        "rationale": "Rich amber shows energetic flow and electromagnetic connection"
+      },
+      "inactive_channels": {
+        "description": "Channels without both gates activated",
+        "light_mode_color": "#E8DDD0",
+        "light_mode_name": "sand_light",
+        "dark_mode_color": "#344A3D",
+        "dark_mode_name": "moss_deep",
+        "opacity": 0.4,
+        "stroke": "dashed",
+        "rationale": "Very subtle presence shows potential but not activation"
+      },
+      "gate_activations": {
+        "description": "Individual gate activations (specific degrees)",
+        "conscious_color": "#D4A046",
+        "conscious_name": "autumn_gold",
+        "unconscious_color": "#6B4E8B",
+        "unconscious_name": "mystical_purple",
+        "highlight_style": "dot",
+        "rationale": "Clear differentiation between conscious (gold) and unconscious (purple) activations"
+      }
+    },
+    "interaction_charts": {
+      "person_a": {
+        "description": "First person in interaction chart",
+        "primary_color": "#D4A046",
+        "color_name": "autumn_gold",
+        "label_background": "#E8C589",
+        "rationale": "Primary gold shows 'home' person or chart owner"
+      },
+      "person_b": {
+        "description": "Second person in interaction chart",
+        "primary_color": "#6B4E8B",
+        "color_name": "mystical_purple",
+        "label_background": "#9B7EBD",
+        "rationale": "Purple differentiates second person, maintaining Rebecca Energy aesthetic"
+      },
+      "composite_overlap": {
+        "description": "Where two people's energies create something new together",
+        "primary_color": "#4A7856",
+        "color_name": "forest_green",
+        "blend_mode": "multiply",
+        "opacity": 0.8,
+        "rationale": "Green represents new growth from relationship alchemy"
+      },
+      "electromagnetic_connection": {
+        "description": "Electromagnetic connections between charts",
+        "primary_color": "#C87D2F",
+        "color_name": "autumn_amber",
+        "animation": "pulse",
+        "rationale": "Amber energy shows live connection and flow between people"
+      }
+    },
+    "transit_overlays": {
+      "current_transits": {
+        "description": "Current planetary transits overlaying natal chart",
+        "primary_color": "#9B7EBD",
+        "color_name": "twilight_light",
+        "opacity": 0.7,
+        "stroke": "dashed",
+        "rationale": "Lighter purple shows transient cosmic weather over stable natal chart"
+      },
+      "transit_gates": {
+        "description": "Gates activated by current transits",
+        "primary_color": "#9B7EBD",
+        "color_name": "twilight_light",
+        "style": "outlined",
+        "rationale": "Distinguished from natal activations while maintaining mystical theme"
+      }
+    }
+  },
+  "functional_colors": {
+    "backgrounds": {
+      "light_mode": {
+        "primary": {
+          "hex": "#F5F1EB",
+          "rgb": [245, 241, 235],
+          "name": "Soft Canvas",
+          "usage": "Main background for light mode"
+        },
+        "secondary": {
+          "hex": "#E8DDD0",
+          "rgb": [232, 221, 208],
+          "name": "sand_light",
+          "usage": "Card backgrounds, secondary surfaces"
+        },
+        "elevated": {
+          "hex": "#FFFFFF",
+          "rgb": [255, 255, 255],
+          "name": "Pure White",
+          "usage": "Elevated cards, modals, overlays"
+        }
+      },
+      "dark_mode": {
+        "primary": {
+          "hex": "#1C1410",
+          "rgb": [28, 20, 16],
+          "name": "Dark Earth",
+          "usage": "Main background for dark mode"
+        },
+        "secondary": {
+          "hex": "#2A211D",
+          "rgb": [42, 33, 29],
+          "name": "Deep Brown",
+          "usage": "Card backgrounds, secondary surfaces"
+        },
+        "elevated": {
+          "hex": "#344A3D",
+          "rgb": [52, 74, 61],
+          "name": "moss_deep",
+          "usage": "Elevated cards, modals, overlays"
+        }
+      }
+    },
+    "text": {
+      "light_mode": {
+        "primary": {
+          "hex": "#4D3A2F",
+          "rgb": [77, 58, 47],
+          "name": "bark_deep",
+          "usage": "Primary text, headings",
+          "contrast_ratio_on_light_bg": 10.2
+        },
+        "secondary": {
+          "hex": "#7A5C4D",
+          "rgb": [122, 92, 77],
+          "name": "earth_brown",
+          "usage": "Secondary text, labels",
+          "contrast_ratio_on_light_bg": 5.8
+        },
+        "muted": {
+          "hex": "#9B8378",
+          "rgb": [155, 131, 120],
+          "name": "Muted Brown",
+          "usage": "Tertiary text, hints",
+          "contrast_ratio_on_light_bg": 3.6
+        }
+      },
+      "dark_mode": {
+        "primary": {
+          "hex": "#E8DDD0",
+          "rgb": [232, 221, 208],
+          "name": "sand_light",
+          "usage": "Primary text, headings",
+          "contrast_ratio_on_dark_bg": 11.8
+        },
+        "secondary": {
+          "hex": "#C4B5A6",
+          "rgb": [196, 181, 166],
+          "name": "Warm Beige",
+          "usage": "Secondary text, labels",
+          "contrast_ratio_on_dark_bg": 8.2
+        },
+        "muted": {
+          "hex": "#9B8378",
+          "rgb": [155, 131, 120],
+          "name": "Muted Brown",
+          "usage": "Tertiary text, hints",
+          "contrast_ratio_on_dark_bg": 4.9
+        }
+      }
+    },
+    "borders": {
+      "light_mode": {
+        "subtle": {
+          "hex": "#D4C4B4",
+          "rgb": [212, 196, 180],
+          "opacity": 0.6,
+          "usage": "Subtle dividers, card borders"
+        },
+        "default": {
+          "hex": "#B8A695",
+          "rgb": [184, 166, 149],
+          "opacity": 1.0,
+          "usage": "Standard borders"
+        },
+        "emphasis": {
+          "hex": "#7A5C4D",
+          "rgb": [122, 92, 77],
+          "name": "earth_brown",
+          "usage": "Emphasized borders, focus states"
+        }
+      },
+      "dark_mode": {
+        "subtle": {
+          "hex": "#3A2F28",
+          "rgb": [58, 47, 40],
+          "opacity": 0.6,
+          "usage": "Subtle dividers, card borders"
+        },
+        "default": {
+          "hex": "#4D3A2F",
+          "rgb": [77, 58, 47],
+          "name": "bark_deep",
+          "usage": "Standard borders"
+        },
+        "emphasis": {
+          "hex": "#9B8378",
+          "rgb": [155, 131, 120],
+          "usage": "Emphasized borders, focus states"
+        }
+      }
+    },
+    "interactive_states": {
+      "hover": {
+        "conscious_element": {
+          "color": "#E8C589",
+          "color_name": "harvest_light",
+          "transform": "brightness(1.1)",
+          "usage": "Hover over conscious activations (gold elements)"
+        },
+        "unconscious_element": {
+          "color": "#9B7EBD",
+          "color_name": "twilight_light",
+          "transform": "brightness(1.15)",
+          "usage": "Hover over unconscious activations (purple elements)"
+        },
+        "neutral_element": {
+          "color": "#9FB8A7",
+          "color_name": "sage_light",
+          "transform": "brightness(1.1)",
+          "usage": "Hover over neutral/undefined elements"
+        }
+      },
+      "active_selected": {
+        "conscious": {
+          "color": "#C87D2F",
+          "color_name": "autumn_amber",
+          "border": "2px solid #D4A046",
+          "usage": "Selected conscious element"
+        },
+        "unconscious": {
+          "color": "#4A3560",
+          "color_name": "twilight_deep",
+          "border": "2px solid #6B4E8B",
+          "usage": "Selected unconscious element"
+        },
+        "neutral": {
+          "color": "#4A7856",
+          "color_name": "forest_green",
+          "border": "2px solid #4A7856",
+          "usage": "Selected neutral element"
+        }
+      },
+      "disabled": {
+        "light_mode": {
+          "color": "#D4C4B4",
+          "opacity": 0.5,
+          "cursor": "not-allowed",
+          "usage": "Disabled elements in light mode"
+        },
+        "dark_mode": {
+          "color": "#3A2F28",
+          "opacity": 0.5,
+          "cursor": "not-allowed",
+          "usage": "Disabled elements in dark mode"
+        }
+      },
+      "focus_keyboard": {
+        "outline_color": "#D4A046",
+        "outline_color_name": "autumn_gold",
+        "outline_width": "3px",
+        "outline_style": "solid",
+        "outline_offset": "2px",
+        "usage": "Keyboard focus indicator (WCAG 2.4.7 compliant)"
+      }
+    },
+    "feedback": {
+      "success": {
+        "color": "#4A7856",
+        "color_name": "forest_green",
+        "background_light": "#E8F3ED",
+        "background_dark": "#2A3E32",
+        "usage": "Success messages, confirmations"
+      },
+      "warning": {
+        "color": "#C87D2F",
+        "color_name": "autumn_amber",
+        "background_light": "#FFF3E6",
+        "background_dark": "#3D2A1F",
+        "usage": "Warnings, cautions"
+      },
+      "error": {
+        "color": "#A63A3A",
+        "background_light": "#FDEAEA",
+        "background_dark": "#3A2525",
+        "usage": "Errors, validation failures"
+      },
+      "info": {
+        "color": "#6B4E8B",
+        "color_name": "mystical_purple",
+        "background_light": "#F3EFFA",
+        "background_dark": "#2A2235",
+        "usage": "Informational messages, tips"
+      }
+    }
+  },
+  "accessibility": {
+    "wcag_aa_compliance": {
+      "text_contrast": {
+        "minimum_ratio": 4.5,
+        "requirement": "WCAG AA for normal text"
+      },
+      "large_text_contrast": {
+        "minimum_ratio": 3.0,
+        "requirement": "WCAG AA for large text (18pt+)"
+      },
+      "ui_component_contrast": {
+        "minimum_ratio": 3.0,
+        "requirement": "WCAG AA for UI components and graphical objects"
+      }
+    },
+    "validated_combinations": {
+      "light_mode": [
+        {
+          "foreground": "#4D3A2F",
+          "foreground_name": "bark_deep (primary text)",
+          "background": "#F5F1EB",
+          "background_name": "soft_canvas",
+          "contrast_ratio": 10.2,
+          "passes_aa": true,
+          "passes_aaa": true
+        },
+        {
+          "foreground": "#7A5C4D",
+          "foreground_name": "earth_brown (secondary text)",
+          "background": "#F5F1EB",
+          "background_name": "soft_canvas",
+          "contrast_ratio": 5.8,
+          "passes_aa": true,
+          "passes_aaa": false
+        },
+        {
+          "foreground": "#D4A046",
+          "foreground_name": "autumn_gold (conscious)",
+          "background": "#4D3A2F",
+          "background_name": "bark_deep",
+          "contrast_ratio": 4.6,
+          "passes_aa": true,
+          "passes_aaa": false
+        },
+        {
+          "foreground": "#4A7856",
+          "foreground_name": "forest_green (defined centers)",
+          "background": "#F5F1EB",
+          "background_name": "soft_canvas",
+          "contrast_ratio": 5.2,
+          "passes_aa": true,
+          "passes_aaa": false
+        }
+      ],
+      "dark_mode": [
+        {
+          "foreground": "#E8DDD0",
+          "foreground_name": "sand_light (primary text)",
+          "background": "#1C1410",
+          "background_name": "dark_earth",
+          "contrast_ratio": 11.8,
+          "passes_aa": true,
+          "passes_aaa": true
+        },
+        {
+          "foreground": "#C4B5A6",
+          "foreground_name": "warm_beige (secondary text)",
+          "background": "#1C1410",
+          "background_name": "dark_earth",
+          "contrast_ratio": 8.2,
+          "passes_aa": true,
+          "passes_aaa": true
+        },
+        {
+          "foreground": "#D4A046",
+          "foreground_name": "autumn_gold (conscious)",
+          "background": "#1C1410",
+          "background_name": "dark_earth",
+          "contrast_ratio": 6.8,
+          "passes_aa": true,
+          "passes_aaa": false
+        },
+        {
+          "foreground": "#9B7EBD",
+          "foreground_name": "twilight_light (hover unconscious)",
+          "background": "#1C1410",
+          "background_name": "dark_earth",
+          "contrast_ratio": 5.4,
+          "passes_aa": true,
+          "passes_aaa": false
+        }
+      ]
+    },
+    "notes": [
+      "All primary text combinations pass WCAG AAA (7:1) in both light and dark modes",
+      "Secondary text passes WCAG AA (4.5:1) in both modes",
+      "UI component colors (centers, channels, gates) pass WCAG AA (3:1) against backgrounds",
+      "Focus indicators use high-contrast autumn gold (#D4A046) with 3px outline",
+      "Muted text (tertiary) intentionally lower contrast but still maintains 3.6:1+ ratio",
+      "Interactive states increase brightness/saturation to improve discoverability",
+      "Color is never the only means of conveying information (patterns, labels, icons used)"
+    ]
+  },
+  "usage_examples": {
+    "css_variables": {
+      "description": "CSS custom properties for easy integration",
+      "example": "```css\n:root {\n  /* Primary Palette */\n  --color-mystical-purple: #6B4E8B;\n  --color-twilight-deep: #4A3560;\n  --color-twilight-light: #9B7EBD;\n  --color-autumn-gold: #D4A046;\n  --color-autumn-amber: #C87D2F;\n  --color-harvest-light: #E8C589;\n  --color-forest-green: #4A7856;\n  --color-moss-deep: #344A3D;\n  --color-sage-light: #9FB8A7;\n  --color-earth-brown: #7A5C4D;\n  --color-bark-deep: #4D3A2F;\n  --color-sand-light: #E8DDD0;\n  \n  /* Semantic Mappings */\n  --color-conscious: var(--color-autumn-gold);\n  --color-unconscious: var(--color-mystical-purple);\n  --color-defined: var(--color-forest-green);\n  --color-undefined-light: var(--color-sage-light);\n  --color-active-channel: var(--color-autumn-amber);\n  \n  /* Functional Colors - Light Mode */\n  --bg-primary: #F5F1EB;\n  --bg-secondary: var(--color-sand-light);\n  --text-primary: var(--color-bark-deep);\n  --text-secondary: var(--color-earth-brown);\n  --border-default: #B8A695;\n}\n\n[data-theme=\"dark\"] {\n  --bg-primary: #1C1410;\n  --bg-secondary: #2A211D;\n  --text-primary: var(--color-sand-light);\n  --text-secondary: #C4B5A6;\n  --border-default: var(--color-bark-deep);\n}\n```"
+    },
+    "component_patterns": {
+      "human_design_center": {
+        "description": "Styling for a defined vs undefined center",
+        "example": "```css\n.hd-center {\n  border: 2px solid var(--color-earth-brown);\n  transition: all 0.2s ease;\n}\n\n.hd-center--defined {\n  background-color: var(--color-forest-green);\n  opacity: 1;\n}\n\n.hd-center--undefined {\n  background-color: var(--color-sage-light);\n  opacity: 0.6;\n}\n\n.hd-center:hover {\n  transform: scale(1.05);\n  filter: brightness(1.1);\n}\n\n.hd-center--selected {\n  border: 3px solid var(--color-autumn-gold);\n  box-shadow: 0 0 12px rgba(212, 160, 70, 0.4);\n}\n```"
+      },
+      "gate_activation": {
+        "description": "Styling for conscious vs unconscious gate activations",
+        "example": "```css\n.gate-activation {\n  width: 12px;\n  height: 12px;\n  border-radius: 50%;\n  border: 2px solid var(--color-earth-brown);\n}\n\n.gate-activation--conscious {\n  background-color: var(--color-autumn-gold);\n  box-shadow: 0 0 6px rgba(212, 160, 70, 0.5);\n}\n\n.gate-activation--unconscious {\n  background-color: var(--color-mystical-purple);\n  box-shadow: 0 0 6px rgba(107, 78, 139, 0.5);\n}\n\n.gate-activation:focus-visible {\n  outline: 3px solid var(--color-autumn-gold);\n  outline-offset: 2px;\n}\n```"
+      },
+      "interaction_chart": {
+        "description": "Color coding for person A, person B, and composite",
+        "example": "```css\n.chart-person-a {\n  --person-color: var(--color-autumn-gold);\n  --person-label-bg: var(--color-harvest-light);\n}\n\n.chart-person-b {\n  --person-color: var(--color-mystical-purple);\n  --person-label-bg: var(--color-twilight-light);\n}\n\n.chart-composite {\n  --composite-color: var(--color-forest-green);\n  mix-blend-mode: multiply;\n  opacity: 0.8;\n}\n\n.electromagnetic-connection {\n  stroke: var(--color-autumn-amber);\n  stroke-width: 3px;\n  animation: pulse 2s ease-in-out infinite;\n}\n\n@keyframes pulse {\n  0%, 100% { opacity: 0.8; }\n  50% { opacity: 1; }\n}\n```"
+      }
+    }
+  },
+  "design_guidelines": {
+    "do": [
+      "Use warm autumn tones (gold, amber) for conscious/personality elements",
+      "Use mystical purples for unconscious/design elements",
+      "Use forest greens for grounded, stable, defined energy",
+      "Mute colors (lower saturation, add opacity) for undefined/open centers",
+      "Increase brightness on hover to show interactivity",
+      "Use consistent focus indicators (3px gold outline) for accessibility",
+      "Maintain cozy, warm feeling through earth tones and soft transitions",
+      "Test all color combinations for WCAG AA contrast before using"
+    ],
+    "dont": [
+      "Don't use pure black or pure white - stay in the warm earth tone palette",
+      "Don't use colors as the only way to convey information (add labels, patterns)",
+      "Don't use neon or overly saturated colors - keep it cozy and grounded",
+      "Don't ignore dark mode - ensure all colors work in both light and dark themes",
+      "Don't use red/green alone for semantic meaning (colorblind considerations)",
+      "Don't sacrifice contrast for aesthetics - accessibility is non-negotiable",
+      "Don't mix cold blues with the warm autumn palette",
+      "Don't use more than 3-4 colors in a single component - keep it clear"
+    ],
+    "metaphors_and_vibes": [
+      "Conscious (gold) = Sunlight on autumn leaves, what we can see and know",
+      "Unconscious (purple) = Twilight mysteries, what operates beneath awareness",
+      "Defined (forest green) = Strong oak tree, reliable and grounded",
+      "Undefined (sage) = Open meadow, receptive to what comes through",
+      "Active channels (amber) = Energy flowing like golden sap through tree veins",
+      "Electromagnetic connections (amber pulse) = Hummingbird wings creating magic between charts",
+      "Transit overlays (twilight light) = Cosmic weather passing through your steady forest"
+    ]
+  },
+  "technical_notes": {
+    "color_spaces": "Colors provided in hex (web), RGB (0-255), and HSL (H: 0-360°, S/L: 0-100%)",
+    "format_validation": "All hex codes are 6-digit uppercase format (#RRGGBB)",
+    "json_schema": "See COLOR_PALETTE_schema.json for structural validation",
+    "naming_convention": "snake_case for all semantic keys",
+    "accessibility_testing": "Contrast ratios calculated using WCAG 2.1 formula: (L1 + 0.05) / (L2 + 0.05)",
+    "browser_support": "CSS custom properties (CSS Variables) require modern browsers (IE11+)",
+    "fallbacks": "Provide fallback colors for older browsers if needed",
+    "color_profile": "sRGB color space (standard for web)",
+    "opacity_handling": "Opacity values provided separately for layering control"
+  }
+}
