@@ -135,7 +135,7 @@ wip/
 .cache/
 
 # Whisper models (large files, download locally)
-models/
+/models/
 
 # CDK
 cdk.out/

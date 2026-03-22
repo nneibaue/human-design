@@ -13,7 +13,7 @@ import math
 from collections.abc import Iterator
 from datetime import datetime
 from pathlib import Path
-from typing import Annotated, Self, cast
+from typing import TYPE_CHECKING, Annotated, Self, cast
 
 import pytz  # type: ignore
 import swisseph as swe  # type: ignore
@@ -28,8 +28,13 @@ from pydantic import (
 from timezonefinder import TimezoneFinder
 
 from ..calculate_utils import calc_lon_ut, geocode_place
+from .channel import ChannelDefinition, ChannelRegistry
 from .coordinates import CoordinateRange, LocalTime
 from .core import CenterName, GateLineNumber, GateNumber, Planet, PlanetField
+from .type_authority import Authority, HDType, Profile, TypeAuthorityCalculator
+
+if TYPE_CHECKING:
+    from .composite import CompositeBodyGraph
 
 BODYGRAPH_DEFINITION_FILE = Path(str(importlib.resources.files("human_design") / "bodygraph.yaml"))
 
@@ -360,3 +365,114 @@ class RawBodyGraph(BaseModel):
         for activation in self.unconscious_activations:
             gates.add(activation.gate)
         return gates
+
+    @computed_field  # type: ignore
+    @property
+    def active_channels(self) -> list[ChannelDefinition]:
+        """
+        Get all channels formed by activated gates.
+
+        A channel is formed when BOTH its gates are activated.
+        This is the foundation for determining defined centers and
+        definition types (Single/Split/Triple/Quad).
+
+        Returns:
+            List of formed channels (may be empty)
+        """
+        channel_registry = ChannelRegistry.load()
+        return channel_registry.get_formed_channels(self.all_activated_gates)
+
+    @computed_field  # type: ignore
+    @property
+    def defined_centers(self) -> set[CenterName]:
+        """
+        Get all centers that are defined (have at least one active channel).
+
+        A center is defined when it has at least one channel connecting
+        it to another center. Centers with gates but no formed channels
+        are undefined (open).
+
+        Returns:
+            Set of defined center names
+        """
+        defined: set[CenterName] = set()
+        for channel in self.active_channels:
+            defined.add(channel.center_a)
+            defined.add(channel.center_b)
+        return defined
+
+    @computed_field  # type: ignore
+    @property
+    def type(self) -> HDType:
+        """
+        Calculate Human Design Type (Initiator/Builder/Specialist/Coordinator/Observer).
+
+        Type is determined by which centers are defined and how they connect,
+        particularly motor-to-throat connections and sacral definition.
+
+        Returns:
+            HDType enum using 64keys terminology
+        """
+        calculator = TypeAuthorityCalculator(self)
+        return calculator.calculate_type()
+
+    @computed_field  # type: ignore
+    @property
+    def authority(self) -> Authority:
+        """
+        Calculate Authority - the decision-making strategy.
+
+        Authority follows a hierarchical precedence based on which centers
+        are defined. First defined authority center in the hierarchy wins.
+
+        Returns:
+            Authority enum (Emotional/Sacral/Splenic/Ego/Self/Mental/Lunar)
+        """
+        calculator = TypeAuthorityCalculator(self)
+        return calculator.calculate_authority()
+
+    @computed_field  # type: ignore
+    @property
+    def profile(self) -> Profile:
+        """
+        Calculate Profile from Sun conscious/unconscious line numbers.
+
+        Profile represents the role and life theme, determined by the
+        line numbers of the conscious and unconscious Sun activations.
+
+        Returns:
+            Profile model with conscious/unconscious lines and notation
+        """
+        calculator = TypeAuthorityCalculator(self)
+        return calculator.calculate_profile()
+
+    def __add__(self, other: "RawBodyGraph | CompositeBodyGraph") -> "CompositeBodyGraph":
+        """
+        Combine charts through gate activation stacking.
+
+        Creates interaction charts, penta charts, or adds transit overlays.
+        New channels can form when gates from different charts complete each other.
+
+        Example:
+            interaction = chart1 + chart2
+            penta = chart1 + chart2 + chart3 + chart4
+            with_transit = chart + transit_now()
+
+        Args:
+            other: Another bodygraph (raw or composite)
+
+        Returns:
+            CompositeBodyGraph with stacked activations
+        """
+        from .composite import CompositeBodyGraph
+
+        if isinstance(other, CompositeBodyGraph):
+            return CompositeBodyGraph(charts=[self] + other.charts)
+        else:
+            return CompositeBodyGraph(charts=[self, other])
+
+
+# Rebuild CompositeBodyGraph model now that RawBodyGraph is fully defined
+from .composite import CompositeBodyGraph as _CompositeBodyGraph
+
+_CompositeBodyGraph.model_rebuild()
