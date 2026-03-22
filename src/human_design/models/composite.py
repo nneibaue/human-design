@@ -122,7 +122,7 @@ class CompositeBodyGraph(BaseModel):
         calculator = TypeAuthorityCalculator(self)  # type: ignore
         return calculator.calculate_authority()
 
-    def __add__(self, other: "RawBodyGraph | CompositeBodyGraph") -> "CompositeBodyGraph":
+    def __add__(self, other: "RawBodyGraph | CompositeBodyGraph | Transit") -> "CompositeBodyGraph":
         """
         Add another chart to this composite.
 
@@ -130,13 +130,17 @@ class CompositeBodyGraph(BaseModel):
             penta = chart1 + chart2 + chart3 + chart4 + chart5
 
         Args:
-            other: Another bodygraph (raw or composite)
+            other: Another bodygraph, composite, or transit
 
         Returns:
             New composite with all charts combined
         """
+        from .transit import Transit
+
         if isinstance(other, CompositeBodyGraph):
             return CompositeBodyGraph(charts=self.charts + other.charts)
+        elif isinstance(other, Transit):
+            return CompositeBodyGraph(charts=self.charts + [other._as_bodygraph()])
         else:
             return CompositeBodyGraph(charts=self.charts + [other])
 

@@ -446,7 +446,7 @@ class RawBodyGraph(BaseModel):
         calculator = TypeAuthorityCalculator(self)
         return calculator.calculate_profile()
 
-    def __add__(self, other: "RawBodyGraph | CompositeBodyGraph") -> "CompositeBodyGraph":
+    def __add__(self, other: "RawBodyGraph | CompositeBodyGraph | Transit") -> "CompositeBodyGraph":
         """
         Combine charts through gate activation stacking.
 
@@ -456,18 +456,21 @@ class RawBodyGraph(BaseModel):
         Example:
             interaction = chart1 + chart2
             penta = chart1 + chart2 + chart3 + chart4
-            with_transit = chart + transit_now()
+            with_transit = chart + Transit.now()
 
         Args:
-            other: Another bodygraph (raw or composite)
+            other: Another bodygraph, composite, or transit
 
         Returns:
             CompositeBodyGraph with stacked activations
         """
         from .composite import CompositeBodyGraph
+        from .transit import Transit
 
         if isinstance(other, CompositeBodyGraph):
             return CompositeBodyGraph(charts=[self] + other.charts)
+        elif isinstance(other, Transit):
+            return CompositeBodyGraph(charts=[self, other._as_bodygraph()])
         else:
             return CompositeBodyGraph(charts=[self, other])
 
