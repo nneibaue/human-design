@@ -97,7 +97,8 @@ The raw calculations are completely independent of any interpretation system.
 - Uses Swiss Ephemeris via `pyswisseph` (not `swisseph` - note the 'py')
 - Conscious activations: birth time
 - Unconscious activations: ~88 days before birth (Design time)
-- Calculations use sidereal zodiac (not tropical)
+- Calculations use **tropical zodiac** (seasons-based, not sidereal)
+- See `docs/gate-zodiac-mapping.md` for authoritative zodiac reference
 
 ### Important Development Patterns
 
