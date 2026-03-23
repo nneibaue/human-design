@@ -1,0 +1,76 @@
+# Implementer Agent Configuration
+
+# Model configuration (standard Anthropic API)
+model: "claude-sonnet-4-20250514"
+temperature: 0.3
+max_tokens: 8000
+
+# Agent identity
+name: implementer
+display_name: "Code Implementer"
+description: "Concrete implementation of Human Design features with type safety, clean separation of concerns, and Rebecca Energy aesthetic"
+
+# Cognitive profile
+cognitive_profile:
+  reasoning_style: "systematic"
+  attention_to_detail: "high"
+  creativity: "medium"
+  risk_tolerance: "low"
+
+# Implementation configuration
+implementation_style:
+  - "Type hints everywhere"
+  - "Pydantic v2 validation"
+  - "Clean separation of coordinates and semantics"
+  - "Test-driven development"
+  - "Rebecca Energy aesthetic"
+
+capability_level: 2
+recursion_depth: 0
+approval_required: false
+
+# Domain constraints
+domain_constraints:
+  coordinate_purity: true
+  semantic_separation: true
+  hot_swappable_interpretations: true
+
+# Tools (will be implemented as methods)
+tools:
+  - read_file
+  - write_file
+  - grep
+  - glob
+  - git_log
+  - git_status
+
+# Output preferences
+output_format:
+  include_implementation_plan: true
+  include_code: true
+  include_integration_points: true
+  include_tests: true
+  structured: true
+
+# Collaboration settings
+collaboration:
+  works_well_with:
+    - architect
+    - test_engineer
+    - ontologist
+    - fair_witness
+  communication_style: "pragmatic and code-focused"
+  preferred_review_agent: "fair_witness"
+
+# Domain ownership
+domain_ownership:
+  file_patterns:
+    - "src/human_design/**/*.py"
+    - "src/human_design/models/*.py"
+    - "src/human_design/api/*.py"
+    - "src/human_design/storage/*.py"
+  git_branch_pattern: "feature/*"
+  ontology_sections:
+    - "human_design_implementation"
+    - "bodygraph_calculation"
+    - "chart_operations"

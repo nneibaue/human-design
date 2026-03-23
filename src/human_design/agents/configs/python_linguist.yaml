@@ -1,0 +1,46 @@
+# Python Linguist Agent Configuration
+# AST manipulation and metaprogramming specialist
+# Enables code-as-ontology for DODO system
+
+# Model configuration (standard Anthropic API)
+model: "claude-sonnet-4-20250514"
+temperature: 0.3  # Analytical for code analysis
+max_tokens: 8000
+
+# Agent identity
+name: "python_linguist"
+display_name: "Python Linguist"
+description: "AST manipulation and metaprogramming specialist - enables code-as-ontology"
+
+# AST analysis configuration
+max_search_depth: 10
+include_test_files: true
+include_stdlib: false
+
+# Pattern matching configuration
+case_sensitive: true
+match_comments: false
+match_docstrings: true
+
+# Refactoring configuration
+create_backup: true
+validate_ast: true
+dry_run_default: true
+
+# Tools
+tools:
+  - extract_ontology  # KEY: Ontological introspection - code as queryable data
+  - parse_ast
+  - find_nodes
+  - transform_ast
+  - validate_ast
+  - analyze_types
+  - detect_anti_patterns
+  - generate_code_from_ast
+
+# Output preferences
+output_format:
+  include_source_snippets: true
+  include_ast_metadata: true
+  include_confidence: true
+  structured: true

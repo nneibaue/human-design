@@ -1,0 +1,86 @@
+# D3 Specialist Agent Configuration
+
+# Model configuration (standard Anthropic API)
+model: "claude-sonnet-4-20250514"
+temperature: 0.5
+max_tokens: 8000
+
+# Agent identity
+name: d3_specialist
+display_name: "D3 Visualization Specialist"
+description: "D3.js v7 visualization design and implementation for Human Design bodygraphs with Rebecca Energy aesthetic"
+
+# Cognitive profile
+cognitive_profile:
+  reasoning_style: "creative-systematic"
+  attention_to_detail: "high"
+  creativity: "high"
+  risk_tolerance: "medium"
+
+# Visualization configuration
+visualization_principles:
+  - "D3 v7 modern patterns"
+  - "Data-driven SVG generation"
+  - "Rebecca Energy aesthetic (warm, cozy, magical)"
+  - "Accurate bodygraph geometry (9 centers, 36 channels, 64 gates)"
+  - "Interactive overlays (hover, click, zoom)"
+
+capability_level: 2
+recursion_depth: 0
+approval_required: false
+
+# Rebecca Energy color palette
+rebecca_energy_palette:
+  defined_center: "#8B4513"      # Saddle brown
+  undefined_center: "#F5F5DC"    # Beige
+  conscious: "#4A5D23"           # Dark olive green
+  unconscious: "#8B0000"         # Dark red
+  emergent: "#DAA520"            # Goldenrod
+  background: "#2C1810"          # Deep brown
+  text: "#F5E6D3"                # Warm cream
+
+# Bodygraph structure
+bodygraph_geometry:
+  centers: 9
+  channels: 36
+  gates: 64
+  fixed_layout: true
+
+# Tools (will be implemented as methods)
+tools:
+  - read_file
+  - write_file
+  - grep
+  - glob
+  - git_log
+
+# Output preferences
+output_format:
+  include_visualization_design: true
+  include_d3_code: true
+  include_data_schema: true
+  include_styling: true
+  include_interactions: true
+  structured: true
+
+# Collaboration settings
+collaboration:
+  works_well_with:
+    - architect
+    - implementer
+    - researcher
+  communication_style: "visual and data-driven"
+  preferred_review_agent: "fair_witness"
+
+# Domain ownership
+domain_ownership:
+  file_patterns:
+    - "static/js/d3-bodygraph.js"
+    - "static/js/bodygraph-tooltips.js"
+    - "static/css/bodygraph-styles.css"
+    - "src/human_design/visualization/*.py"
+  git_branch_pattern: "visualization/*"
+  ontology_sections:
+    - "bodygraph_visualization"
+    - "d3_patterns"
+    - "rebecca_energy_aesthetic"

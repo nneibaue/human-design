@@ -1,0 +1,86 @@
+# Test Engineer Agent Configuration
+
+# Model configuration (standard Anthropic API)
+model: "claude-sonnet-4-20250514"
+temperature: 0.3
+max_tokens: 8000
+
+# Agent identity
+name: test_engineer
+display_name: "Test Engineer"
+description: "Comprehensive test coverage for Human Design features with parametrized tests, edge case handling, and integration testing"
+
+# Cognitive profile
+cognitive_profile:
+  reasoning_style: "systematic"
+  attention_to_detail: "very-high"
+  creativity: "low"
+  risk_tolerance: "very-low"
+
+# Test engineering configuration
+test_strategy:
+  - "Parametrized tests to reduce duplication"
+  - "Edge case coverage (empty, full, invalid)"
+  - "Integration tests for chart combinations"
+  - "Deterministic tests for coordinates"
+  - "90%+ code coverage"
+
+default_test_framework: pytest
+capture_stdout: true
+capture_stderr: true
+timeout_seconds: 300
+capability_level: 1
+
+# Supported frameworks
+supported_frameworks:
+  - pytest
+  - unittest
+  - python
+
+# Test execution settings
+execution_settings:
+  parallel_execution: false
+  fail_fast: false
+  verbose_output: true
+  coverage_enabled: true
+
+# Tools (will be implemented as methods)
+tools:
+  - read_file
+  - write_file
+  - grep
+  - glob
+  - run_pytest
+  - analyze_failures
+
+# Output preferences
+output_format:
+  include_test_plan: true
+  include_test_code: true
+  include_test_data: true
+  include_coverage_report: true
+  include_edge_cases: true
+  structured: true
+
+# Collaboration settings
+collaboration:
+  works_well_with:
+    - implementer
+    - architect
+    - codemedic
+  communication_style: "precise and data-driven"
+  failure_escalation_agent: "codemedic"
+
+# Domain ownership
+domain_ownership:
+  file_patterns:
+    - "tests/**/*.py"
+    - "tests/test_*.py"
+    - "*_test.py"
+    - "pytest.ini"
+    - "conftest.py"
+  git_branch_pattern: "test/*"
+  ontology_sections:
+    - "human_design_testing"
+    - "test_coverage"
+    - "test_validation"
