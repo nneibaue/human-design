@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human Design Bodygraph Test</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #2C1810;
+            color: #F5E6D3;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #DAA520;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #F5E6D3;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        #bodygraph {
+            background-color: #1a0f0a;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .center {
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .center:hover {
+            opacity: 0.8;
+        }
+
+        .center.defined {
+            fill: #8B4513;
+            stroke: #DAA520;
+            stroke-width: 2;
+        }
+
+        .center.undefined {
+            fill: none;
+            stroke: #F5F5DC;
+            stroke-width: 2;
+            stroke-dasharray: 5,5;
+        }
+
+        .center-label {
+            fill: #F5E6D3;
+            font-size: 12px;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .channel {
+            stroke-width: 8;
+            stroke-linecap: round;
+        }
+
+        .channel.active {
+            stroke: #4A5D23;
+            opacity: 0.8;
+        }
+
+        .channel.inactive {
+            stroke: #3a2a1a;
+            opacity: 0.3;
+        }
+
+        .gate {
+            cursor: pointer;
+        }
+
+        .gate.personality {
+            fill: #4A5D23;
+            stroke: #F5E6D3;
+            stroke-width: 1;
+        }
+
+        .gate.design {
+            fill: #8B0000;
+            stroke: #F5E6D3;
+            stroke-width: 1;
+        }
+
+        .tooltip {
+            position: absolute;
+            padding: 10px;
+            background-color: #1a0f0a;
+            border: 2px solid #DAA520;
+            border-radius: 5px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            max-width: 300px;
+        }
+
+        .info-panel {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #1a0f0a;
+            border-radius: 10px;
+            max-width: 600px;
+        }
+
+        .info-panel h2 {
+            color: #DAA520;
+            margin-top: 0;
+        }
+
+        .info-item {
+            margin: 10px 0;
+        }
+
+        .info-label {
+            color: #DAA520;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Human Design Bodygraph</h1>
+    <p class="subtitle">D3.js Visualization Test • Rebecca Energy Aesthetic</p>
+
+    <div id="bodygraph"></div>
+    <div class="tooltip" id="tooltip"></div>
+
+    <div class="info-panel">
+        <h2>Chart Information</h2>
+        <div class="info-item">
+            <span class="info-label">Type:</span> <span id="type">BUILDER</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Authority:</span> <span id="authority">EMOTIONAL</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Profile:</span> <span id="profile">3/5</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Defined Centers:</span> <span id="defined">LIFEFORCE, EMOTION, EXPRESSION</span>
+        </div>
+    </div>
+
+    <script>
+        // Sample bodygraph data
+        const bodygraphData = {
+            centers: [
+                {name: "INSPIRATION", x: 300, y: 50, defined: false, shape: "diamond"},
+                {name: "MIND", x: 300, y: 120, defined: false, shape: "triangle"},
+                {name: "EXPRESSION", x: 300, y: 200, defined: true, shape: "square"},
+                {name: "IDENTITY", x: 300, y: 300, defined: false, shape: "diamond"},
+                {name: "WILLPOWER", x: 220, y: 280, defined: false, shape: "triangle"},
+                {name: "EMOTION", x: 260, y: 380, defined: true, shape: "triangle"},
+                {name: "DRIVE", x: 340, y: 400, defined: false, shape: "square"},
+                {name: "LIFEFORCE", x: 300, y: 500, defined: true, shape: "square"},
+                {name: "INTUITION", x: 380, y: 320, defined: false, shape: "triangle"}
+            ],
+            channels: [
+                {id: "42-53", from: "LIFEFORCE", to: "EMOTION", defined: true},
+                {id: "34-20", from: "DRIVE", to: "EXPRESSION", defined: false}
+            ],
+            gates: [
+                {number: 42, line: 3, planet: "SUN", type: "personality", center: "LIFEFORCE"},
+                {number: 53, line: 1, planet: "SUN", type: "design", center: "EMOTION"},
+                {number: 18, line: 6, planet: "MOON", type: "personality", center: "INTUITION"}
+            ],
+            type: "BUILDER",
+            authority: "EMOTIONAL",
+            profile: "3/5"
+        };
+
+        // SVG dimensions
+        const width = 600;
+        const height = 600;
+
+        // Create SVG
+        const svg = d3.select("#bodygraph")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("viewBox", `0 0 ${width} ${height}`)
+            .attr("preserveAspectRatio", "xMidYMid meet");
+
+        // Tooltip
+        const tooltip = d3.select("#tooltip");
+
+        // Draw channels first (so they appear behind centers)
+        const centerMap = {};
+        bodygraphData.centers.forEach(c => centerMap[c.name] = c);
+
+        svg.selectAll(".channel")
+            .data(bodygraphData.channels)
+            .join("line")
+            .attr("class", d => `channel ${d.defined ? "active" : "inactive"}`)
+            .attr("x1", d => centerMap[d.from].x)
+            .attr("y1", d => centerMap[d.from].y)
+            .attr("x2", d => centerMap[d.to].x)
+            .attr("y2", d => centerMap[d.to].y);
+
+        // Draw centers
+        function getCenterPath(shape, size = 40) {
+            switch(shape) {
+                case "square":
+                    return `M ${-size/2} ${-size/2} L ${size/2} ${-size/2} L ${size/2} ${size/2} L ${-size/2} ${size/2} Z`;
+                case "triangle":
+                    return `M 0 ${-size/2} L ${size/2} ${size/3} L ${-size/2} ${size/3} Z`;
+                case "diamond":
+                    return `M 0 ${-size/2} L ${size/2} 0 L 0 ${size/2} L ${-size/2} 0 Z`;
+                default:
+                    return `M ${-size/2} ${-size/2} L ${size/2} ${-size/2} L ${size/2} ${size/2} L ${-size/2} ${size/2} Z`;
+            }
+        }
+
+        const centerGroups = svg.selectAll(".center-group")
+            .data(bodygraphData.centers)
+            .join("g")
+            .attr("class", "center-group")
+            .attr("transform", d => `translate(${d.x}, ${d.y})`);
+
+        centerGroups.append("path")
+            .attr("class", d => `center ${d.defined ? "defined" : "undefined"}`)
+            .attr("d", d => getCenterPath(d.shape))
+            .on("mouseover", function(event, d) {
+                tooltip
+                    .style("opacity", 1)
+                    .html(`<strong>${d.name}</strong><br>${d.defined ? "Defined" : "Undefined"}`)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 10) + "px");
+            })
+            .on("mouseout", function() {
+                tooltip.style("opacity", 0);
+            });
+
+        centerGroups.append("text")
+            .attr("class", "center-label")
+            .attr("dy", "0.35em")
+            .text(d => d.name.slice(0, 4))
+            .style("font-size", "10px");
+
+        // Draw gates
+        const gatePositions = {
+            "LIFEFORCE": {x: 300, y: 500},
+            "EMOTION": {x: 260, y: 380},
+            "INTUITION": {x: 380, y: 320}
+        };
+
+        svg.selectAll(".gate")
+            .data(bodygraphData.gates)
+            .join("circle")
+            .attr("class", d => `gate ${d.type}`)
+            .attr("cx", d => gatePositions[d.center] ? gatePositions[d.center].x + (Math.random() - 0.5) * 30 : 0)
+            .attr("cy", d => gatePositions[d.center] ? gatePositions[d.center].y + (Math.random() - 0.5) * 30 : 0)
+            .attr("r", 6)
+            .on("mouseover", function(event, d) {
+                tooltip
+                    .style("opacity", 1)
+                    .html(`<strong>Gate ${d.number}.${d.line}</strong><br>${d.planet} (${d.type})<br>Center: ${d.center}`)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 10) + "px");
+            })
+            .on("mouseout", function() {
+                tooltip.style("opacity", 0);
+            });
+
+        console.log("✅ Bodygraph rendered with D3.js v7");
+        console.log("✅ Rebecca Energy palette applied");
+        console.log("✅ Interactive hover tooltips working");
+    </script>
+</body>
+</html>
