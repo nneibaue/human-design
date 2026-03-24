@@ -15,6 +15,15 @@ from dataclasses import dataclass
 from pathlib import Path
 import logging
 
+from ..agent_tools import (
+    register_filesystem_tools,
+    register_code_search_tools,
+    register_git_history_tools,
+    FileSystemDeps,
+    CodeSearchDeps,
+    GitHistoryDeps,
+)
+
 logger = logging.getLogger(__name__)
 
 
@@ -166,12 +175,22 @@ class D3SpecialistDeps:
     static_directory: Path
 
     def __post_init__(self):
-        """Validate D3 specialist dependencies."""
+        """Validate and initialize D3 specialist dependencies."""
         if not self.workspace_root.exists():
             raise ValueError(f"Workspace root does not exist: {self.workspace_root}")
 
         if not self.workspace_root.is_dir():
             raise ValueError(f"Workspace root is not a directory: {self.workspace_root}")
+
+        # Create static directory structure if it doesn't exist
+        static_path = self.workspace_root / self.static_directory
+        if not static_path.exists():
+            logger.info(f"Creating static directory: {static_path}")
+            static_path.mkdir(parents=True, exist_ok=True)
+
+        # Ensure js and css subdirectories exist
+        (static_path / "js").mkdir(exist_ok=True)
+        (static_path / "css").mkdir(exist_ok=True)
 
 
 def create_d3_specialist_agent(deps: D3SpecialistDeps, model: str | None = None) -> Agent:
@@ -182,7 +201,7 @@ def create_d3_specialist_agent(deps: D3SpecialistDeps, model: str | None = None)
         model: Optional LLM model override
 
     Returns:
-        Configured pydantic-ai Agent instance
+        Configured pydantic-ai Agent instance with registered tools
     """
     agent = Agent(
         model=model or "claude-opus-4-6",
@@ -190,8 +209,29 @@ def create_d3_specialist_agent(deps: D3SpecialistDeps, model: str | None = None)
         deps_type=D3SpecialistDeps,
     )
 
-    # Register tools (filesystem, code search, asset management)
-    # TODO: Import from dodo.agent_tools when available
+    # Register filesystem tools (read/write D3 code, CSS, assets)
+    register_filesystem_tools(agent, FileSystemDeps(
+        workspace_root=deps.workspace_root,
+        max_file_size_mb=5,
+        default_encoding="utf-8",
+        max_lines_default=1000,
+    ))
+
+    # Register code search tools (find D3 code, search patterns)
+    register_code_search_tools(agent, CodeSearchDeps(
+        workspace_root=deps.workspace_root,
+        max_results_default=50,
+        max_file_size_mb=5,
+        context_lines_default=3,
+        exclude_patterns=[".git", "node_modules", "__pycache__", "*.pyc"],
+    ))
+
+    # Register git history tools (check visualization history)
+    register_git_history_tools(agent, GitHistoryDeps(
+        workspace_root=deps.workspace_root,
+        max_commits_default=50,
+        max_diff_lines=500,
+    ))
 
     return agent
 
