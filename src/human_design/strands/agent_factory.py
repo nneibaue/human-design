@@ -85,6 +85,17 @@ class HumanDesignAgentFactory:
             self._agent_cache[agent_name] = agent
             return agent
 
+        elif agent_name == "researcher":
+            from human_design.agents.researcher import (
+                create_researcher_agent,
+                ResearcherDeps,
+            )
+
+            deps = ResearcherDeps(workspace_root=Path.cwd())
+            agent = create_researcher_agent(deps, model="claude-opus-4-6")
+            self._agent_cache[agent_name] = agent
+            return agent
+
         # Agent not found in embedded system
         else:
             raise ValueError(

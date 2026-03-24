@@ -230,7 +230,6 @@ def create_d3_specialist_agent(deps: D3SpecialistDeps, model: str | None = None)
     register_git_history_tools(agent, GitHistoryDeps(
         workspace_root=deps.workspace_root,
         max_commits_default=50,
-        max_diff_lines=500,
     ))
 
     return agent

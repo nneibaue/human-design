@@ -178,6 +178,176 @@ class BodyGraph(BaseModel):
 **Why @computed_field**: Plain `@property` is NOT included in Pydantic serialization.
 Use `@computed_field` + `@property` when you need lazy evaluation that's also serialized.
 
+## FASTAPI PATTERNS (2026 BEST PRACTICES)
+
+**Modern Async Endpoints** (always use async for I/O-bound operations):
+
+```python
+# ✅ CORRECT: Async endpoint with dependency injection
+from typing import Annotated
+from fastapi import Depends, HTTPException, status, Query
+from uuid import UUID
+
+@app.post("/api/bodygraph", response_model=BodygraphResponse)
+async def calculate_bodygraph(
+    date: Annotated[str, Query(..., description="Birth date (YYYY-MM-DD)")],
+    time: Annotated[str, Query(..., description="Birth time (HH:MM)")],
+    location: Annotated[str, Query(..., description="City, State/Country")],
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> BodygraphResponse:
+    """
+    Pattern elements:
+    - async def for non-blocking I/O
+    - Annotated[type, Query/Path/Depends] for explicit parameter metadata
+    - response_model for automatic validation + OpenAPI docs
+    - HTTPException for expected business errors
+    """
+    try:
+        birth_info = parse_birth_data(date, time, location)
+        bodygraph = await calculate(birth_info)  # async calculation
+        return BodygraphResponse.model_validate(bodygraph)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid input: {str(e)}",
+        )
+
+# ❌ AVOID: Sync endpoint for I/O operations (blocks event loop)
+@app.post("/api/bodygraph")
+def calculate_bodygraph(date: str, time: str, location: str):
+    # Blocking I/O hurts performance
+    bodygraph = blocking_calculate(...)
+    return bodygraph
+```
+
+**Dependency Injection Layers** (compose dependencies for reusability):
+
+```python
+# Layer 0: Infrastructure (DB, Redis, HTTP clients)
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
+    async with async_session_factory() as session:
+        try:
+            yield session
+        finally:
+            await session.close()
+
+# Layer 1: Authentication (token → user resolution)
+async def get_current_user(
+    token: Annotated[str, Depends(oauth2_scheme)],
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> User:
+    # Composes: token extraction + db lookup
+    user = await db.get(User, decode_token(token))
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    return user
+
+# Layer 2: Authorization (role/permission checks)
+def require_role(role: str):
+    """Factory pattern — returns parameterized dependency."""
+    async def _check_role(
+        current_user: Annotated[User, Depends(get_current_user)],
+    ) -> User:
+        if role not in current_user.roles:
+            raise HTTPException(status_code=403, detail=f"Role '{role}' required")
+        return current_user
+    return _check_role
+
+# Usage: Clean, declarative composition
+AdminUser = Annotated[User, Depends(require_role("admin"))]
+DbSession = Annotated[AsyncSession, Depends(get_db)]
+
+@router.delete("/{item_id}", dependencies=[Depends(require_role("admin"))])
+async def delete_item(item_id: UUID, db: DbSession) -> None:
+    ...
+```
+
+**Structured Error Handling** (separate domain exceptions from HTTP):
+
+```python
+# Domain exceptions (no HTTP knowledge)
+class DomainError(Exception):
+    def __init__(self, message: str, code: str):
+        self.message = message
+        self.code = code
+
+class EntityNotFoundError(DomainError):
+    def __init__(self, entity: str, entity_id: str):
+        super().__init__(f"{entity} '{entity_id}' not found", "ENTITY_NOT_FOUND")
+
+# Exception handler (translate domain → HTTP)
+@app.exception_handler(EntityNotFoundError)
+async def entity_not_found_handler(
+    request: Request,
+    exc: EntityNotFoundError,
+) -> JSONResponse:
+    return JSONResponse(
+        status_code=status.HTTP_404_NOT_FOUND,
+        content={"detail": exc.message, "code": exc.code},
+    )
+
+# Usage in endpoint
+@app.get("/person/{person_id}")
+async def get_person(person_id: UUID) -> PersonResponse:
+    person = await person_repo.get(person_id)
+    if not person:
+        raise EntityNotFoundError("Person", str(person_id))  # Clean separation
+    return PersonResponse.model_validate(person)
+```
+
+**Response Models** (explicit, validated, documented):
+
+```python
+# ✅ CORRECT: Separate request/response models
+class PersonCreate(BaseModel):
+    """Request body — only fields user can set."""
+    name: str = Field(..., min_length=1, max_length=255)
+    birth_date: str
+    birth_time: str
+    location: str
+
+class PersonResponse(BaseModel):
+    """Response model — includes server-generated fields."""
+    model_config = ConfigDict(from_attributes=True)  # ORM mode for SQLAlchemy
+
+    id: UUID
+    name: str
+    birth_date: str
+    created_at: datetime
+    bodygraph: BodygraphSummary  # Nested model
+
+# Endpoint with explicit response_model
+@app.post("/person", response_model=PersonResponse, status_code=201)
+async def create_person(person: PersonCreate) -> PersonResponse:
+    # response_model strips unexpected fields (security)
+    ...
+
+# ❌ AVOID: Dict responses (no validation, no docs)
+@app.post("/person")
+def create_person(person: dict) -> dict:
+    return {"id": "123", "name": person["name"]}  # No type safety
+```
+
+**Modern Python Typing** (Union syntax, Annotated, Literal):
+
+```python
+# ✅ CORRECT: Python 3.10+ union syntax
+def get_value(key: str) -> str | None:  # Not Optional[str]
+    ...
+
+# ✅ CORRECT: Annotated for reusable constraints
+GateNumber = Annotated[int, Field(ge=1, le=64, description="Gate number 1-64")]
+PositiveInt = Annotated[int, Field(gt=0)]
+
+# ✅ CORRECT: Literal for constrained string values
+HDType = Literal["Initiator", "Builder", "Specialist", "Coordinator", "Observer"]
+
+# ❌ AVOID: Optional[T] (use T | None)
+from typing import Optional
+def get_value(key: str) -> Optional[str]:  # Old style
+    ...
+```
+
 ## HUMAN DESIGN DOMAIN KNOWLEDGE (CRITICAL)
 
 **Semantic Separation Principle** (FOUNDATIONAL):
