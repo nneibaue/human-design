@@ -147,7 +147,7 @@ class Strand:
         Returns:
             Agent findings dict
         """
-        agent = self.factory.create_agent(agent_name)
+        agent, deps = self.factory.create_agent(agent_name)
 
         # Build agent prompt from strand problem and context
         prompt = self.definition.problem
@@ -158,9 +158,8 @@ class Strand:
             prompt += "\n\n## CONTEXT PROVIDED:\n"
             prompt += json.dumps(self.definition.context, indent=2)
 
-        # Run agent (pydantic-ai agents expect string prompt + deps)
-        # Agent dependencies are already set when agent was created
-        result = await agent.run(prompt)
+        # Run agent with deps (pydantic-ai passes deps via RunContext)
+        result = await agent.run(prompt, deps=deps)
 
         # Extract findings from result
         if hasattr(result, 'output'):
@@ -176,7 +175,7 @@ class Strand:
         print(f"🧵 Coordinator | Synthesizing findings from {len(self.findings)} specialists...")
 
         try:
-            coordinator = self.factory.create_agent('coordinator')
+            coordinator, deps = self.factory.create_agent('coordinator')
 
             # Build coordinator input with all specialist findings
             coordinator_input = {
@@ -185,7 +184,7 @@ class Strand:
                 "specialist_findings": self.findings,
             }
 
-            result = await coordinator.run(coordinator_input)
+            result = await coordinator.run(coordinator_input, deps=deps)
 
             # Extract synthesis
             if hasattr(result, 'output'):

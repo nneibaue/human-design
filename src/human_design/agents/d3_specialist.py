@@ -170,9 +170,27 @@ class D3SpecialistConfig(BaseModel):
 
 @dataclass
 class D3SpecialistDeps:
-    """D3 Specialist agent dependencies."""
+    """D3 Specialist agent dependencies.
+
+    Combines all deps needed by filesystem, code_search, and git_history tools.
+    """
     workspace_root: Path
     static_directory: Path
+
+    # FileSystemDeps fields
+    max_file_size_mb: int = 10
+    default_encoding: str = "utf-8"
+    max_lines_default: int = 1000
+
+    # CodeSearchDeps fields
+    max_results_default: int = 50
+    context_lines_default: int = 3
+    default_file_patterns: list[str] = None
+    exclude_patterns: list[str] = None
+
+    # GitHistoryDeps fields
+    max_commits_default: int = 50
+    timeout_seconds: int = 30
 
     def __post_init__(self):
         """Validate and initialize D3 specialist dependencies."""
@@ -191,6 +209,20 @@ class D3SpecialistDeps:
         # Ensure js and css subdirectories exist
         (static_path / "js").mkdir(exist_ok=True)
         (static_path / "css").mkdir(exist_ok=True)
+
+        # Set default exclude patterns if not provided
+        if self.exclude_patterns is None:
+            self.exclude_patterns = [
+                ".git/*",
+                "*.pyc",
+                "__pycache__/*",
+                "node_modules/*",
+                ".venv/*",
+            ]
+
+        # Set default file patterns if not provided
+        if self.default_file_patterns is None:
+            self.default_file_patterns = ["*"]
 
 
 def create_d3_specialist_agent(deps: D3SpecialistDeps, model: str | None = None) -> Agent:

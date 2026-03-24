@@ -8,8 +8,22 @@ DODO: Distributed Ontology-Driven Operations
 Inspired by Neal Stephenson's "The Rise and Fall of D.O.D.O."
 """
 
+import os
 from pathlib import Path
 from typing import Any
+
+
+def get_agent_model() -> str:
+    """Get LLM model for agents from environment.
+
+    Returns:
+        Model name - "claude-haiku-4-5" for testing, "claude-opus-4-6" for production
+
+    Environment:
+        AGENT_MODEL: Override model (e.g., "claude-opus-4-6" for production)
+        Default: "claude-haiku-4-5" (cost-efficient testing)
+    """
+    return os.getenv("AGENT_MODEL", "claude-haiku-4-5")
 
 
 class HumanDesignAgentFactory:
@@ -31,7 +45,7 @@ class HumanDesignAgentFactory:
             agent_name: Name of agent to create
 
         Returns:
-            Agent instance with .run() method
+            Tuple of (Agent instance, deps object)
 
         Raises:
             ValueError: If agent not found
@@ -39,6 +53,8 @@ class HumanDesignAgentFactory:
         # Check cache first
         if agent_name in self._agent_cache:
             return self._agent_cache[agent_name]
+
+        model = get_agent_model()
 
         # Hardcoded human-design agents
         if agent_name == "implementer":
@@ -48,9 +64,9 @@ class HumanDesignAgentFactory:
             )
 
             deps = ImplementerDeps(workspace_root=Path.cwd())
-            agent = create_implementer_agent(deps, model="claude-opus-4-6")
-            self._agent_cache[agent_name] = agent
-            return agent
+            agent = create_implementer_agent(deps, model=model)
+            self._agent_cache[agent_name] = (agent, deps)
+            return (agent, deps)
 
         elif agent_name == "test_engineer":
             from human_design.agents.test_engineer import (
@@ -60,8 +76,14 @@ class HumanDesignAgentFactory:
 
             config = TestEngineerConfig(workspace_root=Path.cwd())
             agent = create_test_engineer_agent(config)
-            self._agent_cache[agent_name] = agent
-            return agent
+            # test_engineer doesn't expose deps, create compatible object
+            from dataclasses import dataclass
+            @dataclass
+            class TestEngineerDeps:
+                workspace_root: Path = Path.cwd()
+            deps = TestEngineerDeps()
+            self._agent_cache[agent_name] = (agent, deps)
+            return (agent, deps)
 
         elif agent_name == "d3_specialist":
             from human_design.agents.d3_specialist import (
@@ -73,9 +95,9 @@ class HumanDesignAgentFactory:
                 workspace_root=Path.cwd(),
                 static_directory=Path("static")
             )
-            agent = create_d3_specialist_agent(deps)
-            self._agent_cache[agent_name] = agent
-            return agent
+            agent = create_d3_specialist_agent(deps, model=model)
+            self._agent_cache[agent_name] = (agent, deps)
+            return (agent, deps)
 
         elif agent_name == "python_linguist":
             from human_design.agents.python_linguist import (
@@ -84,9 +106,9 @@ class HumanDesignAgentFactory:
             )
 
             deps = PythonLinguistDeps(workspace_root=Path.cwd())
-            agent = create_python_linguist_agent(deps, model="claude-opus-4-6")
-            self._agent_cache[agent_name] = agent
-            return agent
+            agent = create_python_linguist_agent(deps, model=model)
+            self._agent_cache[agent_name] = (agent, deps)
+            return (agent, deps)
 
         elif agent_name == "researcher":
             from human_design.agents.researcher import (
@@ -95,16 +117,16 @@ class HumanDesignAgentFactory:
             )
 
             deps = ResearcherDeps(workspace_root=Path.cwd())
-            agent = create_researcher_agent(deps, model="claude-opus-4-6")
-            self._agent_cache[agent_name] = agent
-            return agent
+            agent = create_researcher_agent(deps, model=model)
+            self._agent_cache[agent_name] = (agent, deps)
+            return (agent, deps)
 
         # Agent not found in embedded system
         else:
             raise ValueError(
                 f"Agent '{agent_name}' not found. "
-                f"Available embedded agents: implementer, test_engineer, d3_specialist, python_linguist. "
-                f"Additional agents (researcher, architect, coordinator, fair_witness) require "
+                f"Available embedded agents: implementer, test_engineer, d3_specialist, python_linguist, researcher. "
+                f"Additional agents (architect, coordinator, fair_witness) require "
                 f"standalone DODO installation (Distributed Ontology-Driven Operations)."
             )
 

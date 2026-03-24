@@ -1,0 +1,98 @@
+seed_metadata:
+  type: visualization_test
+  created_date: "2026-03-23"
+  priority: high
+  domain: d3_visualization
+  estimated_complexity: medium
+
+problem_statement: |
+  Test the d3_specialist agent by creating a standalone HTML bodygraph visualization.
+
+  Requirements:
+  1. Get sample bodygraph data from the human-design codebase
+  2. Create a standalone HTML file with embedded D3.js visualization
+  3. Use real RawBodyGraph data structure
+  4. Apply Rebecca Energy aesthetic
+  5. Include basic interactivity (hover for gate info)
+
+  The visualization should render a single bodygraph in a self-contained HTML file
+  that can be opened in a browser without a server.
+
+success_criteria:
+  - Standalone HTML file created (e.g., test_bodygraph.html)
+  - Uses D3.js v7 patterns
+  - Renders 9 centers with proper geometry
+  - Shows defined/undefined centers
+  - Rebecca Energy color palette applied
+  - Hover interactions work
+  - No external dependencies (inline D3 or use CDN)
+
+investigation_agents:
+  implementer:
+    role: data_preparation
+    focus: |
+      - Read human_design.models.bodygraph module
+      - Extract sample bodygraph data structure
+      - Convert RawBodyGraph to D3-friendly JSON format
+      - Provide data schema to d3_specialist
+
+  d3_specialist:
+    role: visualization_implementation
+    focus: |
+      - Design bodygraph SVG structure
+      - Implement D3.js v7 rendering code
+      - Apply Rebecca Energy aesthetic (colors, fonts)
+      - Add hover interactions for gates/centers
+      - Create standalone HTML file with inline JS/CSS
+      - Ensure proper center geometry (9 centers: triangle, square, diamond shapes)
+
+context:
+  bodygraph_structure:
+    centers: 9
+    channels: 36
+    gates: 64
+    center_names:
+      - INSPIRATION  # Head
+      - MIND         # Ajna
+      - EXPRESSION   # Throat
+      - IDENTITY     # G-Center
+      - WILLPOWER    # Ego/Heart
+      - EMOTION      # Solar Plexus
+      - DRIVE        # Sacral
+      - LIFEFORCE    # Root
+      - INTUITION    # Spleen
+
+  rebecca_energy_palette:
+    defined_center: "#8B4513"      # Saddle brown
+    undefined_center: "#F5F5DC"    # Beige
+    conscious: "#4A5D23"           # Dark olive green
+    unconscious: "#8B0000"         # Dark red
+    emergent: "#DAA520"            # Goldenrod
+    background: "#2C1810"          # Deep brown
+    text: "#F5E6D3"                # Warm cream
+
+  sample_data_source:
+    file: "src/human_design/models/bodygraph.py"
+    class: "RawBodyGraph"
+    test_data: "Use any test/fixture data or create minimal example"
+
+expected_outputs:
+  - test_bodygraph.html (standalone HTML with D3 visualization)
+  - bodygraph_data.json (sample data used for visualization)
+  - README_visualization_test.md (brief description of what was created)
+
+strand_configuration:
+  execution_mode: sequential
+  agents: ["implementer", "d3_specialist"]
+  allow_agent_dialogue: false
+  git_isolation: false
+  output_location: "."
+
+metadata:
+  user_request: "test strand to build quick visualization in standalone html"
+  purpose: "Validate d3_specialist agent functionality"
+  semantic_tags:
+    - d3_test
+    - bodygraph
+    - visualization
+    - standalone_html
