@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bodygraph Visualization - Coordinator</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        /* Rebecca Energy Aesthetic */
+        :root {
+            --defined-center: #8B4513;      /* Saddle brown */
+            --undefined-center: #F5F5DC;    /* Beige */
+            --conscious: #4A5D23;           /* Dark olive green */
+            --unconscious: #8B0000;         /* Dark red */
+            --emergent: #DAA520;            /* Goldenrod */
+            --background: #FFFFFF;          /* White background for visibility */
+            --text: #333333;                /* Dark gray text */
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background: var(--background);
+            color: var(--text);
+            font-family: Georgia, serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #8B4513;
+        }
+
+        .info {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 18px;
+        }
+
+        .bodygraph-container {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        svg {
+            background: #FFFFFF;
+            border: 2px solid #CCCCCC;
+            border-radius: 8px;
+        }
+
+        .center-defined {
+            fill: var(--defined-center);
+            stroke: #333333;
+            stroke-width: 2;
+        }
+
+        .center-undefined {
+            fill: #FFFFFF;
+            stroke: #333333;
+            stroke-width: 2;
+        }
+
+        .center-label {
+            fill: #333333;
+            font-family: Georgia, serif;
+            font-size: 12px;
+            text-anchor: middle;
+        }
+
+
+        .gate-conscious {
+            fill: var(--conscious);
+            stroke: var(--text);
+            stroke-width: 1.5;
+        }
+
+        .gate-unconscious {
+            fill: var(--unconscious);
+            stroke: var(--text);
+            stroke-width: 1.5;
+        }
+
+        .gate-label {
+            fill: var(--text);
+            font-size: 10px;
+            text-anchor: middle;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: #333333;
+            color: #FFFFFF;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Human Design Bodygraph</h1>
+        <div class="info">
+            <strong>Type:</strong> Coordinator |
+            <strong>Authority:</strong> Emotional |
+            <strong>Profile:</strong> conscious_line=6 unconscious_line=3 profile_notation='6/3' profile_name='Role Model/Martyr'
+        </div>
+        <div class="info">
+            <strong>Birth:</strong> 1992-11-10 in Austin, TX
+        </div>
+
+        <div class="bodygraph-container" id="bodygraph"></div>
+        <div class="tooltip" id="tooltip"></div>
+    </div>
+
+    <script>
+        // Bodygraph data
+        const data = {
+        "centers": [
+                {
+                        "name": "INSPIRATION",
+                        "defined": false,
+                        "x": 400,
+                        "y": 80,
+                        "shape": "triangle"
+                },
+                {
+                        "name": "MIND",
+                        "defined": false,
+                        "x": 400,
+                        "y": 195,
+                        "shape": "triangle"
+                },
+                {
+                        "name": "EXPRESSION",
+                        "defined": true,
+                        "x": 400,
+                        "y": 340,
+                        "shape": "square"
+                },
+                {
+                        "name": "IDENTITY",
+                        "defined": true,
+                        "x": 400,
+                        "y": 505,
+                        "shape": "diamond"
+                },
+                {
+                        "name": "WILLPOWER",
+                        "defined": false,
+                        "x": 310,
+                        "y": 445,
+                        "shape": "triangle"
+                },
+                {
+                        "name": "EMOTION",
+                        "defined": true,
+                        "x": 535,
+                        "y": 620,
+                        "shape": "triangle"
+                },
+                {
+                        "name": "DRIVE",
+                        "defined": true,
+                        "x": 400,
+                        "y": 850,
+                        "shape": "square"
+                },
+                {
+                        "name": "LIFEFORCE",
+                        "defined": false,
+                        "x": 400,
+                        "y": 680,
+                        "shape": "square"
+                },
+                {
+                        "name": "INTUITION",
+                        "defined": false,
+                        "x": 265,
+                        "y": 620,
+                        "shape": "triangle"
+                }
+        ],
+        "channels": [
+                {
+                        "id": "1-8",
+                        "gate_a": 1,
+                        "gate_b": 8,
+                        "defined": true,
+                        "from_center": "IDENTITY",
+                        "to_center": "EXPRESSION"
+                },
+                {
+                        "id": "19-49",
+                        "gate_a": 19,
+                        "gate_b": 49,
+                        "defined": true,
+                        "from_center": "DRIVE",
+                        "to_center": "EMOTION"
+                }
+        ],
+        "type": "Coordinator",
+        "authority": "Emotional",
+        "profile": "conscious_line=6 unconscious_line=3 profile_notation='6/3' profile_name='Role Model/Martyr'"
+};
+
+        // D3 v7 Visualization
+        const width = 800;
+        const height = 1000;
+
+        const svg = d3.select("#bodygraph")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("viewBox", `0 0 ${width} ${height}`);
+
+        const tooltip = d3.select("#tooltip");
+
+        // Helper functions
+        function getCenterShape(shape, size = 60) {
+            switch (shape) {
+                case "square":
+                    return `M ${-size/2} ${-size/2} h ${size} v ${size} h ${-size} Z`;
+                case "triangle":
+                    return `M 0 ${-size/2} L ${size/2} ${size/2} L ${-size/2} ${size/2} Z`;
+                case "diamond":
+                    return `M 0 ${-size/2} L ${size/2} 0 L 0 ${size/2} L ${-size/2} 0 Z`;
+                default:
+                    return "";
+            }
+        }
+
+        // Draw simple lines connecting centers
+        svg.selectAll(".channel")
+            .data(data.channels)
+            .join("line")
+            .attr("class", "channel")
+            .attr("x1", d => {
+                const fromCenter = data.centers.find(c => c.name === d.from_center);
+                return fromCenter ? fromCenter.x : 0;
+            })
+            .attr("y1", d => {
+                const fromCenter = data.centers.find(c => c.name === d.from_center);
+                return fromCenter ? fromCenter.y : 0;
+            })
+            .attr("x2", d => {
+                const toCenter = data.centers.find(c => c.name === d.to_center);
+                return toCenter ? toCenter.x : 0;
+            })
+            .attr("y2", d => {
+                const toCenter = data.centers.find(c => c.name === d.to_center);
+                return toCenter ? toCenter.y : 0;
+            })
+            .attr("stroke", "#8B4513")
+            .attr("stroke-width", 4);
+
+        // Draw centers
+        const centerGroups = svg.selectAll(".center")
+            .data(data.centers)
+            .join("g")
+            .attr("class", "center")
+            .attr("transform", d => `translate(${d.x}, ${d.y})`);
+
+        centerGroups.append("path")
+            .attr("d", d => getCenterShape(d.shape))
+            .attr("class", d => d.defined ? "center-defined" : "center-undefined")
+            .on("mouseover", (event, d) => {
+                tooltip
+                    .style("opacity", 1)
+                    .html(`<strong>${d.name}</strong><br>${d.defined ? "Defined" : "Undefined"}`)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 20) + "px");
+            })
+            .on("mouseout", () => {
+                tooltip.style("opacity", 0);
+            });
+
+        centerGroups.append("text")
+            .attr("class", "center-label")
+            .attr("dy", "0.3em")
+            .text(d => d.name.substring(0, 4));
+    </script>
+</body>
+</html>

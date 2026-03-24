@@ -28,7 +28,8 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
-from ..api import GateAPI
+from human_design.api_client import GateAPI
+from human_design.api.bodygraph_endpoint import calculate_and_render_bodygraph
 from ..gates_data import CHANNELS, CIRCUIT_GROUPS, CONFUSABLE_CLUSTERS, GATES
 from ..models.people import GroupStore, PeopleResponse, Person, RelationshipStore, TagStore
 
@@ -876,3 +877,34 @@ async def save_learning_progress(request: Request) -> dict[str, Any]:
 
     _save_json_to_s3_or_local(f"learning/{session_id}/progress.json", progress)
     return {"status": "saved", "progress": progress[gate_num]}
+
+
+# ============================================================================
+# Bodygraph Rendering Endpoint
+# ============================================================================
+
+
+@app.get("/bodygraph", response_class=HTMLResponse)
+async def bodygraph_page(request: Request) -> HTMLResponse:
+    """Render the bodygraph calculator page."""
+    if not request.session.get("authenticated"):
+        return RedirectResponse(url="/login", status_code=303)
+
+    return templates.TemplateResponse(
+        "bodygraph.html",
+        {"request": request},
+    )
+
+
+@app.get("/api/bodygraph")
+async def get_bodygraph(
+    date: str = Query(..., description="Birth date (YYYY-MM-DD)"),
+    time: str = Query(..., description="Birth time (HH:MM)"),
+    city: str = Query(..., description="City name"),
+    country: str = Query(..., description="Country or state code"),
+):
+    """Calculate and render bodygraph from birth data.
+
+    Returns SVG string and metadata (type, authority, profile, centers, channels).
+    """
+    return calculate_and_render_bodygraph(date, time, city, country)

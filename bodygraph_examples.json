@@ -1,0 +1,599 @@
+[
+  {
+    "name": "Alex Chen",
+    "birth_info": {
+      "date": "1988-03-15",
+      "time": "14:30",
+      "city": "San Francisco",
+      "state": "CA"
+    },
+    "centers": {
+      "INSPIRATION": {
+        "is_defined": false
+      },
+      "MIND": {
+        "is_defined": false
+      },
+      "EXPRESSION": {
+        "is_defined": false
+      },
+      "IDENTITY": {
+        "is_defined": false
+      },
+      "WILLPOWER": {
+        "is_defined": true
+      },
+      "EMOTION": {
+        "is_defined": false
+      },
+      "DRIVE": {
+        "is_defined": true
+      },
+      "LIFEFORCE": {
+        "is_defined": true
+      },
+      "INTUITION": {
+        "is_defined": true
+      }
+    },
+    "gates": [
+      {
+        "number": 36,
+        "line": 4,
+        "planet": 0,
+        "is_personality": true
+      },
+      {
+        "number": 6,
+        "line": 4,
+        "planet": 14,
+        "is_personality": true
+      },
+      {
+        "number": 30,
+        "line": 2,
+        "planet": 1,
+        "is_personality": true
+      },
+      {
+        "number": 30,
+        "line": 6,
+        "planet": 2,
+        "is_personality": true
+      },
+      {
+        "number": 24,
+        "line": 4,
+        "planet": 3,
+        "is_personality": true
+      },
+      {
+        "number": 54,
+        "line": 1,
+        "planet": 4,
+        "is_personality": true
+      },
+      {
+        "number": 3,
+        "line": 6,
+        "planet": 5,
+        "is_personality": true
+      },
+      {
+        "number": 10,
+        "line": 4,
+        "planet": 6,
+        "is_personality": true
+      },
+      {
+        "number": 10,
+        "line": 3,
+        "planet": 7,
+        "is_personality": true
+      },
+      {
+        "number": 38,
+        "line": 1,
+        "planet": 8,
+        "is_personality": true
+      },
+      {
+        "number": 44,
+        "line": 6,
+        "planet": 9,
+        "is_personality": true
+      },
+      {
+        "number": 36,
+        "line": 1,
+        "planet": 11,
+        "is_personality": true
+      },
+      {
+        "number": 6,
+        "line": 1,
+        "planet": 999,
+        "is_personality": true
+      },
+      {
+        "number": 11,
+        "line": 6,
+        "planet": 0,
+        "is_personality": false
+      },
+      {
+        "number": 12,
+        "line": 6,
+        "planet": 14,
+        "is_personality": false
+      },
+      {
+        "number": 26,
+        "line": 1,
+        "planet": 1,
+        "is_personality": false
+      },
+      {
+        "number": 11,
+        "line": 4,
+        "planet": 2,
+        "is_personality": false
+      },
+      {
+        "number": 60,
+        "line": 1,
+        "planet": 3,
+        "is_personality": false
+      },
+      {
+        "number": 1,
+        "line": 4,
+        "planet": 4,
+        "is_personality": false
+      },
+      {
+        "number": 51,
+        "line": 5,
+        "planet": 5,
+        "is_personality": false
+      },
+      {
+        "number": 11,
+        "line": 2,
+        "planet": 6,
+        "is_personality": false
+      },
+      {
+        "number": 11,
+        "line": 5,
+        "planet": 7,
+        "is_personality": false
+      },
+      {
+        "number": 58,
+        "line": 4,
+        "planet": 8,
+        "is_personality": false
+      },
+      {
+        "number": 44,
+        "line": 5,
+        "planet": 9,
+        "is_personality": false
+      },
+      {
+        "number": 36,
+        "line": 6,
+        "planet": 11,
+        "is_personality": false
+      },
+      {
+        "number": 6,
+        "line": 6,
+        "planet": 999,
+        "is_personality": false
+      }
+    ],
+    "type": "Builder",
+    "authority": "Sacral",
+    "profile": "4/6"
+  },
+  {
+    "name": "Jordan Martinez",
+    "birth_info": {
+      "date": "1992-07-22",
+      "time": "08:45",
+      "city": "Austin",
+      "state": "TX"
+    },
+    "centers": {
+      "INSPIRATION": {
+        "is_defined": false
+      },
+      "MIND": {
+        "is_defined": false
+      },
+      "EXPRESSION": {
+        "is_defined": true
+      },
+      "IDENTITY": {
+        "is_defined": true
+      },
+      "WILLPOWER": {
+        "is_defined": false
+      },
+      "EMOTION": {
+        "is_defined": false
+      },
+      "DRIVE": {
+        "is_defined": true
+      },
+      "LIFEFORCE": {
+        "is_defined": true
+      },
+      "INTUITION": {
+        "is_defined": false
+      }
+    },
+    "gates": [
+      {
+        "number": 56,
+        "line": 4,
+        "planet": 0,
+        "is_personality": true
+      },
+      {
+        "number": 60,
+        "line": 4,
+        "planet": 14,
+        "is_personality": true
+      },
+      {
+        "number": 42,
+        "line": 6,
+        "planet": 1,
+        "is_personality": true
+      },
+      {
+        "number": 7,
+        "line": 5,
+        "planet": 2,
+        "is_personality": true
+      },
+      {
+        "number": 33,
+        "line": 4,
+        "planet": 3,
+        "is_personality": true
+      },
+      {
+        "number": 8,
+        "line": 3,
+        "planet": 4,
+        "is_personality": true
+      },
+      {
+        "number": 64,
+        "line": 3,
+        "planet": 5,
+        "is_personality": true
+      },
+      {
+        "number": 13,
+        "line": 4,
+        "planet": 6,
+        "is_personality": true
+      },
+      {
+        "number": 54,
+        "line": 1,
+        "planet": 7,
+        "is_personality": true
+      },
+      {
+        "number": 54,
+        "line": 3,
+        "planet": 8,
+        "is_personality": true
+      },
+      {
+        "number": 43,
+        "line": 2,
+        "planet": 9,
+        "is_personality": true
+      },
+      {
+        "number": 10,
+        "line": 3,
+        "planet": 11,
+        "is_personality": true
+      },
+      {
+        "number": 15,
+        "line": 3,
+        "planet": 999,
+        "is_personality": true
+      },
+      {
+        "number": 3,
+        "line": 6,
+        "planet": 0,
+        "is_personality": false
+      },
+      {
+        "number": 50,
+        "line": 6,
+        "planet": 14,
+        "is_personality": false
+      },
+      {
+        "number": 10,
+        "line": 1,
+        "planet": 1,
+        "is_personality": false
+      },
+      {
+        "number": 17,
+        "line": 2,
+        "planet": 2,
+        "is_personality": false
+      },
+      {
+        "number": 51,
+        "line": 4,
+        "planet": 3,
+        "is_personality": false
+      },
+      {
+        "number": 22,
+        "line": 3,
+        "planet": 4,
+        "is_personality": false
+      },
+      {
+        "number": 59,
+        "line": 5,
+        "planet": 5,
+        "is_personality": false
+      },
+      {
+        "number": 13,
+        "line": 5,
+        "planet": 6,
+        "is_personality": false
+      },
+      {
+        "number": 54,
+        "line": 4,
+        "planet": 7,
+        "is_personality": false
+      },
+      {
+        "number": 54,
+        "line": 5,
+        "planet": 8,
+        "is_personality": false
+      },
+      {
+        "number": 43,
+        "line": 4,
+        "planet": 9,
+        "is_personality": false
+      },
+      {
+        "number": 10,
+        "line": 5,
+        "planet": 11,
+        "is_personality": false
+      },
+      {
+        "number": 15,
+        "line": 5,
+        "planet": 999,
+        "is_personality": false
+      }
+    ],
+    "type": "Builder",
+    "authority": "Sacral",
+    "profile": "4/6"
+  },
+  {
+    "name": "Sam Taylor",
+    "birth_info": {
+      "date": "1985-11-08",
+      "time": "22:15",
+      "city": "Portland",
+      "state": "OR"
+    },
+    "centers": {
+      "INSPIRATION": {
+        "is_defined": false
+      },
+      "MIND": {
+        "is_defined": false
+      },
+      "EXPRESSION": {
+        "is_defined": true
+      },
+      "IDENTITY": {
+        "is_defined": true
+      },
+      "WILLPOWER": {
+        "is_defined": false
+      },
+      "EMOTION": {
+        "is_defined": false
+      },
+      "DRIVE": {
+        "is_defined": false
+      },
+      "LIFEFORCE": {
+        "is_defined": true
+      },
+      "INTUITION": {
+        "is_defined": false
+      }
+    },
+    "gates": [
+      {
+        "number": 1,
+        "line": 4,
+        "planet": 0,
+        "is_personality": true
+      },
+      {
+        "number": 2,
+        "line": 4,
+        "planet": 14,
+        "is_personality": true
+      },
+      {
+        "number": 46,
+        "line": 3,
+        "planet": 1,
+        "is_personality": true
+      },
+      {
+        "number": 9,
+        "line": 5,
+        "planet": 2,
+        "is_personality": true
+      },
+      {
+        "number": 50,
+        "line": 4,
+        "planet": 3,
+        "is_personality": true
+      },
+      {
+        "number": 18,
+        "line": 5,
+        "planet": 4,
+        "is_personality": true
+      },
+      {
+        "number": 19,
+        "line": 2,
+        "planet": 5,
+        "is_personality": true
+      },
+      {
+        "number": 14,
+        "line": 5,
+        "planet": 6,
+        "is_personality": true
+      },
+      {
+        "number": 5,
+        "line": 6,
+        "planet": 7,
+        "is_personality": true
+      },
+      {
+        "number": 10,
+        "line": 4,
+        "planet": 8,
+        "is_personality": true
+      },
+      {
+        "number": 28,
+        "line": 4,
+        "planet": 9,
+        "is_personality": true
+      },
+      {
+        "number": 24,
+        "line": 2,
+        "planet": 11,
+        "is_personality": true
+      },
+      {
+        "number": 44,
+        "line": 2,
+        "planet": 999,
+        "is_personality": true
+      },
+      {
+        "number": 7,
+        "line": 6,
+        "planet": 0,
+        "is_personality": false
+      },
+      {
+        "number": 13,
+        "line": 6,
+        "planet": 14,
+        "is_personality": false
+      },
+      {
+        "number": 45,
+        "line": 3,
+        "planet": 1,
+        "is_personality": false
+      },
+      {
+        "number": 7,
+        "line": 5,
+        "planet": 2,
+        "is_personality": false
+      },
+      {
+        "number": 39,
+        "line": 2,
+        "planet": 3,
+        "is_personality": false
+      },
+      {
+        "number": 33,
+        "line": 4,
+        "planet": 4,
+        "is_personality": false
+      },
+      {
+        "number": 19,
+        "line": 4,
+        "planet": 5,
+        "is_personality": false
+      },
+      {
+        "number": 43,
+        "line": 4,
+        "planet": 6,
+        "is_personality": false
+      },
+      {
+        "number": 5,
+        "line": 3,
+        "planet": 7,
+        "is_personality": false
+      },
+      {
+        "number": 10,
+        "line": 4,
+        "planet": 8,
+        "is_personality": false
+      },
+      {
+        "number": 28,
+        "line": 1,
+        "planet": 9,
+        "is_personality": false
+      },
+      {
+        "number": 2,
+        "line": 1,
+        "planet": 11,
+        "is_personality": false
+      },
+      {
+        "number": 1,
+        "line": 1,
+        "planet": 999,
+        "is_personality": false
+      }
+    ],
+    "type": "Builder",
+    "authority": "Sacral",
+    "profile": "4/6"
+  }
+]

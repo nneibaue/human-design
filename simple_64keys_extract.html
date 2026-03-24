@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>64keys Bodygraph - Direct Copy</title>
+    <style>
+        body {
+            background: white;
+            margin: 20px;
+            font-family: sans-serif;
+        }
+        #container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        svg {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>64keys Bodygraph Structure (Direct Copy)</h1>
+    <p>This is the exact SVG from bg_example.html</p>
+    <div id="container"></div>
+    <script>
+        fetch('bg_example.html')
+            .then(r => r.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const svg = doc.getElementById('Bodygraph_v1');
+                if (svg) {
+                    const container = document.getElementById('container');
+                    const cloned = svg.cloneNode(true);
+                    cloned.setAttribute('width', '600');
+                    cloned.setAttribute('height', '800');
+                    container.appendChild(cloned);
+                } else {
+                    document.body.innerHTML += '<p>Could not find Bodygraph_v1 SVG</p>';
+                }
+            })
+            .catch(e => {
+                document.body.innerHTML += '<p>Error: ' + e.message + '</p>';
+            });
+    </script>
+</body>
+</html>

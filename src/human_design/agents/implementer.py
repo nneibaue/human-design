@@ -195,13 +195,11 @@ async def calculate_bodygraph(
     location: Annotated[str, Query(..., description="City, State/Country")],
     db: Annotated[AsyncSession, Depends(get_db)],
 ) -> BodygraphResponse:
-    """
-    Pattern elements:
-    - async def for non-blocking I/O
-    - Annotated[type, Query/Path/Depends] for explicit parameter metadata
-    - response_model for automatic validation + OpenAPI docs
-    - HTTPException for expected business errors
-    """
+    # Pattern elements:
+    # - async def for non-blocking I/O
+    # - Annotated[type, Query/Path/Depends] for explicit parameter metadata
+    # - response_model for automatic validation + OpenAPI docs
+    # - HTTPException for expected business errors
     try:
         birth_info = parse_birth_data(date, time, location)
         bodygraph = await calculate(birth_info)  # async calculation
@@ -231,7 +229,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
         finally:
             await session.close()
 
-# Layer 1: Authentication (token → user resolution)
+# Layer 1: Authentication (token -> user resolution)
 async def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)],
     db: Annotated[AsyncSession, Depends(get_db)],
@@ -244,7 +242,7 @@ async def get_current_user(
 
 # Layer 2: Authorization (role/permission checks)
 def require_role(role: str):
-    """Factory pattern — returns parameterized dependency."""
+    # Factory pattern - returns parameterized dependency
     async def _check_role(
         current_user: Annotated[User, Depends(get_current_user)],
     ) -> User:
@@ -275,7 +273,7 @@ class EntityNotFoundError(DomainError):
     def __init__(self, entity: str, entity_id: str):
         super().__init__(f"{entity} '{entity_id}' not found", "ENTITY_NOT_FOUND")
 
-# Exception handler (translate domain → HTTP)
+# Exception handler (translate domain -> HTTP)
 @app.exception_handler(EntityNotFoundError)
 async def entity_not_found_handler(
     request: Request,
@@ -300,14 +298,14 @@ async def get_person(person_id: UUID) -> PersonResponse:
 ```python
 # ✅ CORRECT: Separate request/response models
 class PersonCreate(BaseModel):
-    """Request body — only fields user can set."""
+    # Request body - only fields user can set
     name: str = Field(..., min_length=1, max_length=255)
     birth_date: str
     birth_time: str
     location: str
 
 class PersonResponse(BaseModel):
-    """Response model — includes server-generated fields."""
+    # Response model - includes server-generated fields
     model_config = ConfigDict(from_attributes=True)  # ORM mode for SQLAlchemy
 
     id: UUID

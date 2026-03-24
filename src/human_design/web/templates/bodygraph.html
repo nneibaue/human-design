@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bodygraph Calculator</title>
+    <style>
+        body {
+            font-family: Georgia, serif;
+            margin: 20px;
+            background: #2C1810;
+            color: #F5E6D3;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #3d2817;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #DAA520;
+            margin-bottom: 30px;
+        }
+        .form-section {
+            background: #2C1810;
+            padding: 25px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+        }
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #DAA520;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #8B4513;
+            border-radius: 4px;
+            background: #F5E6D3;
+            color: #2C1810;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #8B4513;
+            color: #F5E6D3;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #A0522D;
+        }
+        .result-section {
+            display: none;
+            margin-top: 30px;
+        }
+        .result-section.show {
+            display: block;
+        }
+        .metadata {
+            background: #2C1810;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .metadata h2 {
+            color: #DAA520;
+            margin-top: 0;
+        }
+        .metadata-row {
+            display: flex;
+            gap: 30px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .metadata-item {
+            flex: 1;
+            min-width: 200px;
+        }
+        .metadata-label {
+            color: #DAA520;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .metadata-value {
+            color: #F5E6D3;
+            font-size: 18px;
+        }
+        .svg-container {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .error {
+            background: #8B0000;
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            display: none;
+        }
+        .error.show {
+            display: block;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #DAA520;
+        }
+        .loading.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Bodygraph Calculator ✨</h1>
+
+        <div class="form-section">
+            <form id="bodygraph-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date">Birth Date</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Birth Time</label>
+                        <input type="time" id="time" name="time" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city" placeholder="Albuquerque" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="country">State/Country</label>
+                        <input type="text" id="country" name="country" placeholder="NM" required>
+                    </div>
+                </div>
+                <button type="submit">Calculate Bodygraph</button>
+            </form>
+            <div class="error" id="error"></div>
+            <div class="loading" id="loading">Calculating your bodygraph...</div>
+        </div>
+
+        <div class="result-section" id="result-section">
+            <div class="metadata">
+                <h2>Your Human Design</h2>
+                <div class="metadata-row">
+                    <div class="metadata-item">
+                        <div class="metadata-label">Type</div>
+                        <div class="metadata-value" id="type"></div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-label">Authority</div>
+                        <div class="metadata-value" id="authority"></div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-label">Profile</div>
+                        <div class="metadata-value" id="profile"></div>
+                    </div>
+                </div>
+                <div class="metadata-row">
+                    <div class="metadata-item">
+                        <div class="metadata-label">Defined Centers</div>
+                        <div class="metadata-value" id="centers"></div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-label">Active Channels</div>
+                        <div class="metadata-value" id="channels"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="svg-container" id="svg-container"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('bodygraph-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const params = new URLSearchParams({
+                date: formData.get('date'),
+                time: formData.get('time'),
+                city: formData.get('city'),
+                country: formData.get('country')
+            });
+
+            // Show loading, hide error and results
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('error').classList.remove('show');
+            document.getElementById('result-section').classList.remove('show');
+
+            try {
+                const response = await fetch(`/api/bodygraph?${params}`);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || 'Failed to calculate bodygraph');
+                }
+
+                // Update metadata
+                document.getElementById('type').textContent = data.type;
+                document.getElementById('authority').textContent = data.authority;
+                document.getElementById('profile').textContent = data.profile;
+                document.getElementById('centers').textContent = data.defined_centers.join(', ');
+                document.getElementById('channels').textContent = data.active_channels
+                    .map(ch => `${ch[0]}-${ch[1]}`)
+                    .join(', ');
+
+                // Insert SVG
+                document.getElementById('svg-container').innerHTML = data.svg;
+
+                // Show results
+                document.getElementById('result-section').classList.add('show');
+            } catch (error) {
+                document.getElementById('error').textContent = error.message;
+                document.getElementById('error').classList.add('show');
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+            }
+        });
+
+        // Set default values (Nate's birth info for testing)
+        document.getElementById('date').value = '1992-08-13';
+        document.getElementById('time').value = '09:13';
+        document.getElementById('city').value = 'Albuquerque';
+        document.getElementById('country').value = 'NM';
+    </script>
+</body>
+</html>
