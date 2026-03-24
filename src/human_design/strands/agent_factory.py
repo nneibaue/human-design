@@ -66,11 +66,14 @@ class HumanDesignAgentFactory:
         elif agent_name == "d3_specialist":
             from human_design.agents.d3_specialist import (
                 create_d3_specialist_agent,
-                D3SpecialistConfig,
+                D3SpecialistDeps,
             )
 
-            config = D3SpecialistConfig(workspace_root=Path.cwd())
-            agent = create_d3_specialist_agent(config)
+            deps = D3SpecialistDeps(
+                workspace_root=Path.cwd(),
+                static_directory=Path("static")
+            )
+            agent = create_d3_specialist_agent(deps)
             self._agent_cache[agent_name] = agent
             return agent
 
