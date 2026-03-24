@@ -182,6 +182,28 @@ cdk/                        # AWS CDK infrastructure (Batch, S3, ECR)
 - **Respect Rebecca Energy** - whimsical, warm, grounded tone in UI text
 - **Consult `.github/copilot-instructions.md`** for Rebecca Energy philosophy and detailed context
 
+## Documentation Policy - The DODO Way
+
+**Document WHAT IS, not what we did.**
+
+**Rule**: NEVER create `*_COMPLETE.md`, `*_SUMMARY.md`, `*_FEEDBACK.md` files.
+
+**Philosophy**: Documentation captures current state, not historical narrative. So let it be written.
+
+**What NOT to create**:
+- ❌ `IMPLEMENTATION_COMPLETE.md`
+- ❌ `DODO_REBRAND_COMPLETE.md`
+- ❌ `FEATURE_X_SUMMARY.md`
+- ❌ Any retrospective summary files
+
+**Instead**:
+- ✅ Update existing docs with current state (present tense)
+- ✅ Let git history tell the story
+- ✅ Create docs that describe capabilities and usage
+- ✅ Make completed work invisible (as it should be)
+
+**This is the DODO way.**
+
 ## Multi-Agent Development with DODO-Lite
 
 This project includes an **embedded multi-agent investigation system** (DODO-Lite) for code refinement, feature implementation, and visualization creation.
