@@ -1,0 +1,195 @@
+---
+strand_id: agent_training_audit
+title: "Comprehensive Training Audit for Human Design Agents"
+created_at: 2026-03-22T10:45:00Z
+ambiguity_score: 0.14
+confidence: 0.93
+
+problem:
+  description: |
+    Audit and enhance training for four Human Design agents (implementer, test_engineer,
+    d3_specialist, python_linguist). Critical concern: Agent system prompts may not reflect
+    2026 best practices due to model training data lag.
+
+    Specific training gaps to address:
+    1. D3 specialist: Needs 2026 D3 v7 patterns (`.join()` vs legacy `.enter()/.exit()`)
+    2. All agents: Pydantic v2 validation patterns, field validators, model_validator
+    3. Test engineer: pytest.mark.parametrize patterns, fixture best practices
+    4. All agents: Human Design domain knowledge (gates, channels, semantic separation)
+
+    Goal: Comprehensive training embedded in Python code (system prompts, examples, anti-patterns)
+    to align with ontological principle of first-class agent code.
+
+  context:
+    brownfield: true
+    existing_code:
+      - src/human_design/agents/implementer.py (just created, minimal training)
+      - src/human_design/agents/test_engineer.py (just created, minimal training)
+      - src/human_design/agents/d3_specialist.py (just created, minimal training)
+      - src/human_design/agents/python_linguist.py (duplicated from DODO, well-trained)
+      - src/human_design/agents/configs/*.yaml (configuration files)
+
+    training_benchmarks:
+      - ~/code/claude/he360-dodo/he360_dodo/agents/ (reference: well-trained agents)
+      - DODO agents have 200-500 line system prompts with examples, anti-patterns
+      - python_linguist: 1082 lines, comprehensive AST/metaprogramming training
+
+    key_questions:
+      - What does "well-trained" mean? (system prompt depth, examples, anti-patterns)
+      - How to encode 2026 best practices that model training data may lack?
+      - What Human Design domain knowledge must agents know?
+      - How to validate training completeness?
+
+  success_criteria:
+    - All four agents have 200+ line system prompts with domain knowledge
+    - D3 specialist knows 2026 D3 v7 patterns (not legacy D3 v3/v4)
+    - All agents know Pydantic v2 (not v1), pytest parametrize, Human Design ontology
+    - System prompts include examples, anti-patterns, decision frameworks
+    - Fair Witness validates: agents can execute their roles without hallucinating outdated patterns
+    - Training program documented (what was added, why, validation criteria)
+
+agents:
+  - role: researcher
+    focus: |
+      Research 2026 best practices for agent training domains:
+
+      1. D3.js v7 (2026 patterns):
+         - Modern `.join()` pattern vs legacy `.enter()/.exit()`
+         - Data binding patterns
+         - SVG generation best practices
+         - Interactive visualization patterns
+
+      2. Pydantic v2 (2024+ patterns):
+         - field_validator vs validator (v1)
+         - model_validator for cross-field validation
+         - ConfigDict vs Config class
+         - computed_field patterns
+
+      3. pytest patterns (2026):
+         - @pytest.mark.parametrize best practices
+         - Fixture composition
+         - Async test patterns
+
+      4. Human Design domain:
+         - Gates (1-64), Lines (1-6), Centers (9), Channels (36)
+         - Coordinate vs semantic separation principle
+         - Types: Initiator, Builder, Specialist, Coordinator, Observer
+
+      Output: Research findings on what agents need to know (2026 canonical)
+
+  - role: ontologist
+    focus: |
+      Structure the training program:
+
+      1. Training taxonomy:
+         - Core knowledge (must know)
+         - Domain knowledge (Human Design specific)
+         - Pattern knowledge (how to do X)
+         - Anti-pattern knowledge (never do Y)
+
+      2. Encoding strategy:
+         - System prompt sections (values, responsibilities, patterns, anti-patterns)
+         - Example code blocks in prompts
+         - Decision frameworks (checklists agents follow)
+
+      3. Validation criteria:
+         - How to test if agent knows something?
+         - Red flags for hallucinated outdated patterns
+         - Completeness checks (all domains covered)
+
+      Output: Training program structure (what goes where, how to encode it)
+
+  - role: python_linguist
+    focus: |
+      Analyze existing agent implementations for code quality:
+
+      1. System prompt analysis:
+         - Length (lines, complexity)
+         - Structure (sections, examples, anti-patterns)
+         - Comparison to DODO agent prompts (benchmark)
+
+      2. Code patterns:
+         - Type hints usage
+         - Pydantic model patterns
+         - Tool registration patterns
+
+      3. Gaps identification:
+         - Missing domain knowledge
+         - Outdated patterns (Pydantic v1, D3 v3)
+         - Insufficient examples
+
+      Output: Agent code quality audit (what's missing, what needs updating)
+
+  - role: fair_witness
+    focus: |
+      Validate training completeness:
+
+      1. Knowledge coverage:
+         - Does D3 specialist know 2026 D3 v7 patterns? (✓/✗)
+         - Do all agents know Pydantic v2? (✓/✗)
+         - Do agents know Human Design ontology? (✓/✗)
+         - Are anti-patterns documented? (✓/✗)
+
+      2. Red flag detection:
+         - System prompts referencing outdated patterns (D3 v3, Pydantic v1)
+         - Missing examples in prompts
+         - Vague instructions (agents will hallucinate)
+
+      3. Training quality metrics:
+         - System prompt length (target: 200+ lines)
+         - Examples per domain (target: 3+ per pattern)
+         - Anti-patterns documented (target: 5+ per agent)
+
+      Output: Training validation report (pass/fail, gaps, recommendations)
+
+  - role: coordinator
+    focus: |
+      Synthesize comprehensive training program:
+
+      1. Integrate findings:
+         - Research: What agents need to know (2026 canonical)
+         - Ontologist: How to structure training (encoding strategy)
+         - Python linguist: Current state audit (gaps)
+         - Fair Witness: Validation criteria (completeness)
+
+      2. Generate training updates:
+         - Updated system prompts (200+ lines each)
+         - Examples and anti-patterns
+         - Decision frameworks
+         - Domain knowledge sections
+
+      3. Implementation plan:
+         - Priority order (D3 specialist first - most outdated risk)
+         - Validation steps (how to test training worked)
+         - Documentation (training program rationale)
+
+      Output: Training program synthesis + implementation plan
+
+expected_artifacts:
+  documentation:
+    - docs/AGENT_TRAINING_PROGRAM.md (rationale, methodology)
+    - docs/AGENT_TRAINING_VALIDATION.md (completeness criteria)
+    - docs/AGENT_TRAINING_RESEARCH.md (2026 best practices)
+
+  code:
+    - src/human_design/agents/implementer.py (enhanced system prompt)
+    - src/human_design/agents/test_engineer.py (enhanced system prompt)
+    - src/human_design/agents/d3_specialist.py (enhanced system prompt)
+    - Training validation: All agents have 200+ line prompts with examples
+
+  validation:
+    - Training completeness report (Fair Witness findings)
+    - Before/after comparison (prompt lengths, knowledge coverage)
+    - Test: Can agents execute roles without hallucinating outdated patterns?
+
+timeline:
+  estimated_rounds: 8
+  estimated_duration: "12-16 minutes"
+
+tags:
+  - agent-training
+  - d3-v7
+  - pydantic-v2
+  - pytest
+  - human-design-ontology
+  - first-class-agents

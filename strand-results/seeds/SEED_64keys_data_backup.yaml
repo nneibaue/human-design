@@ -1,0 +1,349 @@
+---
+strand_id: 64keys_data_backup
+title: "64keys Data Backup - SQLite Archive with SQLModel ORM"
+created_at: 2026-03-23T11:30:00Z
+ambiguity_score: 0.12
+confidence: 0.94
+
+problem:
+  description: |
+    Decouple from 64keys.com by backing up all semantic data to local SQLite database.
+
+    Current state: Fetching gate names, descriptions, line content on-demand from 64keys API.
+    Future state: Eventually implement our own semantic system, but for now archive theirs.
+    Immediate need: CLI command to backup all 64keys data locally using SQLModel ORM.
+
+    Philosophy: Preserve 64keys data as historical reference while building independence.
+
+  context:
+    brownfield: true
+    existing_code:
+      - src/human_design/api.py (GateAPI client - knows how to fetch from 64keys)
+      - src/human_design/models/semantic.py (SemanticInterpretation schema)
+      - src/human_design/cli.py (CLI entry point)
+
+    what_to_backup:
+      gates_and_lines:
+        - All 64 gates (numbers 1-64)
+        - All 6 lines per gate (1.1 through 64.6)
+        - Gate names, summaries, descriptions
+        - Line names, text, keywords
+        - Quarter classifications (64keys-specific)
+        - Strive guidance (64keys-specific)
+
+      types:
+        - All 5 Human Design types
+        - 64keys terminology (Initiator, Builder, Specialist, Coordinator, Observer)
+        - Traditional terminology mapping (Manifestor, Generator, MG, Projector, Reflector)
+        - Strategy, signature, not-self theme
+        - Full descriptions
+
+      authorities:
+        - All 7 authorities
+        - Center dependencies
+        - Decision strategies
+        - Time frames
+
+      centers:
+        - All 9 centers
+        - Defined/undefined descriptions
+        - Shadow aspects
+        - Wisdom aspects
+        - Questions for contemplation
+
+      profiles:
+        - All 12 profiles (1/3, 1/4, 2/4, 2/5, 3/5, 3/6, 4/6, 4/1, 5/1, 5/2, 6/2, 6/3)
+        - Display names
+        - Life themes
+        - Descriptions
+
+    technical_requirements:
+      - SQLModel ORM (Pydantic v2 + SQLAlchemy)
+      - SQLite database (local file: ~/.human-design/64keys_backup.db)
+      - CLI command: `hd backup-64keys` or `hd backup-semantics`
+      - Preserve all metadata (system_id="64keys", version, timestamp)
+      - Idempotent (can run multiple times without duplicates)
+
+  success_criteria:
+    - SQLModel models for all 64keys data types
+    - Backup script fetches all data from 64keys API
+    - Saves to SQLite with proper relationships
+    - CLI command `hd backup-64keys` works end-to-end
+    - Can query backed-up data (e.g., get gate 42, get profile 4/6)
+    - 30+ tests covering database operations
+    - No data loss (all fields preserved from 64keys)
+
+agents:
+  - role: researcher
+    focus: |
+      Analyze current 64keys integration:
+
+      1. Read src/human_design/api.py (GateAPI client)
+         - What endpoints does it use?
+         - What data structures come back?
+         - How is authentication handled?
+
+      2. Read src/human_design/models/semantic.py
+         - SemanticInterpretation schema
+         - GateSemantics, LineSemantics, TypeSemantics, etc.
+         - What fields need to be preserved?
+
+      3. Identify data sources:
+         - Where does gate data come from? (API calls, cached files, etc.)
+         - What's the complete data set we need to backup?
+         - Any data currently missing that we should capture?
+
+      4. Research SQLModel patterns:
+         - SQLModel = Pydantic + SQLAlchemy ORM
+         - How to model relationships (gates -> lines, many-to-many, etc.)
+         - Best practices for migration from Pydantic to SQLModel
+
+      Deliverable:
+      - Analysis of current 64keys integration
+      - Complete list of data to backup
+      - SQLModel pattern recommendations
+
+  - role: architect
+    focus: |
+      Design SQLite backup architecture:
+
+      1. Database schema design:
+         - SQLModel table models (Gate, Line, Type, Authority, Center, Profile)
+         - Relationships (Gate has many Lines, etc.)
+         - Indexes for fast queries
+         - Metadata table (backup timestamp, version, system_id)
+
+      2. Backup script architecture:
+         - src/human_design/backup/backup_64keys.py
+         - Fetch all data from 64keys API (reuse GateAPI)
+         - Transform to SQLModel instances
+         - Bulk insert to SQLite
+         - Progress reporting
+         - Error handling (partial failures, retries)
+
+      3. Query interface:
+         - src/human_design/backup/queries.py
+         - get_gate(num), get_line(gate, line), get_type(code), etc.
+         - Mirror SemanticInterpretation interface for compatibility
+
+      4. Migration strategy:
+         - How to transition from live API calls to backed-up data?
+         - Feature flag: USE_BACKUP_DB vs USE_64KEYS_API?
+         - Fallback behavior (try backup, fall back to API)?
+
+      Deliverable:
+      - SQLModel schema design document
+      - Backup script architecture
+      - Query interface design
+      - Migration strategy
+
+  - role: implementer
+    focus: |
+      Implement SQLModel models and backup script:
+
+      1. Create src/human_design/backup/__init__.py
+      2. Create SQLModel table models in src/human_design/backup/models.py:
+         - BackupMetadata (system_id, version, timestamp)
+         - GateBackup (SQLModel table)
+         - LineBackup (SQLModel table, foreign key to GateBackup)
+         - TypeBackup, AuthorityBackup, CenterBackup, ProfileBackup
+
+      3. Create backup script in src/human_design/backup/backup_64keys.py:
+         ```python
+         async def backup_64keys_data(db_path: Path) -> BackupMetadata:
+             # Create SQLModel engine
+             # Fetch all data from 64keys API
+             # Insert into SQLite
+             # Return metadata
+         ```
+
+      4. Create query interface in src/human_design/backup/queries.py:
+         ```python
+         class BackupQueries:
+             def get_gate(self, gate_num: int) -> GateBackup | None
+             def get_line(self, gate_num: int, line_num: int) -> LineBackup | None
+             def get_type(self, type_code: str) -> TypeBackup | None
+             # etc.
+         ```
+
+      Deliverable:
+      - src/human_design/backup/models.py (SQLModel tables)
+      - src/human_design/backup/backup_64keys.py (backup script)
+      - src/human_design/backup/queries.py (query interface)
+
+  - role: implementer
+    focus: |
+      Add CLI command for backup:
+
+      1. Update src/human_design/cli.py:
+         ```python
+         @app.command()
+         def backup_64keys(
+             output: Path = typer.Option(
+                 Path.home() / ".human-design" / "64keys_backup.db",
+                 help="Output database path"
+             ),
+             force: bool = typer.Option(False, help="Overwrite existing backup")
+         ):
+             '''Backup all 64keys semantic data to local SQLite database'''
+             # Call backup script
+             # Show progress
+             # Report results
+         ```
+
+      2. Add progress reporting (rich progress bar or simple print)
+      3. Add confirmation prompt if database exists (unless --force)
+      4. Add summary statistics (gates backed up, lines backed up, etc.)
+
+      Deliverable:
+      - CLI command `hd backup-64keys` in src/human_design/cli.py
+      - User-friendly output with progress/results
+
+  - role: test_engineer
+    focus: |
+      Comprehensive tests for backup system:
+
+      1. Create tests/test_backup_models.py:
+         - Test SQLModel table creation
+         - Test relationships (gate -> lines)
+         - Test data validation (Pydantic validators still work in SQLModel)
+         - Test serialization (model_dump works)
+
+      2. Create tests/test_backup_operations.py:
+         - Test backup script end-to-end (with fixture data)
+         - Test idempotency (running backup twice doesn't duplicate)
+         - Test error handling (missing data, API failures)
+         - Test metadata tracking
+
+      3. Create tests/test_backup_queries.py:
+         - Test all query methods (get_gate, get_line, etc.)
+         - Test query performance (indexes work)
+         - Test query edge cases (missing data returns None)
+
+      4. Integration test:
+         - Create mock 64keys API responses
+         - Run full backup
+         - Verify all data in SQLite
+         - Query backed-up data
+         - Verify data integrity
+
+      Deliverable:
+      - tests/test_backup_models.py
+      - tests/test_backup_operations.py
+      - tests/test_backup_queries.py
+      - Fixtures for mock 64keys data
+
+  - role: fair_witness
+    focus: |
+      Validate backup completeness and correctness:
+
+      1. Data completeness check:
+         - All 64 gates backed up?
+         - All 6 lines per gate (384 total)?
+         - All 5 types?
+         - All 7 authorities?
+         - All 9 centers?
+         - All 12 profiles?
+
+      2. Data integrity check:
+         - Do backed-up gate names match 64keys?
+         - Are relationships preserved (gates -> lines)?
+         - Is metadata captured (system_id, version, timestamp)?
+         - Can backed-up data reconstruct SemanticInterpretation model?
+
+      3. Schema validation:
+         - SQLModel models match Pydantic models?
+         - All field validators work?
+         - Serialization/deserialization correct?
+
+      4. CLI command validation:
+         - Does `hd backup-64keys` work end-to-end?
+         - Is output user-friendly?
+         - Does --force flag work?
+         - Error handling graceful?
+
+      5. Migration path validation:
+         - How to use backed-up data in production?
+         - Fallback to API if backup missing?
+         - Performance acceptable (SQLite queries fast)?
+
+      Deliverable:
+      - Completeness validation report
+      - Data integrity checks
+      - Migration recommendations
+
+  - role: coordinator
+    focus: |
+      Synthesize backup system implementation:
+
+      1. Integrate specialist findings:
+         - Researcher: Current 64keys integration analysis
+         - Architect: SQLModel schema and backup architecture
+         - Implementers: SQLModel models, backup script, CLI command
+         - Test Engineer: Comprehensive test suite
+         - Fair Witness: Completeness and integrity validation
+
+      2. Final deliverables:
+         - src/human_design/backup/models.py (SQLModel tables)
+         - src/human_design/backup/backup_64keys.py (backup script)
+         - src/human_design/backup/queries.py (query interface)
+         - src/human_design/cli.py (updated with backup command)
+         - tests/test_backup_*.py (comprehensive tests)
+
+      3. Usage documentation:
+         ```bash
+         # Backup all 64keys data
+         hd backup-64keys
+
+         # Backup to custom location
+         hd backup-64keys --output ~/my-backup.db
+
+         # Overwrite existing backup
+         hd backup-64keys --force
+         ```
+
+      4. Migration strategy:
+         - Phase 1: Backup data (this strand)
+         - Phase 2: Add query interface to use backed-up data
+         - Phase 3: Implement fallback (backup → API)
+         - Phase 4: Implement our own semantic system
+
+      5. Next steps:
+         - After backup exists, update semantic loader to use local DB
+         - Eventually replace 64keys data with custom interpretations
+         - Preserve 64keys backup as historical reference
+
+      Deliverable:
+      - Complete backup system implementation
+      - Usage guide and migration strategy
+      - Recommendations for next steps
+
+expected_artifacts:
+  code:
+    - src/human_design/backup/__init__.py
+    - src/human_design/backup/models.py (SQLModel tables)
+    - src/human_design/backup/backup_64keys.py (backup script)
+    - src/human_design/backup/queries.py (query interface)
+    - src/human_design/cli.py (updated with backup command)
+
+  tests:
+    - tests/test_backup_models.py
+    - tests/test_backup_operations.py
+    - tests/test_backup_queries.py
+
+  documentation:
+    - docs/64KEYS_BACKUP_ARCHITECTURE.md
+    - docs/MIGRATION_TO_LOCAL_DATA.md
+    - Usage examples in code docstrings
+
+timeline:
+  estimated_rounds: 8-10
+  estimated_duration: "15-20 minutes"
+
+tags:
+  - 64keys-decoupling
+  - sqlmodel
+  - sqlite
+  - data-backup
+  - independence
+  - cli-command

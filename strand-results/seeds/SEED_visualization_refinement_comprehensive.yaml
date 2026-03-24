@@ -1,0 +1,653 @@
+---
+strand_id: visualization_refinement_comprehensive
+title: "Bodygraph Visualization - Comprehensive 64keys Study & Custom D3 Implementation"
+created_at: 2026-03-23T11:45:00Z
+ambiguity_score: 0.08
+confidence: 0.96
+
+problem:
+  description: |
+    Build production-ready bodygraph visualization system with THOROUGH understanding
+    of 64keys.com geometry and rendering approach, then implement our own SUPERIOR
+    custom D3.js solution with full ontological control.
+
+    Previous strand identified critical gap: NO geometry data extracted from 64keys.
+    This refinement uses LARGE TEAM to ensure exhaustive 64keys study, precise
+    geometry extraction, and high-quality custom implementation.
+
+    Philosophy: Study 64keys exhaustively to understand the problem space deeply,
+    then build something better with Rebecca Energy aesthetic and ontological clarity.
+
+  context:
+    brownfield: true
+    existing_code:
+      - src/human_design/models/bodygraph.py (RawBodyGraph - production-ready)
+      - src/human_design/models/composite.py (CompositeBodyGraph with emergent channels)
+      - src/human_design/models/transit.py (Transit overlays)
+      - src/human_design/api.py (64keys API integration)
+      - src/human_design/web/app.py (FastAPI web app)
+
+    validated_facts_from_previous_strand:
+      calculation_engine_ready:
+        - Swiss Ephemeris integration working ✅
+        - Tropical zodiac (seasons-based) ✅
+        - Conscious + unconscious activations ✅
+        - Channel formation logic correct ✅
+        - Emergent channel detection WORKING (in composite.py:147-174) ✅
+
+      rebecca_energy_aesthetic:
+        colors:
+          defined_center: "#8B4513"      # Saddle brown
+          undefined_center: "#F5F5DC"    # Beige
+          conscious: "#4A5D23"            # Dark olive green
+          unconscious: "#8B0000"          # Dark red
+          emergent: "#DAA520"             # Goldenrod
+          background: "#2C1810"           # Deep brown
+          text: "#F5E6D3"                 # Warm cream
+
+        theme: "Cozy autumnal forest, twilight magic, warm and inviting"
+        philosophy: "Whimsical yet grounded, focusing on self-discovery"
+
+    critical_blockers_from_previous_strand:
+      blocker_1_geometry:
+        status: BLOCKING ALL WORK
+        description: "No bodygraph geometry data extracted from 64keys"
+        required_data:
+          - 9 center positions (x, y coordinates)
+          - 9 center shapes (triangle/square/diamond mappings)
+          - 36 channel paths (SVG path strings or Bezier coordinates)
+          - 64 gate positions (locations on channel paths)
+          - Rendering technology identification (D3? Raw SVG? Custom?)
+          - Color schemes and styling patterns
+          - Interaction patterns (hover, tooltips, layer toggles)
+
+        acceptance_criteria:
+          - All 9 centers documented with <5px variance achievable
+          - All 36 channels documented with precise path definitions
+          - Gate positioning algorithm understood
+          - Complete geometry constant file created
+          - Rendering approach validated
+
+      blocker_2_technology_choice:
+        status: MEDIUM (research-driven decision needed)
+        description: "Technology stack should be informed by 64keys study"
+        options:
+          - Pure D3.js v7 (modern, functional)
+          - Raw SVG manipulation
+          - Hybrid approach
+        decision_criteria:
+          - What does 64keys use? (reference point)
+          - What gives us best ontological control?
+          - What supports Rebecca Energy aesthetic best?
+          - What performs well for composite charts?
+
+  success_criteria:
+    phase_1_research:
+      - Complete 64keys DOM inspection documented
+      - All 9 centers: positions + shapes extracted
+      - All 36 channels: path definitions extracted
+      - All 64 gates: positioning algorithm understood
+      - Rendering technology identified with confidence
+      - Color scheme and styling patterns documented
+      - Interaction patterns documented (hover states, tooltips)
+      - Deliverable: docs/64keys_visualization_spec.md (comprehensive reference)
+      - Deliverable: src/human_design/visualization/geometry.py (coordinate constants)
+
+    phase_2_backend:
+      - Pydantic visualization models (CenterVisualization, ChannelVisualization, etc.)
+      - BodygraphVisualizationBuilder class (raw data → visualization schema)
+      - Support for individual, composite, and transit charts
+      - Emergent channel detection integrated
+      - 20+ tests for backend models and builder
+
+    phase_3_frontend:
+      - Custom D3.js v7 renderer with ontologically clean function names
+      - SVG generation matching extracted geometry
+      - Rebecca Energy CSS theme applied
+      - Hover states, tooltips, interactive elements
+      - Responsive layout (desktop/mobile)
+
+    phase_4_validation:
+      - Visual accuracy validated (<5px variance from 64keys reference)
+      - Composite charts show emergent channels distinctly
+      - Performance acceptable (renders <500ms for pentas)
+      - Rebecca Energy aesthetic fully applied
+      - End-to-end integration tests passing
+
+agents:
+  - role: researcher
+    archetype: 64keys_geometry_specialist
+    focus: |
+      EXHAUSTIVE 64keys.com geometry extraction:
+
+      Use mcp_server_64keys to browse sample charts. Inspect DOM thoroughly.
+
+      CRITICAL DELIVERABLES:
+
+      1. **9 Center Positions** (x, y coordinates in SVG coordinate space):
+         - INSPIRATION (Crown/Head) - position, shape (triangle)
+         - MIND (Ajna) - position, shape (triangle)
+         - EXPRESSION (Throat) - position, shape (square)
+         - IDENTITY (G/Self) - position, shape (diamond)
+         - WILLPOWER (Ego/Heart) - position, shape (triangle)
+         - EMOTION (Solar Plexus) - position, shape (square)
+         - DRIVE (Root) - position, shape (square)
+         - LIFEFORCE (Sacral) - position, shape (square)
+         - INTUITION (Spleen) - position, shape (triangle)
+
+      2. **36 Channel Paths** (SVG path definitions):
+         - Extract actual SVG path strings or Bezier control points
+         - Document which centers each channel connects
+         - Note visual styling (stroke width, color classes)
+
+      3. **64 Gate Positions**:
+         - How are gates positioned on channels?
+         - Are they evenly distributed? Proportional to gate degree ranges?
+         - Document positioning algorithm or coordinate table
+
+      4. **SVG Structure**:
+         - What's the SVG viewBox size?
+         - How are layers organized (centers, channels, gates, labels)?
+         - Z-index ordering?
+
+      Tools: Use browse_page, find_text, analyze_page from mcp_server_64keys
+
+      Output: docs/64keys_geometry_extraction.md (EXHAUSTIVE documentation)
+
+  - role: researcher
+    archetype: 64keys_technology_analyst
+    focus: |
+      Identify 64keys rendering technology:
+
+      1. Inspect JavaScript libraries:
+         - Is D3.js loaded? Which version?
+         - Are there custom libraries?
+         - Raw SVG manipulation?
+
+      2. Analyze rendering approach:
+         - Server-side SVG generation?
+         - Client-side dynamic rendering?
+         - Static SVG with CSS styling?
+
+      3. Performance patterns:
+         - How do they handle composite charts?
+         - Layer management for emergent channels?
+         - Animation/transition patterns?
+
+      4. Styling system:
+         - CSS classes for defined/undefined?
+         - Inline styles vs external stylesheets?
+         - Color palette implementation?
+
+      Output: docs/64keys_technology_stack.md
+
+  - role: researcher
+    archetype: interaction_pattern_analyst
+    focus: |
+      Document 64keys interaction patterns:
+
+      1. Hover behaviors:
+         - Gate hover → what happens?
+         - Channel hover → what displays?
+         - Center hover → tooltip content?
+
+      2. Click interactions:
+         - Gate click → detail modal?
+         - Channel click → description?
+         - Navigation patterns?
+
+      3. Composite chart features:
+         - How are multiple people distinguished?
+         - Emergent channel visual treatment?
+         - Toggle layers (individual vs composite)?
+
+      4. Transit overlays:
+         - How are transits visualized differently?
+         - Opacity, color, or style differences?
+
+      Output: docs/64keys_interaction_patterns.md
+
+  - role: architect
+    archetype: geometry_systems_architect
+    focus: |
+      Design coordinate system and geometry constants:
+
+      Based on researcher findings, design:
+
+      1. **src/human_design/visualization/geometry.py**:
+         ```python
+         from typing import Literal
+         from pydantic import BaseModel
+
+         CenterShape = Literal["triangle", "square", "diamond"]
+
+         class CenterGeometry(BaseModel):
+             name: str
+             position: tuple[float, float]
+             shape: CenterShape
+             radius: float  # Or width/height
+
+         class ChannelGeometry(BaseModel):
+             channel_id: str
+             gate_a: int
+             gate_b: int
+             path: str  # SVG path string
+             gate_a_position: tuple[float, float]
+             gate_b_position: tuple[float, float]
+
+         # Constants extracted from 64keys
+         CENTERS: dict[str, CenterGeometry] = { ... }
+         CHANNELS: dict[str, ChannelGeometry] = { ... }
+         SVG_VIEWBOX = "0 0 800 1000"  # Example
+         ```
+
+      2. Coordinate transformation utilities:
+         - Scaling for responsive layouts
+         - Viewport mapping
+         - Coordinate validation
+
+      3. Geometry testing strategy:
+         - Visual regression tests
+         - Coordinate accuracy tests
+         - Boundary condition tests
+
+      Output: Architecture design document + geometry.py skeleton
+
+  - role: architect
+    archetype: visualization_api_architect
+    focus: |
+      Design backend visualization API:
+
+      1. **Pydantic Models** (src/human_design/visualization/models.py):
+         ```python
+         class CenterVisualization(BaseModel):
+             name: CenterName
+             position: tuple[float, float]
+             shape: Literal["triangle", "square", "diamond"]
+             is_defined: bool
+             color: str
+             label: str
+
+         class ChannelVisualization(BaseModel):
+             channel_id: str
+             gates: tuple[int, int]
+             path: str  # SVG path
+             is_active: bool
+             is_emergent: bool = False
+             color: str
+             stroke_style: Literal["solid", "dashed"]
+
+         class ActivationVisualization(BaseModel):
+             gate: GateNumber
+             line: GateLineNumber
+             planet: Planet
+             is_conscious: bool
+             position: tuple[float, float]
+             color: str
+
+         class BodygraphVisualizationSchema(BaseModel):
+             centers: list[CenterVisualization]
+             channels: list[ChannelVisualization]
+             activations: list[ActivationVisualization]
+             chart_type: Literal["individual", "interaction", "penta", "transit"]
+             metadata: dict
+         ```
+
+      2. **Builder Pattern** (src/human_design/visualization/builder.py):
+         ```python
+         class BodygraphVisualizationBuilder:
+             def from_bodygraph(self, bg: RawBodyGraph) -> BodygraphVisualizationSchema
+             def from_composite(self, comp: CompositeBodyGraph) -> BodygraphVisualizationSchema
+             def from_transit(self, person: RawBodyGraph, transit: Transit) -> BodygraphVisualizationSchema
+
+             # Helper methods
+             def _map_centers(self, ...) -> list[CenterVisualization]
+             def _map_channels(self, ...) -> list[ChannelVisualization]
+             def _map_activations(self, ...) -> list[ActivationVisualization]
+         ```
+
+      3. FastAPI endpoint design:
+         ```python
+         @app.get("/api/visualize/{person_id}")
+         async def get_visualization(person_id: UUID) -> BodygraphVisualizationSchema
+
+         @app.get("/api/visualize/interaction/{p1_id}/{p2_id}")
+         async def get_interaction_visualization(...) -> BodygraphVisualizationSchema
+         ```
+
+      Output: API architecture document + model/builder skeletons
+
+  - role: d3_specialist
+    focus: |
+      Design custom D3.js v7 renderer with ontological clarity:
+
+      1. **Function naming philosophy**:
+         - drawLifeforceCenter() not drawSacral()
+         - connectEmotionToExpression() not generic drawChannel()
+         - Use Human Design ontology: LIFEFORCE, EMOTION, EXPRESSION, etc.
+         - Avoid leaky implementation names
+
+      2. **D3 v7 patterns** (static/js/d3-bodygraph.js):
+         ```javascript
+         // Main renderer
+         function renderBodygraph(data, containerId) {
+           const svg = d3.select(containerId).append("svg")
+             .attr("viewBox", SVG_VIEWBOX);
+
+           drawCenters(svg, data.centers);
+           drawChannels(svg, data.channels);
+           drawActivations(svg, data.activations);
+           applyRebeccaTheme(svg);
+           attachInteractions(svg);
+         }
+
+         // Center rendering with shape dispatch
+         function drawCenters(svg, centers) {
+           svg.selectAll(".center")
+             .data(centers, d => d.name)
+             .join("g")
+             .attr("class", "center")
+             .attr("transform", d => `translate(${d.position[0]}, ${d.position[1]})`)
+             .each(function(d) {
+               const shape = d.shape === "triangle" ? drawTriangle :
+                             d.shape === "square" ? drawSquare : drawDiamond;
+               shape(d3.select(this), d);
+             });
+         }
+
+         // Channel rendering
+         function drawChannels(svg, channels) {
+           svg.selectAll(".channel")
+             .data(channels)
+             .join("path")
+             .attr("class", d => `channel ${d.is_active ? "active" : "inactive"} ${d.is_emergent ? "emergent" : ""}`)
+             .attr("d", d => d.path)
+             .style("stroke", d => d.color);
+         }
+         ```
+
+      3. **Rebecca Energy theme** (static/css/bodygraph.css):
+         ```css
+         .center.defined { fill: #8B4513; }  /* Saddle brown */
+         .center.undefined { fill: #F5F5DC; }  /* Beige */
+         .channel.conscious { stroke: #4A5D23; }  /* Dark olive */
+         .channel.unconscious { stroke: #8B0000; }  /* Dark red */
+         .channel.emergent { stroke: #DAA520; stroke-dasharray: 5,5; }  /* Goldenrod dashed */
+         ```
+
+      4. **Interaction patterns**:
+         - Hover tooltips with D3 event handlers
+         - Click modals for detailed info
+         - Layer toggles (show/hide individual vs composite)
+
+      Output: D3 architecture design + code skeleton
+
+  - role: implementer
+    archetype: geometry_data_implementer
+    focus: |
+      Implement geometry constants file:
+
+      Based on researcher extraction, create:
+      - src/human_design/visualization/geometry.py (all 9 centers, 36 channels)
+      - Coordinate accuracy within 5px of 64keys
+      - Comprehensive docstrings explaining coordinate system
+      - Unit tests validating coordinate ranges
+
+  - role: implementer
+    archetype: backend_api_implementer
+    focus: |
+      Implement backend visualization API:
+
+      1. src/human_design/visualization/models.py (Pydantic models)
+      2. src/human_design/visualization/builder.py (Builder class)
+      3. Update src/human_design/web/app.py (FastAPI endpoints)
+      4. Integration with existing RawBodyGraph, CompositeBodyGraph, Transit
+
+  - role: implementer
+    archetype: d3_frontend_implementer
+    focus: |
+      Implement custom D3.js renderer:
+
+      1. static/js/d3-bodygraph.js (D3 v7 rendering logic)
+      2. static/css/bodygraph.css (Rebecca Energy theme)
+      3. static/js/bodygraph-interactions.js (hover, click, tooltips)
+      4. Integration with FastAPI endpoints
+      5. HTML template updates
+
+  - role: implementer
+    archetype: composite_visualization_implementer
+    focus: |
+      Implement composite chart visualization:
+
+      1. Emergent channel highlighting (distinct visual treatment)
+      2. Multiple person layer management
+      3. Individual vs composite toggle
+      4. Transit overlay rendering
+      5. Performance optimization for large pentas (up to 16 people)
+
+  - role: test_engineer
+    archetype: geometry_test_engineer
+    focus: |
+      Test geometry system:
+
+      1. tests/test_visualization_geometry.py:
+         - Coordinate validation (all positions in valid ranges)
+         - Shape mapping correctness (9 centers, correct shapes)
+         - Channel path validation (36 paths, proper SVG syntax)
+         - Gate positioning accuracy
+
+      2. Visual regression tests (if possible):
+         - Compare rendered output to 64keys screenshots
+         - Measure pixel differences
+         - Validate <5px variance
+
+  - role: test_engineer
+    archetype: backend_api_test_engineer
+    focus: |
+      Test backend visualization API:
+
+      1. tests/test_visualization_models.py:
+         - Pydantic model validation
+         - Serialization/deserialization
+         - Field validators
+
+      2. tests/test_visualization_builder.py:
+         - Individual chart builder
+         - Composite chart builder
+         - Transit overlay builder
+         - Emergent channel detection integration
+         - Edge cases (empty charts, full charts)
+
+      3. tests/test_visualization_endpoints.py:
+         - FastAPI endpoint integration tests
+         - Response schema validation
+
+  - role: test_engineer
+    archetype: frontend_test_engineer
+    focus: |
+      Test D3 renderer (manual + automated):
+
+      1. Manual test scenarios:
+         - Render individual chart (verify all 9 centers, active channels)
+         - Render interaction chart (verify emergent channels)
+         - Render penta chart (verify performance)
+         - Test interactions (hover, click, tooltips)
+         - Verify Rebecca Energy colors applied
+
+      2. Automated tests (if feasible):
+         - Jest tests for JavaScript functions
+         - DOM manipulation tests
+         - Event handler tests
+
+  - role: fair_witness
+    archetype: geometry_accuracy_validator
+    focus: |
+      Validate geometry extraction accuracy:
+
+      1. Review researcher findings:
+         - Are all 9 centers documented?
+         - Are all 36 channels documented?
+         - Is gate positioning algorithm clear?
+
+      2. Cross-reference with 64keys:
+         - Do extracted coordinates match visual inspection?
+         - Is <5px variance achievable?
+         - Are there any geometric contradictions?
+
+      3. Validate geometry.py implementation:
+         - Do constants match extracted data?
+         - Are coordinate ranges reasonable?
+         - Is SVG viewBox correct?
+
+      Output: Geometry validation report (pass/fail with confidence scores)
+
+  - role: fair_witness
+    archetype: implementation_completeness_validator
+    focus: |
+      Validate implementation completeness:
+
+      1. Backend API:
+         - All Pydantic models implemented?
+         - Builder supports individual, composite, transit?
+         - FastAPI endpoints working?
+
+      2. Frontend renderer:
+         - D3.js renderer complete?
+         - All center shapes rendered correctly?
+         - All channels rendered with proper paths?
+         - Rebecca Energy theme applied?
+         - Interactions working?
+
+      3. Composite visualization:
+         - Emergent channels highlighted distinctly?
+         - Multiple person layers managed?
+         - Performance acceptable?
+
+      4. Tests:
+         - 30+ tests covering all functionality?
+         - Edge cases tested?
+         - Integration tests passing?
+
+      Output: Implementation completeness checklist
+
+  - role: fair_witness
+    archetype: aesthetic_validator
+    focus: |
+      Validate Rebecca Energy aesthetic application:
+
+      1. Color palette:
+         - Defined centers: Saddle brown (#8B4513) ✓
+         - Undefined centers: Beige (#F5F5DC) ✓
+         - Conscious activations: Dark olive (#4A5D23) ✓
+         - Unconscious activations: Dark red (#8B0000) ✓
+         - Emergent channels: Goldenrod (#DAA520) ✓
+         - Background: Deep brown (#2C1810) ✓
+         - Text: Warm cream (#F5E6D3) ✓
+
+      2. Visual theme:
+         - Warm and cozy? (vs clinical)
+         - Twilight magic feeling? (vs bright/harsh)
+         - Whimsical yet grounded?
+
+      3. Typography and spacing:
+         - Readable at all zoom levels?
+         - Comfortable spacing?
+
+      Output: Aesthetic validation report
+
+  - role: coordinator
+    focus: |
+      Synthesize comprehensive bodygraph visualization system:
+
+      1. Integrate Phase 1 Research:
+         - 64keys geometry extraction (researcher findings)
+         - Technology stack analysis
+         - Interaction patterns documentation
+         - Consolidate into single reference spec
+
+      2. Integrate Phase 2 Backend:
+         - Geometry constants file
+         - Pydantic visualization models
+         - BodygraphVisualizationBuilder
+         - FastAPI endpoints
+
+      3. Integrate Phase 3 Frontend:
+         - Custom D3.js renderer
+         - Rebecca Energy CSS theme
+         - Interaction handlers
+         - Composite visualization logic
+
+      4. Integrate Phase 4 Validation:
+         - Geometry accuracy validation
+         - Implementation completeness
+         - Aesthetic validation
+         - Test coverage report
+
+      5. Final deliverables:
+         - docs/64keys_visualization_spec.md (comprehensive reference)
+         - docs/VISUALIZATION_ARCHITECTURE.md (our custom design)
+         - src/human_design/visualization/ (complete module)
+         - static/js/d3-bodygraph.js (D3 renderer)
+         - static/css/bodygraph.css (Rebecca Energy theme)
+         - tests/test_visualization_*.py (30+ tests)
+
+      6. Production readiness checklist:
+         - Geometry accuracy validated (<5px variance)
+         - Backend API complete and tested
+         - Frontend renderer working end-to-end
+         - Rebecca Energy aesthetic applied
+         - Composite charts with emergent channels working
+         - Performance acceptable (<500ms for pentas)
+         - Documentation complete
+
+      7. Next steps:
+         - Deploy to production
+         - Gather user feedback (Rebecca)
+         - Iterate on aesthetic details
+         - Add advanced features (animations, print layouts, etc.)
+
+expected_artifacts:
+  research_phase:
+    - docs/64keys_geometry_extraction.md (exhaustive center/channel/gate data)
+    - docs/64keys_technology_stack.md (rendering approach analysis)
+    - docs/64keys_interaction_patterns.md (UX patterns)
+    - docs/64keys_visualization_spec.md (consolidated reference)
+
+  backend_implementation:
+    - src/human_design/visualization/__init__.py
+    - src/human_design/visualization/geometry.py (coordinate constants)
+    - src/human_design/visualization/models.py (Pydantic models)
+    - src/human_design/visualization/builder.py (BodygraphVisualizationBuilder)
+    - src/human_design/web/app.py (updated with visualization endpoints)
+
+  frontend_implementation:
+    - static/js/d3-bodygraph.js (custom D3.js renderer)
+    - static/js/bodygraph-interactions.js (hover, click handlers)
+    - static/css/bodygraph.css (Rebecca Energy theme)
+    - templates/bodygraph.html (updated template)
+
+  tests:
+    - tests/test_visualization_geometry.py
+    - tests/test_visualization_models.py
+    - tests/test_visualization_builder.py
+    - tests/test_visualization_endpoints.py
+    - tests/test_visualization_integration.py
+
+  documentation:
+    - docs/VISUALIZATION_ARCHITECTURE.md (our custom design)
+    - Usage examples in code docstrings
+    - README updates with visualization features
+
+timeline:
+  estimated_rounds: 12-15
+  estimated_duration: "25-35 minutes"
+
+tags:
+  - visualization
+  - d3js-v7
+  - 64keys-study
+  - geometry-extraction
+  - rebecca-energy
+  - custom-implementation
+  - ontological-control
+  - comprehensive-research

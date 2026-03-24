@@ -1,0 +1,217 @@
+---
+strand_id: ontology_adapter_audit
+title: "Ontological Adapter Layer: Pluggable Semantic Interpretations"
+created_at: 2026-03-22T16:35:00Z
+ambiguity_score: 0.12
+confidence: 0.94
+
+problem:
+  description: |
+    Design and validate an ontological adapter layer that separates deterministic
+    calculations (Swiss Ephemeris, gate/line, channels, type/authority) from
+    semantic interpretations (64keys, Ra Uru Hu traditional, Jolly Alchemy custom).
+
+    Core insight: The same coordinate system produces the same data (gates, channels,
+    centers defined), but different "sheens" (semantic overlays) interpret these
+    coordinates differently. 64keys calls certain things by certain names, Ra has
+    different terminology, Rebecca/Jolly Alchemy will have a third flavor.
+
+    The semantic layer MUST be separate, configurable, and hot-swappable via YAML
+    or similar config files. Cannot be baked into the core models.
+
+  context:
+    brownfield: true
+    existing_code:
+      - src/human_design/models/bodygraph.py (RawBodyGraph - raw calculations)
+      - src/human_design/models/core.py (GateNumber, Planet, CenterName - raw types)
+      - src/human_design/models/summaries_64keys.py (64keys semantic layer - coupled)
+      - src/human_design/api.py (GateAPI - fetches 64keys content)
+      - ontology/HD_ONTOLOGY_complete.json (mixed raw + semantic)
+
+    current_problems:
+      - 64keys terminology hardcoded in summaries_64keys.py
+      - No abstraction for "interpretation system"
+      - ontology/HD_ONTOLOGY_complete.json mixes calculations with 64keys names
+      - Can't easily switch between Ra traditional vs 64keys vs custom
+      - Rebecca's Jolly Alchemy flavor will need separate semantic layer
+
+    key_principle:
+      core: "Deterministic calculations produce coordinates (gate 42, line 3, channel 42-53)"
+      semantic: "Interpretation overlays meaning ('Maturation', 'Growth', 'Heretic')"
+      separation: "Core never knows about semantics, semantics reference core coordinates"
+
+  success_criteria:
+    - Adapter pattern designed for pluggable semantic layers
+    - YAML schema for interpretation configs (64keys.yaml, ra_traditional.yaml, jolly_alchemy.yaml)
+    - Core models completely semantic-free (only coordinates, numbers, structure)
+    - Can load different interpretations at runtime
+    - Demonstrate swapping between 64keys and Ra terminology
+    - Rebecca can define custom Jolly Alchemy semantic layer without code changes
+
+agents:
+  - role: researcher
+    focus: |
+      Audit current semantic coupling:
+      - Where is 64keys terminology hardcoded?
+      - Which models mix calculations with semantics?
+      - What would break if we tried to use Ra terminology instead?
+      - Document all places semantic content appears
+
+      Survey existing code:
+      - src/human_design/models/summaries_64keys.py
+      - src/human_design/api.py (GateAPI)
+      - ontology/HD_ONTOLOGY_complete.json
+      - Any hardcoded gate names, channel names, type names
+
+      Output: Semantic coupling audit report
+
+  - role: architect
+    focus: |
+      Design ontological adapter layer pattern:
+      - How to structure interpretation configs? (YAML, JSON, database?)
+      - What's the interface? InterpretationSystem? SemanticAdapter?
+      - How does RawBodyGraph stay pure?
+      - How do we augment raw data with semantic layer on demand?
+
+      Architecture decisions:
+      - Adapter pattern vs Strategy pattern vs Plugin architecture?
+      - Where does config loading happen?
+      - Caching strategy for interpretations?
+      - How to handle missing semantic data gracefully?
+
+      Consider:
+      - interpretation_systems/64keys.yaml
+      - interpretation_systems/ra_traditional.yaml
+      - interpretation_systems/jolly_alchemy.yaml
+      - Core models import nothing from interpretation layer
+      - API: get_interpretation(raw_data, system='64keys')
+
+  - role: ontologist
+    focus: |
+      Define semantic interpretation schema:
+      - What goes in a semantic config file?
+      - Gate interpretations (name, description, keywords)
+      - Channel names
+      - Type terminology (Initiator vs Manifestor)
+      - Authority names
+      - Profile names
+      - Line meanings
+
+      YAML structure:
+      ```yaml
+      interpretation_system:
+        name: "64keys"
+        version: "1.0"
+        types:
+          INITIATOR: "Initiator"
+          BUILDER: "Generator"
+          # ...
+        gates:
+          1:
+            name: "The Creative"
+            keywords: ["creativity", "self-expression"]
+            description: "..."
+        channels:
+          1-8:
+            name: "Inspiration"
+            description: "..."
+      ```
+
+      Ensure:
+      - Coordinates stay universal (gate numbers, planets)
+      - Only names/descriptions are interpretation-specific
+      - Multiple systems can coexist
+
+  - role: implementer
+    focus: |
+      Prototype the adapter layer:
+      - src/human_design/interpretations/__init__.py
+      - src/human_design/interpretations/adapter.py (InterpretationAdapter)
+      - src/human_design/interpretations/schema.py (config schema)
+      - interpretation_systems/64keys.yaml (extract current 64keys)
+      - interpretation_systems/ra_traditional.yaml (Ra terminology)
+
+      Core interface:
+      ```python
+      adapter = InterpretationAdapter.load('64keys')
+      interpreted = adapter.interpret(raw_bodygraph)
+      # interpreted has gate names, channel names, type labels
+
+      # Switch systems
+      adapter = InterpretationAdapter.load('ra_traditional')
+      interpreted = adapter.interpret(raw_bodygraph)
+      # same coordinates, different semantic layer
+      ```
+
+      Ensure:
+      - RawBodyGraph remains unchanged
+      - Interpreted output is separate type (InterpretedBodyGraph?)
+      - Can load configs from YAML at runtime
+
+  - role: fair_witness
+    focus: |
+      Validate separation of concerns:
+      - Core models have zero semantic imports? (✓/✗)
+      - Can swap interpretations without code changes? (✓/✗)
+      - YAML configs contain only semantic content? (✓/✗)
+      - Raw calculations unchanged regardless of interpretation? (✓/✗)
+      - Multiple interpretation systems can coexist? (✓/✗)
+
+      Test cases:
+      - Calculate bodygraph, interpret with 64keys
+      - Calculate same bodygraph, interpret with Ra traditional
+      - Verify coordinates identical, semantics different
+      - Load custom Jolly Alchemy config
+      - Core models never import from interpretations/
+
+  - role: coordinator
+    focus: |
+      Synthesize ontological adapter design:
+      1. Semantic coupling audit (researcher findings)
+      2. Adapter architecture (architect design)
+      3. Interpretation schema (ontologist spec)
+      4. Prototype implementation (implementer code)
+      5. Validation report (fair_witness)
+
+      Deliverables:
+      - Design document: docs/ONTOLOGY_ADAPTER_DESIGN.md
+      - Schema: interpretation_systems/SCHEMA.yaml
+      - Example configs: 64keys.yaml, ra_traditional.yaml
+      - Prototype: src/human_design/interpretations/
+      - Migration guide: docs/SEMANTIC_LAYER_MIGRATION.md
+
+      Key principle:
+      "Calculations produce coordinates. Interpretations overlay meaning.
+       Core never knows about semantics. Semantics reference coordinates."
+
+expected_artifacts:
+  documentation:
+    - docs/ONTOLOGY_ADAPTER_DESIGN.md (architecture)
+    - docs/SEMANTIC_COUPLING_AUDIT.md (current state)
+    - docs/SEMANTIC_LAYER_MIGRATION.md (how to migrate)
+    - interpretation_systems/SCHEMA.yaml (config format)
+
+  code:
+    - src/human_design/interpretations/__init__.py
+    - src/human_design/interpretations/adapter.py
+    - src/human_design/interpretations/schema.py
+    - interpretation_systems/64keys.yaml (extracted)
+    - interpretation_systems/ra_traditional.yaml (comparison)
+    - interpretation_systems/jolly_alchemy.yaml (template for Rebecca)
+
+  validation:
+    - tests/test_interpretation_adapter.py
+    - Proof: swap between 64keys and Ra with zero code changes
+
+timeline:
+  estimated_rounds: 9
+  estimated_duration: "15-20 minutes"
+
+tags:
+  - architecture
+  - ontology
+  - semantic-layer
+  - adapter-pattern
+  - 64keys
+  - jolly-alchemy
+  - separation-of-concerns

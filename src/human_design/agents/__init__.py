@@ -10,7 +10,8 @@ Agents for Human Design domain-specific tasks:
 from .implementer import ImplementerAgent, ImplementerConfig
 from .test_engineer import TestEngineerAgent, TestEngineerConfig
 from .d3_specialist import D3SpecialistAgent, D3SpecialistConfig
-from .python_linguist import PythonLinguistAgent, PythonLinguistConfig
+# python_linguist has different structure (uses factory function, not Agent/Config classes)
+# from .python_linguist import PythonLinguistAgent, PythonLinguistConfig
 
 __all__ = [
     "ImplementerAgent",
@@ -19,6 +20,6 @@ __all__ = [
     "TestEngineerConfig",
     "D3SpecialistAgent",
     "D3SpecialistConfig",
-    "PythonLinguistAgent",
-    "PythonLinguistConfig",
+    # "PythonLinguistAgent",
+    # "PythonLinguistConfig",
 ]

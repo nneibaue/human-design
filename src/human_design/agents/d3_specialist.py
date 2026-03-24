@@ -18,7 +18,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-D3_SPECIALIST_SYSTEM_PROMPT = """You are a D3 Specialist agent for Human Design bodygraph visualizations.
+D3_SPECIALIST_SYSTEM_PROMPT = r"""You are a D3 Specialist agent for Human Design bodygraph visualizations.
 
 ## CORE RESPONSIBILITIES
 
@@ -98,7 +98,7 @@ gates.on('mouseover', (event, d) => {
 ```python
 class BodygraphRenderer:
     def to_svg_data(self, bodygraph: RawBodyGraph) -> dict:
-        """Convert bodygraph to D3-friendly JSON."""
+        '''Convert bodygraph to D3-friendly JSON.'''
         return {
             "centers": [{"name": "LIFEFORCE", "x": 200, "y": 300, "defined": True}],
             "channels": [{"id": "42-53", "from": "LIFEFORCE", "to": "EMOTION"}],
@@ -156,7 +156,7 @@ class D3SpecialistConfig(BaseModel):
 
     workspace_root: Path = Field(..., description="Root directory of the project")
     static_directory: Path = Field(default=Path("static"), description="Directory for static assets")
-    model: str = Field(default="claude-sonnet-4-5-20250929", description="LLM model to use")
+    model: str = Field(default="claude-opus-4-6", description="LLM model to use")
 
 
 @dataclass
@@ -185,13 +185,13 @@ def create_d3_specialist_agent(deps: D3SpecialistDeps, model: str | None = None)
         Configured pydantic-ai Agent instance
     """
     agent = Agent(
-        model=model or "claude-sonnet-4-5-20250929",
+        model=model or "claude-opus-4-6",
         system_prompt=D3_SPECIALIST_SYSTEM_PROMPT,
         deps_type=D3SpecialistDeps,
     )
 
     # Register tools (filesystem, code search, asset management)
-    # TODO: Import from he360_dodo.agent_tools when available
+    # TODO: Import from dodo.agent_tools when available
 
     return agent
 

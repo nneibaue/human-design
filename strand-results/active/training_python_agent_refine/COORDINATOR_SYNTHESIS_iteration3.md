@@ -221,7 +221,7 @@ register_code_search_tools(agent, workspace_root)
 
 **All Other Agents** (incomplete):
 ```python
-# TODO: Import from he360_dodo.agent_tools when available
+# TODO: Import from dodo.agent_tools when available
 # TODO: Register filesystem tools
 # TODO: Register git tools
 ```
@@ -322,7 +322,7 @@ model_config = ConfigDict(arbitrary_types_allowed=True)
 **The Problem**:
 All agents have TODO comments for tool registration:
 ```python
-# TODO: Import from he360_dodo.agent_tools when available
+# TODO: Import from dodo.agent_tools when available
 # TODO: Register filesystem tools
 # TODO: Register git tools
 ```

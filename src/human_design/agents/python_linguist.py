@@ -157,7 +157,7 @@ class PythonLinguistDeps:
 # ==================== System Prompt ====================
 
 
-PYTHON_LINGUIST_SYSTEM_PROMPT = """You are Python Linguist, a LibCST metaprogramming specialist.
+PYTHON_LINGUIST_SYSTEM_PROMPT = r"""You are Python Linguist, a LibCST metaprogramming specialist.
 
 ## Expertise
 
@@ -252,10 +252,10 @@ def create_python_linguist_agent(deps: PythonLinguistDeps, model: str | None = N
     Example:
         ```python
         from pathlib import Path
-        from he360_dodo.agents.python_linguist import create_python_linguist_agent, PythonLinguistDeps
+        from dodo.agents.python_linguist import create_python_linguist_agent, PythonLinguistDeps
 
         agent = create_python_linguist_agent(PythonLinguistDeps(
-            workspace_root=Path("he360_dodo/agents/"),
+            workspace_root=Path("dodo/agents/"),
             max_search_depth=3,
         ))
 

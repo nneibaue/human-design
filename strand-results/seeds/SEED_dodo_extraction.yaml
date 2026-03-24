@@ -1,0 +1,138 @@
+problem:
+  description: |
+    Extract minimal DODO strand executor into human-design repo for self-sufficient multi-agent coordination.
+
+    Current problem: human-design depends on DODO via fragile sys.path manipulation. Agents live in
+    human-design but can't run without DODO. Symlinks rejected as "sus".
+
+    Solution: Plant DODO's seed - extract ~200 lines of core execution logic (models, builder, factory)
+    into src/human_design/strands/. Remove DODO-specific features (metabolization, temporal anchors,
+    signposting). Keep agents exactly where they are.
+
+    Philosophy: DODO is infrastructure that can be embedded, like pytest or Docker.
+
+metadata:
+  seed_type: implementation
+  priority: high
+  estimated_duration: 25-35 minutes
+  complexity: high
+
+agents:
+  - role: researcher
+    focus: Analyze DODO's builder.py and models.py to identify core vs optional components
+
+  - role: researcher
+    focus: Study human-design's execute_*.py pattern and agent structure
+
+  - role: architect
+    focus: Design simplified strand executor with minimal dependencies
+
+  - role: implementer
+    focus: Extract and simplify src/human_design/strands/models.py
+
+  - role: implementer
+    focus: Extract and simplify src/human_design/strands/builder.py
+
+  - role: implementer
+    focus: Create src/human_design/strands/agent_factory.py with hardcoded agent loading
+
+  - role: implementer
+    focus: Create src/human_design/strands/convenience.py and __init__.py
+
+  - role: test_engineer
+    focus: Create tests/test_strands.py for extracted executor
+
+  - role: fair_witness
+    focus: Validate extraction maintains correctness and removes DODO-specific code
+
+  - role: coordinator
+    focus: Synthesize implementation plan and verify all pieces work together
+
+context:
+  critical_files:
+    dodo_source:
+      - ~/code/claude/he360-dodo/he360_dodo/models.py
+      - ~/code/claude/he360-dodo/he360_dodo/builder.py
+      - ~/code/claude/he360-dodo/he360_dodo/agent_factory.py
+      - ~/code/claude/he360-dodo/he360_dodo/convenience.py
+    human_design:
+      - src/human_design/agents/implementer.py
+      - src/human_design/agents/test_engineer.py
+      - src/human_design/agents/d3_specialist.py
+      - src/human_design/agents/python_linguist.py
+      - execute_ontology_refinement.py
+      - pyproject.toml
+
+  components_to_extract:
+    keep:
+      - StrandDefinition, StrandResult, StrandStatus
+      - Strand class (core execution)
+      - AgentFactory protocol
+      - create_strand() convenience function
+      - Parallel specialist execution
+      - Coordinator synthesis
+
+    remove:
+      - Metabolization detection
+      - Temporal anchors
+      - Token tracking
+      - Signposting
+      - AgentResponseValidator
+      - Git fork-space operations
+      - Company integration
+
+  target_structure:
+    - src/human_design/strands/__init__.py
+    - src/human_design/strands/models.py
+    - src/human_design/strands/builder.py
+    - src/human_design/strands/agent_factory.py
+    - src/human_design/strands/convenience.py
+    - tests/test_strands.py
+
+expected_artifacts:
+  - file: src/human_design/strands/models.py
+    description: Simplified strand models (~50 lines)
+
+  - file: src/human_design/strands/builder.py
+    description: Core strand executor (~200 lines vs 800+ in DODO)
+
+  - file: src/human_design/strands/agent_factory.py
+    description: Hardcoded agent factory for implementer, test_engineer, d3_specialist, python_linguist
+
+  - file: src/human_design/strands/convenience.py
+    description: create_strand() convenience function
+
+  - file: src/human_design/strands/__init__.py
+    description: Public API exports
+
+  - file: pyproject.toml
+    description: Updated with pydantic-ai, anthropic, gitpython dependencies
+
+  - file: tests/test_strands.py
+    description: Integration tests for strand executor
+
+  - updated: execute_*.py scripts (12 files)
+    description: Changed imports from he360_dodo to human_design.strands
+
+success_criteria:
+  - No DODO sys.path manipulation in execute_*.py scripts
+  - Agents (implementer, test_engineer, d3_specialist, python_linguist) discoverable
+  - Strand execution works: parallel specialists → coordinator synthesis
+  - Results saved to strand-results/active/
+  - Tests pass: pytest tests/test_strands.py -v
+  - Code follows Pydantic v2 patterns
+  - All files have type hints (mypy clean)
+
+constraints:
+  - Do NOT move agent files (keep in src/human_design/agents/)
+  - Do NOT copy full DODO (extract minimal subset only)
+  - Do NOT add ontology loading (Phase 4 optional, skip for now)
+  - Match DODO's create_strand() API (backward compatible)
+  - Remove ALL DODO-specific features (metabolization, anchors, signposting)
+
+validation_rules:
+  - builder.py must be ~200 lines (not 800+)
+  - No imports from he360_dodo package
+  - Agent factory uses hardcoded if/elif pattern (no dynamic imports)
+  - All Pydantic models use v2 patterns (ConfigDict, not class Config)
+  - Execute scripts work after changes

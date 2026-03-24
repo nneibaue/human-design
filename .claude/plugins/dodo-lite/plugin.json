@@ -1,0 +1,47 @@
+{
+  "name": "dodo-lite",
+  "version": "0.1.0",
+  "description": "Workspace-local embedded multi-agent investigation system for Human Design",
+  "author": "Nathan Neibauer",
+  "repository": "file:///Users/nathan.neibauer/code/human-design",
+  "skills": [
+    {
+      "name": "refine",
+      "description": "Refine code/agents using embedded multi-agent investigation",
+      "trigger_keywords": ["refine", "improve", "analyze"],
+      "file": "skills/refine/SKILL.md"
+    },
+    {
+      "name": "implement",
+      "description": "Implement features using implementer + test_engineer agents",
+      "trigger_keywords": ["implement", "build", "create feature"],
+      "file": "skills/implement/SKILL.md"
+    },
+    {
+      "name": "visualize",
+      "description": "Create D3 visualizations using d3_specialist agent",
+      "trigger_keywords": ["visualize", "d3", "chart", "bodygraph"],
+      "file": "skills/visualize/SKILL.md"
+    }
+  ],
+  "dependencies": {
+    "python": ">=3.12",
+    "packages": ["pydantic", "pydantic-ai"]
+  },
+  "configuration": {
+    "agents": {
+      "available": [
+        "implementer",
+        "test_engineer",
+        "d3_specialist",
+        "python_linguist"
+      ],
+      "external": [
+        "researcher",
+        "architect",
+        "coordinator",
+        "fair_witness"
+      ]
+    }
+  }
+}

@@ -181,3 +181,179 @@ cdk/                        # AWS CDK infrastructure (Batch, S3, ECR)
 - **Use parametrized tests** to reduce duplication
 - **Respect Rebecca Energy** - whimsical, warm, grounded tone in UI text
 - **Consult `.github/copilot-instructions.md`** for Rebecca Energy philosophy and detailed context
+
+## Multi-Agent Development with DODO-Lite
+
+This project includes an **embedded multi-agent investigation system** (DODO-Lite) for code refinement, feature implementation, and visualization creation.
+
+### What is DODO-Lite?
+
+DODO-Lite is an embedded multi-agent investigation system inspired by Neal Stephenson's novel "The Rise and Fall of D.O.D.O."
+
+**DODO**: Distributed Ontology-Driven Operations
+
+The system is embedded in `src/human_design/strands/` and provides self-sufficient strand execution without external dependencies.
+
+**Architecture**:
+```
+src/human_design/strands/
+├── __init__.py           # Public API: create_strand()
+├── models.py             # StrandDefinition, StrandResult, StrandStatus
+├── builder.py            # Strand execution orchestration
+├── agent_factory.py      # Hardcoded agent loading
+└── convenience.py        # create_strand() convenience function
+```
+
+### Available Agents
+
+**Embedded Agents** (always available):
+- **implementer** - Feature implementation with tool integration
+- **test_engineer** - Test suite creation and validation
+- **d3_specialist** - D3.js visualization design and implementation
+- **python_linguist** - Code quality and LibCST-based introspection
+
+**External Agents** (requires DODO installed):
+- **researcher** - Codebase analysis
+- **architect** - Architecture design
+- **coordinator** - Multi-agent synthesis
+- **fair_witness** - Validation and correctness checking
+
+### Direct Python API
+
+```python
+from human_design.strands import create_strand
+
+# Create and execute strand
+strand = create_strand(
+    problem="Implement bodygraph caching layer",
+    agents=["implementer", "test_engineer"],
+    strand_type="implementation"
+)
+
+result = await strand.run()
+print(result.findings)
+```
+
+### Workspace-Local Skills
+
+Use these skills for common workflows:
+
+#### `/refine` - Code Refinement
+Analyze and improve code using multi-agent investigation.
+
+**Usage**:
+```bash
+/refine d3_specialist agent
+/refine bodygraph calculation logic
+/refine --agents python_linguist,implementer src/human_design/models/bodygraph.py
+```
+
+**Default Agents**: `python_linguist` + `implementer`
+
+**Output**: Analysis + implementation recommendations in `strand-results/active/`
+
+#### `/implement` - Feature Implementation
+Implement features using test-driven development.
+
+**Usage**:
+```bash
+/implement bodygraph caching layer
+/implement composite chart calculation
+/implement --tdd transit overlay visualization
+```
+
+**Default Agents**: `implementer` + `test_engineer`
+
+For visualization features, automatically adds `d3_specialist`.
+
+**Output**: Working code + comprehensive test suite
+
+#### `/visualize` - D3 Visualization Creation
+Create D3.js visualizations with Rebecca Energy aesthetic.
+
+**Usage**:
+```bash
+/visualize interactive bodygraph with hover states
+/visualize composite chart overlay
+/visualize --features hover,click,zoom bodygraph
+```
+
+**Default Agent**: `d3_specialist`
+
+**Output**: D3.js v7 code + CSS styling in `static/js/` and `static/css/`
+
+### When to Use DODO-Lite
+
+**Use DODO-Lite for**:
+- ✅ Code refinement and analysis
+- ✅ Feature implementation with TDD
+- ✅ D3 visualization creation
+- ✅ Multi-perspective investigation
+- ✅ Automated test generation
+
+**Use direct coding for**:
+- ❌ Simple one-line changes
+- ❌ Quick debugging
+- ❌ Exploratory prototyping
+
+**Rule of thumb**: If task requires multiple agents' perspectives or TDD workflow, use DODO-Lite.
+
+### Examples
+
+**Refine existing code**:
+```bash
+/refine d3_specialist agent
+# → Analyzes current implementation
+# → Identifies gaps (tool registration, examples)
+# → Provides actionable recommendations
+```
+
+**Implement new feature**:
+```bash
+/implement bodygraph caching with Redis
+# → implementer: Designs cache architecture
+# → implementer: Implements BodygraphCache class
+# → test_engineer: Creates comprehensive test suite
+# → Output: Working code + tests
+```
+
+**Create visualization**:
+```bash
+/visualize interactive bodygraph with hover and click
+# → d3_specialist: Converts RawBodyGraph to D3 JSON
+# → d3_specialist: Generates D3.js v7 code
+# → d3_specialist: Applies Rebecca Energy styling
+# → Output: static/js/d3-bodygraph.js + CSS
+```
+
+### Strand Results
+
+All strand executions save results to `strand-results/`:
+```
+strand-results/
+├── active/               # Current strand findings
+│   ├── REFINEMENT_ANALYSIS.md
+│   ├── IMPLEMENTATION_SUMMARY.md
+│   └── VISUALIZATION_SPEC.md
+└── seeds/                # Strand seed specifications
+    └── SEED_*.yaml
+```
+
+### Configuration
+
+Plugin configuration: `.claude/plugins/dodo-lite/plugin.json`
+
+Available agents and capabilities documented in: `.claude/plugins/dodo-lite/README.md`
+
+### Why Embedded?
+
+**Problem**: External DODO creates coupling and deployment complexity.
+
+**Solution**: Embed minimal strand system directly in Human Design codebase.
+
+**Benefits**:
+- Self-sufficient (no external dependencies)
+- Hardcoded agents (no ontology lookup)
+- Breaks bootstrap problem (agents can use strands)
+- Simple API (`create_strand()` → `await strand.run()`)
+- Fallback to full DODO for advanced agents

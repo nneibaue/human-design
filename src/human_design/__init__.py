@@ -9,7 +9,8 @@ Core workflow:
 3. Convert to BodyGraphSummary64Keys via the API for full content
 """
 
-from .api import GateAPI, bodygraph_to_summary, get_gate, get_gates, get_home_page
+# API imports temporarily disabled - API refactor in progress
+# from .api import GateAPI, bodygraph_to_summary, get_gate, get_gates, get_home_page
 from .models import (
     ActivationSummary64Keys,
     # Raw calculation models

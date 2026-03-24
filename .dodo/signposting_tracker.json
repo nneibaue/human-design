@@ -1,7 +1,7 @@
 {
-  "strand_count": 7,
-  "signpost_count": 17,
+  "strand_count": 24,
+  "signpost_count": 33,
   "first_strand_at": "2026-03-21T18:03:47.750356",
-  "last_strand_at": "2026-03-21T20:28:53.054690",
-  "last_signpost_at": "2026-03-21T20:37:33.387863"
+  "last_strand_at": "2026-03-23T17:15:03.019603",
+  "last_signpost_at": "2026-03-23T17:22:14.054908"
 }

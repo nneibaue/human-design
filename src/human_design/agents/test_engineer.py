@@ -18,7 +18,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-TEST_ENGINEER_SYSTEM_PROMPT = """You are a Test Engineer agent specializing in Human Design test coverage.
+TEST_ENGINEER_SYSTEM_PROMPT = r"""You are a Test Engineer agent specializing in Human Design test coverage.
 
 ## CORE RESPONSIBILITIES
 
@@ -292,7 +292,7 @@ class TestEngineerConfig(BaseModel):
 
     workspace_root: Path = Field(..., description="Root directory of the project")
     test_directory: Path = Field(default=Path("tests"), description="Directory for test files")
-    model: str = Field(default="claude-sonnet-4-5-20250929", description="LLM model to use")
+    model: str = Field(default="claude-opus-4-6", description="LLM model to use")
 
 
 @dataclass
@@ -321,13 +321,13 @@ def create_test_engineer_agent(deps: TestEngineerDeps, model: str | None = None)
         Configured pydantic-ai Agent instance
     """
     agent = Agent(
-        model=model or "claude-sonnet-4-5-20250929",
+        model=model or "claude-opus-4-6",
         system_prompt=TEST_ENGINEER_SYSTEM_PROMPT,
         deps_type=TestEngineerDeps,
     )
 
     # Register tools (filesystem, git, code search, test execution)
-    # TODO: Import from he360_dodo.agent_tools when available
+    # TODO: Import from dodo.agent_tools when available
 
     return agent
 

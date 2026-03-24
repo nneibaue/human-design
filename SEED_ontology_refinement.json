@@ -1,0 +1,183 @@
+{
+  "seed_version": "1.0",
+  "problem": "Review and refine HD_ONTOLOGY_complete.json for accuracy, completeness, and consistency with codebase patterns and 64keys terminology",
+
+  "goal": "Produce validated, refined HD_ONTOLOGY_complete.json with verified accuracy, complete coverage, consistent terminology, and alignment with existing codebase (bodygraph.yaml, channels.yaml, centers.yaml, core.py)",
+
+  "context": {
+    "current_ontology": {
+      "location": "ontology/HD_ONTOLOGY_complete.json",
+      "size": "60KB (1,524 lines)",
+      "generated_by": "Strand d380b69d (8.7 minutes)",
+      "coverage": "5 Types, 7 Authorities, 12 Profiles, 36 Channels, 9 Centers, 64 Gates, 4 Quarters"
+    },
+
+    "validation_requirements": {
+      "data_integrity": [
+        "All 64 gates present with correct names and I Ching references",
+        "All 36 channels match channels.yaml exactly (gate pairs)",
+        "All 9 centers match centers.yaml exactly (gate assignments)",
+        "Center names use 64keys terminology (LIFEFORCE not Sacral, DRIVE not Root)",
+        "Type names use 64keys terminology (Initiator/Builder/Specialist/Coordinator/Observer)"
+      ],
+      "completeness": [
+        "Each Type includes: name, traditional_name, description, strategy, not_self_theme, percentage",
+        "Each Authority includes: name, description, decision_strategy, hierarchy_order",
+        "Each Profile includes: notation (e.g., 3/5), lines (conscious/unconscious), description, archetype",
+        "Each Channel includes: id, name, gate_a, gate_b, center_a, center_b, circuit, theme",
+        "Each Center includes: name, traditional_name, gates[], defined_description, undefined_description",
+        "Each Gate includes: number, name, i_ching_name, center, theme, keywords"
+      ],
+      "consistency_checks": [
+        "Channel gate pairs match both directions (if channel 1-8, verify both gates reference channel)",
+        "Gate-to-center assignments match centers.yaml",
+        "Channel center assignments derived from gate-to-center mappings",
+        "Circuit assignments for channels are correct (Integration/Knowing/Sensing)",
+        "Profile line combinations are all valid (12 profiles exactly)"
+      ],
+      "terminology_validation": [
+        "Primary terminology is 64keys throughout",
+        "Traditional HD terminology in traditional_name fields only",
+        "Center names: EXPRESSION (Throat), MIND (Ajna), IDENTITY (G-Center), WILLPOWER (Heart), LIFEFORCE (Sacral), EMOTION (Solar Plexus), INTUITION (Spleen), DRIVE (Root), INSPIRATION (Head)",
+        "Type names: Initiator (not Manifestor), Builder (not Generator), Specialist (not ManGen), Coordinator (not Projector), Observer (not Reflector)"
+      ]
+    },
+
+    "existing_codebase_validation": {
+      "must_match": [
+        "src/human_design/models/core.py - GateNumber, CenterName Literal types",
+        "src/human_design/bodygraph.yaml - 64 gates with zodiac ranges",
+        "src/human_design/channels.yaml - 36 channels as gate pairs",
+        "src/human_design/centers.yaml - 9 centers with gate lists"
+      ],
+      "validation_approach": "Cross-reference ontology data with YAML files - every gate number, channel pair, center name must match exactly"
+    }
+  },
+
+  "agents": [
+    "ontologist",
+    "fair_witness",
+    "coordinator"
+  ],
+
+  "constraints": [
+    "Work in strand fork space (automatic isolation branch)",
+    "Do NOT change 64keys terminology - it is primary",
+    "Validate against existing YAML files - they are source of truth for gates/channels/centers",
+    "Fix any errors or inconsistencies found",
+    "Document all changes made in refinement report"
+  ],
+
+  "success_criteria": [
+    "All 64 gates validated against bodygraph.yaml",
+    "All 36 channels validated against channels.yaml",
+    "All 9 centers validated against centers.yaml",
+    "64keys terminology consistently used as primary",
+    "Traditional HD terminology present in traditional_name fields",
+    "No missing data in any ontology entity",
+    "All cross-references validated (gate→center, channel→gates)",
+    "Refinement report documents all changes",
+    "JSON validates against schema",
+    "Human-readable formatting maintained"
+  ],
+
+  "expected_artifacts": [
+    "ontology/HD_ONTOLOGY_complete.json (refined)",
+    "ONTOLOGY_REFINEMENT_REPORT.md",
+    "ONTOLOGY_VALIDATION_RESULTS.md"
+  ],
+
+  "phases": {
+    "1_comprehensive_validation": {
+      "description": "Validate ontology against existing codebase and HD standards",
+      "agents": ["ontologist"],
+      "tasks": [
+        {
+          "agent_index": 0,
+          "task": "Validate HD_ONTOLOGY_complete.json comprehensively: (1) Cross-check all gates against bodygraph.yaml, (2) Cross-check all channels against channels.yaml, (3) Cross-check all centers against centers.yaml, (4) Validate 64keys terminology usage, (5) Check for missing data, (6) Verify all cross-references. Document all discrepancies found.",
+          "inputs": [
+            "ontology/HD_ONTOLOGY_complete.json",
+            "src/human_design/bodygraph.yaml",
+            "src/human_design/channels.yaml",
+            "src/human_design/centers.yaml",
+            "src/human_design/models/core.py"
+          ],
+          "outputs": ["VALIDATION_FINDINGS.md"]
+        }
+      ],
+      "dependencies": [],
+      "parallel": false
+    },
+
+    "2_integrity_audit": {
+      "description": "Audit data integrity and consistency",
+      "agents": ["fair_witness"],
+      "tasks": [
+        {
+          "agent_index": 1,
+          "task": "Audit ontology data integrity: (1) Verify completeness of all entities, (2) Check consistency of cross-references, (3) Validate terminology usage, (4) Identify any errors or omissions, (5) Assess quality and usability. Provide confidence score and evidence.",
+          "inputs": ["ontology/HD_ONTOLOGY_complete.json", "VALIDATION_FINDINGS.md"],
+          "outputs": ["ONTOLOGY_VALIDATION_RESULTS.md"]
+        }
+      ],
+      "dependencies": ["1_comprehensive_validation"],
+      "parallel": false
+    },
+
+    "3_refinement_synthesis": {
+      "description": "Synthesize findings and produce refined ontology",
+      "agents": ["coordinator"],
+      "tasks": [
+        {
+          "agent_index": 2,
+          "task": "Synthesize validation findings and produce refined ontology: (1) Review all validation findings, (2) Fix identified errors, (3) Fill missing data, (4) Ensure consistency, (5) Apply corrections, (6) Generate refined HD_ONTOLOGY_complete.json. Document all changes in refinement report.",
+          "inputs": ["VALIDATION_FINDINGS.md", "ONTOLOGY_VALIDATION_RESULTS.md"],
+          "outputs": [
+            "ontology/HD_ONTOLOGY_complete.json",
+            "ONTOLOGY_REFINEMENT_REPORT.md"
+          ]
+        }
+      ],
+      "dependencies": ["2_integrity_audit"],
+      "parallel": false
+    }
+  },
+
+  "validation_rules": {
+    "structural": [
+      "Valid JSON syntax (RFC 8259)",
+      "Validates against JSON Schema",
+      "Human-readable formatting (2-space indent)",
+      "UTF-8 encoding"
+    ],
+
+    "semantic": [
+      "All 64 GateNumbers (1-64) present",
+      "All 9 CenterNames match core.py exactly",
+      "All 36 channel gate pairs match channels.yaml",
+      "All gate-to-center assignments match centers.yaml",
+      "All 5 Type names use 64keys terminology",
+      "All 12 Profiles present with correct line combinations"
+    ],
+
+    "completeness": [
+      "No missing fields in any entity",
+      "All descriptions present and non-empty",
+      "All cross-references valid (no broken links)",
+      "Traditional terminology present where required"
+    ]
+  },
+
+  "metadata": {
+    "created": "2026-03-21",
+    "seed_type": "validation_and_refinement",
+    "strand_type": "OPERATIONAL",
+    "priority": "HIGH",
+    "effort_estimate": "3-5 agent-hours (1-2 hours)",
+    "target_repo": "/Users/nathan.neibauer/code/human-design",
+    "output_dir": "strand-results/active",
+    "isolation": "automatic git fork and branch creation",
+    "parent_strand": "d380b69d (ontology generation)",
+    "refines": "ontology/HD_ONTOLOGY_complete.json"
+  }
+}

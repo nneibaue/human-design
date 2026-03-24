@@ -1,0 +1,225 @@
+---
+strand_id: medium_priority_visualization
+title: "Bodygraph Visualization with D3 & 64keys Semantic Augmentation"
+created_at: 2026-03-22T09:50:00Z
+ambiguity_score: 0.18
+confidence: 0.88
+
+problem:
+  description: |
+    Build a fully custom D3.js bodygraph visualization system from the ground up.
+    Understand 64keys.com's approach for reference, but implement something BETTER
+    with full ontological control over function names, symbols, and semantic cohesion.
+
+    "Reverse engineer" means: Study their approach to understand the problem space,
+    then build our own superior solution. We want semantic refinement over time,
+    not legacy constraints from their implementation.
+
+    Rebecca Energy aesthetic: Cozy autumnal forest, twilight magic, warm and inviting.
+    Accuracy first, aesthetics second - but both matter.
+
+  context:
+    brownfield: true
+    existing_code:
+      - src/human_design/models/bodygraph.py (RawBodyGraph with activations)
+      - src/human_design/models/composite.py (CompositeBodyGraph)
+      - src/human_design/api.py (chart generation API - from strand 1)
+      - src/human_design/web/app.py (web UI)
+
+    visualization_requirements:
+      accuracy: "Must correctly show 9 centers, 36 channels, 64 gates"
+      composites: "Show individual + composite + emergent channels in different styles"
+      aesthetic: "Rebecca Energy - warm, cozy, magical (not clinical)"
+      colors:
+        defined_center: "#8B4513" # Saddle brown
+        undefined_center: "#F5F5DC" # Beige
+        conscious: "#4A5D23" # Dark olive green
+        unconscious: "#8B0000" # Dark red
+        emergent: "#DAA520" # Goldenrod
+
+    key_questions:
+      - How does 64keys render bodygraphs? (D3? Canvas? SVG?)
+      - What's the SVG structure? (centers, channels, gates positions)
+      - Can we use raw D3 or need custom library?
+      - How to show composite overlays clearly?
+
+  success_criteria:
+    - 64keys reference study documented (learn from, not copy)
+    - Custom D3 renderer with ontologically clean function names
+    - Composite visualization showing individual + emergent channels distinctly
+    - Semantic augmentation system (gate/channel names on hover)
+    - Rebecca Energy aesthetic applied throughout
+    - Geometrically accurate (9 centers, 36 channels, 64 gates)
+    - Full ontological control over naming (refinable over time)
+    - Superior to 64keys implementation (cleaner, more accurate, more beautiful)
+
+agents:
+  - role: researcher
+    focus: |
+      Study 64keys.com bodygraph rendering to understand the problem space:
+      1. Visit 64keys.com sample chart
+      2. Inspect DOM structure (dev tools)
+      3. Identify their rendering approach (D3? Canvas? Raw SVG?)
+      4. Document geometric constraints:
+         - Center positions and shapes (triangle, square, diamond)
+         - Channel connection patterns
+         - Gate placement logic
+      5. Note what works well and what doesn't
+
+      CRITICAL: We're learning from them, not copying them. Document their
+      approach, identify weaknesses, recommend improvements for our custom
+      implementation.
+
+      Deliverable:
+      - docs/64KEYS_RENDERING_ANALYSIS.md (reference study)
+      - Geometric requirements (what's fixed vs flexible)
+      - Recommendations for our superior implementation
+
+  - role: d3_specialist
+    focus: |
+      Design custom D3.js bodygraph renderer from scratch:
+      - Ontologically clean function names (drawLifeforceCenter, not drawSacral)
+      - Semantic cohesion: names reflect Human Design ontology accurately
+      - Data binding strategy for centers, channels, gates
+      - Composite overlay patterns (individual, composite, emergent layers)
+      - Update patterns for interactive states (hover, selection, transit overlays)
+
+      D3 v7 patterns (modern):
+      - .join() for data binding (not legacy .enter()/.exit())
+      - Functional, declarative style
+      - Fixed geometry (not force-directed)
+      - Data-driven styling with semantic CSS classes
+
+      CRITICAL: Full ontological control. Every function name, every CSS class,
+      every data structure should be semantically coherent and refinable over time.
+
+      Deliverable:
+      - D3 architecture design with ontologically clean API
+      - Code patterns demonstrating semantic naming
+      - Composite visualization strategy
+
+  - role: architect
+    focus: |
+      Design visualization system architecture from first principles:
+      - Custom, ground-up implementation (not adapting 64keys patterns)
+      - Ontologically controlled naming throughout the stack
+      - Python backend prepares semantically clean data structures
+      - D3 frontend renders with full control over visual ontology
+
+      Architecture layers:
+      1. Python: RawBodyGraph → BodygraphVisualizationData (clean JSON)
+      2. D3: Semantic rendering functions (drawLifeforceCenter, connectChannels)
+      3. CSS: Rebecca Energy theme with ontologically named classes
+
+      Key decisions:
+      - Server-side data prep, client-side SVG generation (separation of concerns)
+      - Semantic data structure: centers[], channels[], gates[], styling_metadata
+      - Function naming philosophy: domain-accurate, not implementation-leaky
+      - Refinement path: how to evolve semantic cohesion over time?
+
+      Deliverable:
+      - Architecture document emphasizing ontological control
+      - API design with semantic naming conventions
+      - Evolution strategy for semantic refinement
+
+  - role: implementer
+    focus: |
+      Implement bodygraph renderer:
+      - src/human_design/visualization/renderer.py
+      - static/js/d3-bodygraph.js
+      - static/css/bodygraph-styles.css
+
+      Python side:
+      - BodygraphRenderer.to_dict() -> structured data for D3
+      - Center/channel/gate positions (coordinates)
+      - Styling metadata (defined/undefined, conscious/unconscious)
+
+      D3 side:
+      - renderBodygraph(data, container) -> SVG
+      - drawCenters(centers) - triangles, squares, diamonds
+      - drawChannels(channels) - paths between centers
+      - drawGates(gates) - small markers on channels
+      - applyRebeccaTheme() - color palette
+
+  - role: implementer
+    focus: |
+      64keys semantic augmentation:
+      - Overlay gate names, channel names on hover
+      - Fetch from GateAPI (src/human_design/api.py)
+      - Tooltip system with 64keys descriptions
+
+      Implementation:
+      - static/js/bodygraph-tooltips.js
+      - On hover over gate → show gate name + description
+      - On hover over channel → show channel name
+      - Click for full description popup
+
+  - role: test_engineer
+    focus: |
+      Visualization tests:
+      - tests/test_renderer.py (Python)
+      - Geometry validation (centers at correct positions)
+      - Data structure validation (to_dict() format)
+      - Edge cases: empty chart, full chart, composite
+
+      Manual test cases:
+      - Render Sandy's chart (from examples)
+      - Render Sandy + Heath interaction
+      - Render penta with emergent channels
+      - Verify Rebecca Energy colors applied
+
+  - role: fair_witness
+    focus: |
+      Validate against requirements:
+      - Rendering accurate? (9 centers, 36 channels, 64 gates positioned correctly)
+      - 64keys structure reverse-engineered? (documented in analysis doc)
+      - D3 implementation? (using D3 v7 patterns)
+      - Composite overlays clear? (emergent channels distinguishable)
+      - Rebecca Energy aesthetic? (colors match palette)
+      - 64keys augmentation working? (tooltips show gate/channel info)
+
+  - role: coordinator
+    focus: |
+      Synthesize visualization system:
+      1. 64keys analysis findings (rendering approach)
+      2. D3 architecture decisions
+      3. Implementation files (renderer.py, d3-bodygraph.js, styles)
+      4. Test suite and validation
+      5. Integration with API layer (from strand 1)
+
+      Ensure:
+      - All components integrate cleanly
+      - Rebecca Energy aesthetic consistent
+      - Documentation for future D3 work
+      - Ready to render charts in web UI
+
+expected_artifacts:
+  documentation:
+    - docs/64KEYS_RENDERING_ANALYSIS.md
+    - docs/D3_BODYGRAPH_ARCHITECTURE.md
+
+  code:
+    - src/human_design/visualization/renderer.py
+    - static/js/d3-bodygraph.js
+    - static/js/bodygraph-tooltips.js
+    - static/css/bodygraph-styles.css
+
+  tests:
+    - tests/test_renderer.py
+    - tests/test_visualization_integration.py
+
+  examples:
+    - examples/visualization_demo.py
+    - static/bodygraph-demo.html
+
+timeline:
+  estimated_rounds: 10
+  estimated_duration: "18-22 minutes"
+
+tags:
+  - week1-implementation
+  - visualization
+  - d3js
+  - rebecca-energy
+  - 64keys-augmentation
+  - bodygraph-rendering

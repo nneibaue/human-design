@@ -1,0 +1,301 @@
+---
+strand_id: agent_training_validation_comprehensive
+title: "Comprehensive Agent Training Validation - Zero Tolerance for Pydantic v1"
+created_at: 2026-03-23T10:30:00Z
+ambiguity_score: 0.08
+confidence: 0.98
+
+problem:
+  description: |
+    After fixing Config class inconsistency, perform comprehensive validation
+    that agent implementations now demonstrate ALL patterns they teach.
+
+    CRITICAL: Zero tolerance for Pydantic v1 patterns anywhere in agent code.
+    This is a "never again" validation - every line of agent code must be
+    audited against training to ensure complete consistency.
+
+    Fixed in previous iteration:
+    - Config classes changed from v1 to v2 pattern (class Config → model_config = ConfigDict)
+
+    Now validate EVERYTHING ELSE:
+    - All Pydantic patterns (validators, serialization, computed fields)
+    - All pytest patterns (parametrize, fixtures, mocking)
+    - All D3 patterns (v7 .join(), no legacy patterns)
+    - Type hints, imports, docstrings, factory functions
+    - NO Pydantic v1 patterns anywhere (must be eradicated)
+
+  context:
+    what_happened: |
+      Three refinement iterations identified and fixed Config class inconsistency.
+      Manual fix applied and committed (f218cfa).
+
+      Now need comprehensive validation that:
+      1. Config fixes are correct (Pydantic v2 compliant)
+      2. No OTHER training inconsistencies remain
+      3. Agents demonstrate every pattern they teach
+      4. Zero Pydantic v1 patterns exist anywhere
+
+    files_to_audit:
+      - src/human_design/agents/implementer.py (416 lines)
+      - src/human_design/agents/test_engineer.py (371 lines)
+      - src/human_design/agents/d3_specialist.py (263 lines)
+      - src/human_design/agents/python_linguist.py (1082 lines - already correct)
+
+    pydantic_v1_patterns_forbidden:
+      - "@validator"
+      - "@root_validator"
+      - "class Config:"
+      - ".dict()"
+      - ".json()"
+      - ".parse_obj()"
+      - ".parse_raw()"
+      - "from pydantic import validator"
+      - "from pydantic import root_validator"
+
+    pydantic_v2_patterns_required:
+      - "@field_validator"
+      - "@model_validator"
+      - "model_config = ConfigDict"
+      - ".model_dump()"
+      - ".model_dump_json()"
+      - ".model_validate()"
+      - "@computed_field"
+
+    other_patterns_to_validate:
+      pytest_patterns:
+        - "@pytest.mark.parametrize"
+        - "pytest.param(id=...)"
+        - "Fixture scopes"
+        - "Fixture factories"
+        - "pytest-mock"
+
+      d3_patterns:
+        - "D3 v7 .join()"
+        - "Modern functional style"
+        - "No jQuery"
+
+      code_quality:
+        - "Type hints"
+        - "Docstrings"
+        - "Import patterns"
+        - "Factory functions"
+
+  success_criteria:
+    - Zero Pydantic v1 patterns found anywhere (CRITICAL)
+    - All Config fixes validated as correct
+    - All system prompt patterns demonstrated in code
+    - Training quality grade A or A+
+    - No "do as I say, not as I do" inconsistencies remain
+    - Comprehensive line-by-line audit completed
+
+agents:
+  - role: python_linguist
+    focus: |
+      Deep code analysis using LibCST AST introspection:
+
+      1. Parse all three agent files (implementer, test_engineer, d3_specialist)
+      2. Extract AST nodes for:
+         - All class definitions (Config classes, agent classes)
+         - All decorators (@validator, @field_validator, @computed_field, etc.)
+         - All method calls (.dict(), .model_dump(), etc.)
+         - All imports (pydantic imports)
+
+      3. CRITICAL: Detect ANY Pydantic v1 patterns:
+         ```python
+         # Forbidden patterns (raise alarm if found)
+         @validator
+         @root_validator
+         class Config:
+         .dict()
+         .json()
+         .parse_obj()
+         from pydantic import validator
+         from pydantic import root_validator
+         ```
+
+      4. Validate Pydantic v2 compliance:
+         - All validators use @field_validator + @classmethod
+         - All model validators use @model_validator(mode='after') + -> Self
+         - All Config use model_config = ConfigDict(...)
+         - All serialization uses .model_dump() / .model_dump_json()
+
+      5. Report findings:
+         - Line numbers of any v1 patterns (CRITICAL ALERT)
+         - Line numbers of all v2 patterns (validation)
+         - Structural analysis of each class
+
+      Output:
+      - AST analysis report with line numbers
+      - Pydantic v1 pattern detection (MUST BE ZERO)
+      - Pydantic v2 compliance validation
+
+  - role: fair_witness
+    focus: |
+      Compare system prompts to implementation code:
+
+      For EACH agent (implementer, test_engineer, d3_specialist):
+
+      1. Read system prompt (IMPLEMENTER_SYSTEM_PROMPT, etc.)
+      2. Extract all patterns taught in prompt:
+         - Pydantic v2 examples (field_validator, model_validator, ConfigDict, etc.)
+         - pytest patterns (parametrize, fixtures, mocking)
+         - D3 patterns (v7 .join(), SVG structure)
+         - Best practices (type hints, validation, separation of concerns)
+
+      3. Read implementation code (Config class, factory function, Deps class)
+      4. Compare: Does code demonstrate what training teaches?
+         - Config class: Uses model_config = ConfigDict() ✅
+         - Factory function: Follows patterns from training?
+         - Deps dataclass: Follows taught structure?
+         - Imports: Demonstrate taught patterns?
+         - Type hints: Present and correct?
+
+      5. Validate Config fixes:
+         - implementer.py:336 - Correct Pydantic v2 pattern?
+         - test_engineer.py:291 - Correct Pydantic v2 pattern?
+         - d3_specialist.py:155 - Correct Pydantic v2 pattern?
+
+      6. Check for hidden inconsistencies:
+         - Are there OTHER "do as I say, not as I do" patterns?
+         - Does any code contradict training?
+         - Are there missing demonstrations of taught patterns?
+
+      Output:
+      - Pattern-by-pattern validation report
+      - Inconsistency findings (with line numbers)
+      - Validation of Config fixes
+      - Grade: A+, A, A-, B+, etc. (must be A or A+)
+
+  - role: ontologist
+    focus: |
+      Validate semantic consistency across all three agents:
+
+      1. Read all three agents and extract patterns:
+         - How do they structure Config classes?
+         - How do they structure Deps dataclasses?
+         - How do they structure factory functions?
+         - How do they import pydantic?
+
+      2. Check cross-agent consistency:
+         - Do all three follow same Config pattern?
+         - Do all three follow same Deps pattern?
+         - Do all three follow same factory pattern?
+         - Are imports consistent?
+
+      3. Identify architectural drift:
+         - Where do implementations diverge unnecessarily?
+         - Should there be base classes or protocols?
+         - Are there missing abstractions?
+
+      4. Validate against DODO patterns:
+         - Compare to he360-dodo agent architecture
+         - Are we following established patterns?
+         - Any deviations justified?
+
+      5. Pydantic v2 semantic validation:
+         - Is ConfigDict usage consistent?
+         - Are Field() patterns consistent?
+         - Are validator patterns consistent?
+
+      Output:
+      - Cross-agent consistency report
+      - Architectural recommendations
+      - Pattern standardization suggestions
+
+  - role: researcher
+    focus: |
+      Research Pydantic v2 2026 best practices:
+
+      1. Review implementer system prompt Pydantic v2 section
+      2. Cross-reference with official Pydantic v2 docs patterns
+      3. Validate that taught patterns are current (2026 standards)
+      4. Check for any missing modern patterns
+
+      5. Specific validations:
+         - ConfigDict usage: arbitrary_types_allowed, frozen, validate_assignment
+         - field_validator: Requires @classmethod, type hints
+         - model_validator: mode='after', returns Self
+         - computed_field: @computed_field + @property pattern
+         - Annotated types: GateNumber, LineNumber patterns
+
+      6. Validate Config fixes against 2026 standards:
+         - Is model_config = ConfigDict() the current best practice?
+         - Are there better patterns available?
+         - Any deprecation warnings to consider?
+
+      Output:
+      - Pydantic v2 2026 best practices report
+      - Validation of Config fixes against standards
+      - Recommendations for any pattern upgrades
+
+  - role: coordinator
+    focus: |
+      Synthesize comprehensive validation findings:
+
+      1. Integrate specialist findings:
+         - Python Linguist: AST analysis, Pydantic v1 detection
+         - Fair Witness: Training vs implementation comparison
+         - Ontologist: Cross-agent consistency
+         - Researcher: 2026 best practices validation
+
+      2. CRITICAL: Pydantic v1 eradication status
+         - Were ANY v1 patterns found? (MUST BE ZERO)
+         - If found: Exact line numbers, severity, fix required
+         - If not found: Confirm complete eradication
+
+      3. Validate Config fixes:
+         - Are manual fixes correct and complete?
+         - Do they follow 2026 best practices?
+         - Any remaining issues?
+
+      4. Overall training quality grade:
+         - A+: Perfect, zero inconsistencies
+         - A: Excellent, minor style issues only
+         - A-: Very good, some pattern improvements possible
+         - B+: Good, but notable gaps remain
+         - Below B+: Needs another refinement iteration
+
+      5. Remaining inconsistencies:
+         - List all findings with line numbers
+         - Prioritize: Critical → High → Medium → Low
+         - Provide fix recommendations
+
+      6. Meta-analysis:
+         - Has "agents generate agent code" principle been achieved?
+         - Are we confident agents follow their own training?
+         - Is another refinement iteration needed?
+
+      Output:
+      - Comprehensive validation report
+      - Pydantic v1 eradication confirmation (CRITICAL)
+      - Training quality grade with justification
+      - Prioritized list of remaining issues (if any)
+      - Recommendation: Ship it / Refine again
+
+expected_artifacts:
+  reports:
+    - strand-results/active/validation_comprehensive/PYTHON_LINGUIST_ast_analysis.md
+    - strand-results/active/validation_comprehensive/FAIR_WITNESS_training_validation.md
+    - strand-results/active/validation_comprehensive/ONTOLOGIST_consistency_report.md
+    - strand-results/active/validation_comprehensive/RESEARCHER_pydantic_v2_standards.md
+    - strand-results/active/validation_comprehensive/COORDINATOR_SYNTHESIS.md
+
+  critical_validations:
+    - Pydantic v1 pattern count: MUST BE ZERO
+    - Config fix correctness: MUST BE CORRECT
+    - Training quality grade: MUST BE A OR A+
+
+  decisions:
+    - Ship agents as production-ready? (if grade A/A+, zero v1 patterns)
+    - Refine again? (if grade < A or v1 patterns found)
+
+timeline:
+  estimated_rounds: 8-10
+  estimated_duration: "15-20 minutes"
+
+tags:
+  - comprehensive-validation
+  - pydantic-v2-eradication
+  - training-consistency
+  - zero-tolerance
+  - production-readiness

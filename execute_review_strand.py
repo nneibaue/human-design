@@ -18,9 +18,9 @@ os.chdir(human_design_dir)
 print(f"✓ Changed working directory to: {os.getcwd()}")
 
 # Add DODO to path
-sys.path.insert(0, str(Path.home() / "code/claude/he360-dodo"))
 
-from he360_dodo import create_strand, StrandType
+
+from human_design.strands import create_strand
 
 async def main():
     print("📋 64keys Findings Review Strand")
@@ -68,7 +68,7 @@ async def main():
     strand = create_strand(
         problem=seed['problem'],
         agents=seed['agents'],
-        strand_type=StrandType.SYNAPSE,
+        strand_type="LSYNAPSE",
         context=context,
         repo_path=base_dir
     )

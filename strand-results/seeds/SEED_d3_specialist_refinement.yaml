@@ -1,0 +1,122 @@
+seed_metadata:
+  type: agent_refinement
+  created_date: "2026-03-23"
+  priority: high
+  domain: visualization
+  estimated_complexity: medium
+
+problem_statement: |
+  The d3_specialist agent currently exists as a pydantic-ai agent with system prompt and YAML config.
+  We need to refine it to:
+
+  1. **Architecture Alignment**: Ensure it follows latest DODO agent patterns and best practices
+  2. **Tool Integration**: Verify proper tool registration and usage patterns
+  3. **Capability Enhancement**: Add missing capabilities for bodygraph visualization workflows
+  4. **Documentation Quality**: Improve system prompt clarity and examples
+  5. **Ontological Consistency**: Align terminology with Human Design domain ontology
+
+  Current implementation:
+  - Location: src/human_design/agents/d3_specialist.py
+  - Config: src/human_design/agents/configs/d3_specialist.yaml
+  - System prompt: D3_SPECIALIST_SYSTEM_PROMPT in Python file
+  - Tools: Placeholder (TODO comment indicates tools not yet implemented)
+
+  The agent needs to be production-ready for Rebecca's Human Design bodygraph visualization system.
+
+success_criteria:
+  - Agent follows pydantic-ai v0.0.14+ patterns
+  - System prompt demonstrates D3.js v7 best practices
+  - Tool registration is complete and functional
+  - Configuration aligns with Human Design domain (64keys terminology, Rebecca Energy)
+  - Agent can produce working D3 visualization code
+  - Documentation includes practical examples
+  - Integration with broader multi-agent system is clear
+
+investigation_agents:
+  ontologist:
+    role: primary
+    focus: |
+      - Analyze Human Design domain terminology (64keys vs traditional)
+      - Validate Rebecca Energy aesthetic definitions
+      - Check bodygraph geometry specifications (9 centers, 36 channels, 64 gates)
+      - Ensure ontological consistency with project CLAUDE.md
+
+  researcher:
+    role: supporting
+    focus: |
+      - Research D3.js v7 current best practices (2026 standards)
+      - Investigate pydantic-ai agent patterns in codebase
+      - Find examples of tool registration in other project agents
+      - Review similar visualization agents in DODO ecosystem
+
+  architect:
+    role: primary
+    focus: |
+      - Design improvements to agent architecture
+      - Specify tool registration patterns
+      - Plan integration with broader visualization system
+      - Define data flow (RawBodyGraph → SVG data → D3 rendering)
+      - Recommend file organization and separation of concerns
+
+  d3_specialist:
+    role: self_review
+    focus: |
+      - Self-audit current implementation
+      - Identify gaps in visualization capabilities
+      - Suggest improvements to system prompt
+      - Validate D3.js code examples in prompt
+      - Recommend additional interaction patterns
+
+  coordinator:
+    role: synthesis
+    focus: |
+      - Synthesize findings from all agents
+      - Prioritize refinement actions
+      - Create actionable implementation plan
+      - Identify dependencies and sequencing
+
+context:
+  project_type: human_design_toolkit
+  domain: bodygraph_visualization
+  tech_stack:
+    - Python 3.14
+    - pydantic-ai
+    - D3.js v7
+    - FastAPI (web layer)
+    - Swiss Ephemeris (astronomical calculations)
+
+  key_constraints:
+    - Must use 64keys terminology (not traditional Human Design terms)
+    - Rebecca Energy aesthetic (warm, cozy, magical)
+    - Tropical zodiac (not sidereal)
+    - Separation of raw calculations from semantic overlays
+
+  related_files:
+    - src/human_design/agents/d3_specialist.py
+    - src/human_design/agents/configs/d3_specialist.yaml
+    - src/human_design/models/bodygraph.py (data source)
+    - docs/bodygraph-visualization-implementation-guide.md
+    - CLAUDE.md (project instructions)
+
+expected_outputs:
+  - AGENT_d3_specialist_REFINED.md (improved system prompt)
+  - ARCHITECTURE_d3_visualization.md (architectural recommendations)
+  - IMPLEMENTATION_PLAN.md (prioritized action items)
+  - COORDINATOR_SYNTHESIS.md (overall findings and next steps)
+
+strand_configuration:
+  execution_mode: sequential_with_synthesis
+  allow_agent_dialogue: true
+  include_self_review: true
+  git_isolation: true
+  branch_pattern: "refine/d3-specialist-agent"
+
+metadata:
+  user_request: "dodo refine our d3 specialist agent"
+  skill_invoked: "/dodo:maintain_system"
+  semantic_tags:
+    - agent_refinement
+    - visualization
+    - d3js
+    - bodygraph
+    - pydantic_ai

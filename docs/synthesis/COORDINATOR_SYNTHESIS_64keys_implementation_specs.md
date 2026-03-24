@@ -26,7 +26,7 @@ This synthesis resolves the **ontological paradox** from the parent strand inves
 The parent strand's Fair Witness agent flagged a **CRITICAL ONTOLOGICAL MISMATCH**, claiming:
 - "Referenced files don't exist" (bodygraph.yaml, channels.yaml, RawBodyGraph)
 - "Zero semantic intersection between problem domain and codebase"
-- "Wrong repository - searched he360-dodo (DODO system) instead of human-design"
+- "Wrong repository - searched DODO (DODO system) instead of human-design"
 
 ### Ontologist Validation: CONFIRMED ALL FILES EXIST
 
@@ -46,11 +46,11 @@ The **Ontologist agent performed direct file inspection** and confirms:
 
 **Fair Witness searched the WRONG repository path**:
 - Problem statement specified: `/Users/nathan.neibauer/code/human-design`
-- Fair Witness searched: `/Users/nathan.neibauer/code/claude/he360-dodo` (DODO workflow system)
+- Fair Witness searched: `/Users/nathan.neibauer/code/claude/DODO` (DODO workflow system)
 - Result: False negative - files exist in correct repo, not found in wrong repo
 
 **Fair Witness was CORRECT in detecting zero semantic overlap** - but between the wrong codebases:
-- `he360-dodo` domain: Strand, Agent, Task, Investigation (AI workflow orchestration)
+- `DODO` domain: Strand, Agent, Task, Investigation (AI workflow orchestration)
 - `human-design` domain: Gate, Channel, Center, RawBodyGraph (HD chart calculations)
 
 ### Final Verdict: STRAND RESEARCH WAS ACCURATE

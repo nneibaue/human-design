@@ -1,0 +1,248 @@
+---
+strand_id: training_python_agent_refine
+title: "Python-First Agent Training Refinement (Third Iteration)"
+created_at: 2026-03-23T09:45:00Z
+ambiguity_score: 0.08
+confidence: 0.97
+
+problem:
+  description: |
+    Third iteration of agent training refinement using Python-first agent pattern.
+    Apply principle: "anything done once should be done twice" - this is the THIRD
+    pass on training refinement.
+
+    Previous iterations:
+    1. Initial training enhancement (150 → 372 lines)
+    2. Audit + HIGH priority gaps (@computed_field, model_dump) (372 → 416 lines)
+
+    New approach: Use Python-first agent definitions (pydantic-ai patterns, Pydantic v2
+    configs, system prompts embedded in code) instead of JSON-based agent loading.
+
+    This strand uses the "new system" where agents are:
+    - Defined in Python modules (not JSON specs)
+    - Use pydantic_ai.Agent class directly
+    - Have Pydantic v2 config classes
+    - System prompts embedded as Python strings
+    - Follow DODO agent architecture pattern
+
+  context:
+    new_system_pattern: |
+      # Python-First Agent Pattern (DODO-style)
+
+      from pydantic import BaseModel, Field
+      from pydantic_ai import Agent, RunContext
+      from dataclasses import dataclass
+      from pathlib import Path
+
+      # System prompt embedded in Python
+      AGENT_SYSTEM_PROMPT = '''You are an Agent...'''
+
+      # Pydantic v2 config class
+      class AgentConfig(BaseModel):
+          workspace_root: Path = Field(...)
+          model: str = Field(default="claude-sonnet-4-20250514")
+
+      # Agent dependencies
+      @dataclass
+      class AgentDeps:
+          workspace_root: Path
+
+      # Agent factory function
+      def create_agent(deps: AgentDeps, model: str | None = None) -> Agent:
+          agent = Agent(
+              model=model or "claude-sonnet-4-20250514",
+              system_prompt=AGENT_SYSTEM_PROMPT,
+              deps_type=AgentDeps,
+          )
+          return agent
+
+    recent_training_state:
+      - src/human_design/agents/implementer.py (416 lines)
+      - src/human_design/agents/test_engineer.py (371 lines)
+      - src/human_design/agents/d3_specialist.py (263 lines)
+      - src/human_design/agents/python_linguist.py (1082 lines, duplicated from DODO)
+      - All use Python-first pattern with embedded system prompts
+
+    audit_focus:
+      - Architecture: Does Python-first pattern improve maintainability?
+      - Training quality: Are system prompts comprehensive?
+      - Consistency: Do all agents follow same architectural pattern?
+      - Integration: How do Python agents integrate with DODO strand execution?
+      - Gaps: What patterns are still missing after 2 iterations?
+
+  success_criteria:
+    - Identify architectural improvements from Python-first pattern
+    - Find remaining training gaps (beyond @computed_field, model_dump)
+    - Validate consistency across all 4 agent implementations
+    - Propose refinements leveraging Python's type system
+    - Grade final training: A+ or identify path to A+
+
+agents:
+  - role: architect
+    focus: |
+      Analyze Python-first agent architecture:
+
+      1. Pattern consistency:
+         - Do all agents follow same structure?
+         - Config classes consistent (BaseModel, Field annotations)?
+         - Factory functions present (create_agent)?
+         - Dependencies dataclass pattern used?
+
+      2. Architectural quality:
+         - Type safety (Pydantic v2, type hints everywhere)?
+         - Separation of concerns (config vs deps vs agent)?
+         - Extensibility (easy to add new agents)?
+         - Integration (how do agents work with DODO)?
+
+      3. Improvements from Python-first:
+         - System prompts version-controlled in code (not JSON)
+         - Type-safe configuration (Pydantic validation)
+         - IDE support (autocomplete, type checking)
+         - Testing (can import and test agents directly)
+
+      4. Missing patterns:
+         - Should agents have protocols/interfaces?
+         - Should there be base classes?
+         - Tool registration patterns?
+
+      Output: Architectural assessment and refinement recommendations
+
+  - role: python_linguist
+    focus: |
+      Analyze agent code quality and Python patterns:
+
+      1. Code analysis:
+         - Pydantic v2 patterns correct? (Field, BaseModel, dataclass)
+         - Type hints comprehensive?
+         - Docstrings present and useful?
+         - Module structure clean?
+
+      2. System prompt quality:
+         - Are prompts valid Python strings (no syntax errors)?
+         - Proper escaping/quoting?
+         - Consistent formatting (triple quotes, indentation)?
+
+      3. Pattern extraction:
+         - Common patterns across agents (DRY violations)?
+         - Reusable abstractions missing?
+         - Code smells (long functions, deep nesting)?
+
+      4. Python 3.12/3.14 features:
+         - Using modern type hints? (union via |, not Union)
+         - Pattern matching opportunities?
+         - Modern dataclass features?
+
+      Output: Code quality report and Python pattern improvements
+
+  - role: fair_witness
+    focus: |
+      Validate training completeness after 2 iterations:
+
+      1. Training coverage (what's trained vs what's used):
+         - Implementer: Missing patterns after @computed_field, model_dump?
+         - Test Engineer: Any pytest patterns not covered?
+         - D3 Specialist: 2026 D3 v7 patterns complete?
+         - Python Linguist: AST patterns sufficient?
+
+      2. Cross-agent consistency:
+         - Do all agents have similar training depth?
+         - Consistent anti-pattern sections?
+         - Uniform example quality?
+
+      3. Training effectiveness:
+         - Can agents follow their own training?
+         - Are examples copy-paste runnable?
+         - Do anti-patterns have "why" explanations?
+
+      4. Architecture validation:
+         - Python-first pattern working as expected?
+         - Any integration issues with DODO?
+         - Config/deps pattern consistent?
+
+      Output: Training completeness report and remaining gaps
+
+  - role: researcher
+    focus: |
+      Research advanced patterns we might have missed:
+
+      1. Pydantic v2 advanced features (2024-2026):
+         - BeforeValidator, AfterValidator patterns?
+         - PlainSerializer, WrapSerializer?
+         - model_serializer decorator?
+         - TypeAdapter for dynamic validation?
+
+      2. pytest advanced patterns:
+         - pytest-asyncio patterns?
+         - pytest.fixture(params=...) indirect parametrization?
+         - Custom markers and plugins?
+         - Hypothesis property-based testing?
+
+      3. pydantic-ai specific patterns:
+         - RunContext usage patterns?
+         - Tool registration best practices?
+         - Agent composition patterns?
+         - Streaming responses?
+
+      4. Python agent architecture patterns:
+         - Protocol-based interfaces?
+         - Plugin architectures?
+         - Dependency injection patterns?
+
+      Output: Research findings on advanced patterns and best practices
+
+  - role: coordinator
+    focus: |
+      Synthesize third-iteration refinements:
+
+      1. Integrate specialist findings:
+         - Architect: Python-first architectural improvements
+         - Python linguist: Code quality and pattern refinements
+         - Fair Witness: Training completeness validation
+         - Researcher: Advanced patterns to add
+
+      2. Grade final training state:
+         - Implementer: Current grade after 2 iterations?
+         - Test Engineer: Current grade?
+         - D3 Specialist: Training quality?
+         - Python Linguist: Training sufficient (from DODO)?
+
+      3. Path to A++:
+         - What would make training exceptional?
+         - Advanced patterns worth adding?
+         - Architectural improvements?
+
+      4. Python-first benefits analysis:
+         - Advantages over JSON-based agents?
+         - Maintainability improvements?
+         - Type safety benefits?
+         - Integration with DODO?
+
+      Output: Final refinement plan and training grade assessment
+
+expected_artifacts:
+  documentation:
+    - docs/TRAINING_ITERATION_3_REPORT.md (third-pass findings)
+    - docs/PYTHON_AGENT_ARCHITECTURE.md (Python-first pattern benefits)
+    - docs/TRAINING_FINAL_GRADE.md (A+ certification or gap analysis)
+
+  code:
+    - src/human_design/agents/implementer.py (third-iteration refinements)
+    - src/human_design/agents/test_engineer.py (third-iteration refinements)
+    - src/human_design/agents/__init__.py (architectural improvements)
+
+  validation:
+    - Training coverage analysis (patterns in training vs codebase)
+    - Python-first architecture assessment
+    - Cross-agent consistency report
+
+timeline:
+  estimated_rounds: 6-8
+  estimated_duration: "10-14 minutes"
+
+tags:
+  - agent-training
+  - iteration-3
+  - python-first-agents
+  - pydantic-ai
+  - architectural-refinement
+  - training-certification

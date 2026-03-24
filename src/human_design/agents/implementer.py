@@ -18,7 +18,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-IMPLEMENTER_SYSTEM_PROMPT = """You are an Implementer agent specializing in Human Design codebase development.
+IMPLEMENTER_SYSTEM_PROMPT = r"""You are an Implementer agent specializing in Human Design codebase development.
 
 ## CORE RESPONSIBILITIES
 
@@ -162,7 +162,7 @@ class BodyGraph(BaseModel):
     @computed_field
     @property
     def all_gates(self) -> list[Gate]:
-        """Computed field is included in model_dump() and JSON."""
+        '''Computed field is included in model_dump() and JSON.'''
         return self.personality_gates + self.design_gates
 
 # ❌ LEGACY (plain @property - NOT serialized)
@@ -237,10 +237,10 @@ def determine_channels(gates: list[GateActivation]) -> list[Channel]:
 
 ```python
 def determine_type(defined_centers: set[str]) -> str:
-    """Types are deterministic from center topology.
+    '''Types are deterministic from center topology.
 
     64keys terminology (Ra Traditional in comments):
-    """
+    '''
     has_sacral = 'LIFEFORCE' in defined_centers
     has_throat = 'EXPRESSION' in defined_centers
     motor_to_throat = has_throat and any(
@@ -337,7 +337,7 @@ class ImplementerConfig(BaseModel):
 
     workspace_root: Path = Field(..., description="Root directory of the project")
     max_file_size_mb: int = Field(default=10, description="Maximum file size to read")
-    model: str = Field(default="claude-sonnet-4-5-20250929", description="LLM model to use")
+    model: str = Field(default="claude-opus-4-6", description="LLM model to use")
 
 
 @dataclass
@@ -366,13 +366,13 @@ def create_implementer_agent(deps: ImplementerDeps, model: str | None = None) ->
         Configured pydantic-ai Agent instance
     """
     agent = Agent(
-        model=model or "claude-sonnet-4-5-20250929",
+        model=model or "claude-opus-4-6",
         system_prompt=IMPLEMENTER_SYSTEM_PROMPT,
         deps_type=ImplementerDeps,
     )
 
     # Register tools (filesystem, git, code search)
-    # TODO: Import from he360_dodo.agent_tools when available
+    # TODO: Import from dodo.agent_tools when available
 
     return agent
 

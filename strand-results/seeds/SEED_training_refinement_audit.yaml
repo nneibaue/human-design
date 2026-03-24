@@ -1,0 +1,205 @@
+---
+strand_id: training_refinement_audit
+title: "Audit and Refine Agent Training Enhancements"
+created_at: 2026-03-23T09:30:00Z
+ambiguity_score: 0.10
+confidence: 0.95
+
+problem:
+  description: |
+    Audit and refine the agent training enhancements just completed for implementer
+    and test_engineer agents. Apply the principle: "anything that can be done once
+    should be done at least twice."
+
+    Training was enhanced with:
+    - Implementer: Pydantic v2 patterns (150 → 372 lines)
+    - Test Engineer: pytest patterns (140 → 371 lines)
+
+    Goal: Validate training quality, identify gaps, propose refinements.
+
+  context:
+    brownfield: true
+    recently_modified:
+      - src/human_design/agents/implementer.py (372 lines)
+      - src/human_design/agents/test_engineer.py (371 lines)
+      - docs/COORDINATOR_SYNTHESIS_agent_training_audit.md (27KB synthesis)
+      - docs/actionable-enhancements.md (21KB recommendations)
+
+    audit_focus:
+      - Correctness: Are Pydantic v2 examples syntactically correct?
+      - Completeness: Are there missing patterns agents should know?
+      - Consistency: Do examples follow same style/format?
+      - Clarity: Are anti-patterns clearly explained with rationale?
+      - Human Design domain: Is semantic separation principle well-encoded?
+      - 2026 best practices: Are patterns up-to-date?
+
+    validation_criteria:
+      - All code examples should be copy-paste runnable
+      - Anti-patterns should explain WHY they're wrong
+      - Examples should cover common + edge cases
+      - No contradictions between different sections
+      - Domain knowledge should include working algorithms
+
+  success_criteria:
+    - Audit identifies 5+ refinement opportunities
+    - Each refinement has clear rationale (why it improves training)
+    - Refined training passes "copy-paste test" (all examples run)
+    - Fair Witness validates: Training is 2026-compliant
+    - Coordinator produces implementation-ready refinements
+
+agents:
+  - role: python_linguist
+    focus: |
+      Analyze agent system prompts as code:
+
+      1. Syntax validation:
+         - Are Python code blocks syntactically correct?
+         - Do imports match usage? (e.g., `from pydantic import field_validator`)
+         - Are type hints valid? (`-> Self`, `list[LineSemantics]`)
+         - Do decorators match Pydantic v2? (`@field_validator`, not `@validator`)
+
+      2. Pattern completeness:
+         - Pydantic v2: field_validator, model_validator, ConfigDict, Annotated
+         - Missing patterns: computed_field, BeforeValidator, AfterValidator?
+         - pytest: parametrize, fixtures, mocking - any gaps?
+
+      3. Code quality:
+         - Are examples idiomatic Python?
+         - Do examples follow project conventions?
+         - Are there simpler/clearer ways to express patterns?
+
+      Output: Syntax errors, missing patterns, code quality improvements
+
+  - role: fair_witness
+    focus: |
+      Validate training accuracy and 2026 compliance:
+
+      1. Pydantic v2 accuracy:
+         - CLAIM: "Use @field_validator with @classmethod"
+         - EVIDENCE: Check against Pydantic v2 docs (2024+)
+         - VERDICT: Correct? Outdated? Missing nuance?
+
+      2. pytest patterns accuracy:
+         - CLAIM: "Use pytest.param() with id parameter"
+         - EVIDENCE: Check against pytest 8.x docs
+         - VERDICT: Current best practice? Better alternatives?
+
+      3. Anti-pattern validity:
+         - Are "LEGACY" patterns actually legacy?
+         - Are "CORRECT" patterns actually correct?
+         - Do comparisons accurately represent v1→v2 migration?
+
+      4. Human Design domain:
+         - Is semantic separation principle correctly explained?
+         - Are channel formation algorithms correct?
+         - Type determination logic accurate?
+
+      Output: Validation report (correct/incorrect/outdated for each claim)
+
+  - role: researcher
+    focus: |
+      Research 2026 best practices to find gaps in current training:
+
+      1. Pydantic v2 (2024-2026):
+         - What patterns did we miss?
+         - Are there newer Pydantic v2 features? (computed_field, custom validators)
+         - Best practices from Pydantic community?
+
+      2. pytest (2025-2026):
+         - pytest 8.x new features?
+         - Fixture patterns we didn't cover?
+         - Better mocking strategies? (pytest-mock, respx, etc.)
+
+      3. Python 3.12/3.14:
+         - Type hint improvements we could use?
+         - New stdlib features relevant to testing/validation?
+
+      4. Training methodology:
+         - How do other projects train AI agents?
+         - What makes training "sticky" (agents remember it)?
+
+      Output: Research findings on missing patterns and best practices
+
+  - role: ontologist
+    focus: |
+      Structure the refined training program:
+
+      1. Training hierarchy:
+         - Core patterns (must know)
+         - Advanced patterns (nice to know)
+         - Anti-patterns (must avoid)
+         - Edge cases (handle gracefully)
+
+      2. Example quality criteria:
+         - Runnable: Can be copy-pasted and executed
+         - Realistic: Reflects actual codebase usage
+         - Minimal: Simplest example that teaches pattern
+         - Complete: Includes imports, type hints, context
+
+      3. Consistency framework:
+         - Example format (imports → class → usage)
+         - Comment style (# ✅ CORRECT vs # ❌ WRONG)
+         - Explanation depth (when to be verbose vs terse)
+
+      4. Knowledge encoding:
+         - How to encode "why" not just "what"
+         - How to make anti-patterns memorable
+         - How to structure for LLM recall
+
+      Output: Refined training structure and encoding principles
+
+  - role: coordinator
+    focus: |
+      Synthesize audit findings into actionable refinements:
+
+      1. Integrate specialist findings:
+         - Python linguist: Syntax errors and code quality
+         - Fair Witness: Accuracy validation and corrections
+         - Researcher: Missing patterns and 2026 updates
+         - Ontologist: Structural improvements
+
+      2. Prioritize refinements:
+         - CRITICAL: Syntax errors, incorrect examples
+         - HIGH: Missing core patterns, outdated recommendations
+         - MEDIUM: Code quality, consistency improvements
+         - LOW: Nice-to-haves, advanced patterns
+
+      3. Generate refined training:
+         - Updated system prompt sections
+         - Corrected examples
+         - Added missing patterns
+         - Enhanced anti-patterns with rationale
+
+      4. Validation plan:
+         - Copy-paste test (all examples run)
+         - Consistency check (style uniform)
+         - Completeness check (no major gaps)
+
+      Output: Implementation-ready training refinements with priorities
+
+expected_artifacts:
+  documentation:
+    - docs/TRAINING_AUDIT_REPORT.md (audit findings)
+    - docs/TRAINING_REFINEMENTS.md (specific improvements)
+    - docs/TRAINING_VALIDATION.md (how to test training quality)
+
+  code:
+    - src/human_design/agents/implementer.py (refined training)
+    - src/human_design/agents/test_engineer.py (refined training)
+
+  validation:
+    - Copy-paste test results (do examples run?)
+    - Consistency analysis (uniform style?)
+    - Completeness checklist (all patterns covered?)
+
+timeline:
+  estimated_rounds: 6-8
+  estimated_duration: "10-14 minutes"
+
+tags:
+  - agent-training
+  - training-audit
+  - pydantic-v2
+  - pytest
+  - quality-assurance
+  - iterative-refinement

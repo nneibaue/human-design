@@ -81,7 +81,7 @@ Problem statement assumes MCP tools like:
 - MCP server capabilities for 64keys browsing
 
 **Ontologist/Fair Witness Reality Check**:
-- **NONE** of these files/classes exist in `/Users/nathan.neibauer/code/claude/he360-dodo`
+- **NONE** of these files/classes exist in `/Users/nathan.neibauer/code/claude/DODO`
 - Actual codebase is DODO (Daily Ontology-Driven Operations) multi-agent workflow system
 - Domain is software development automation, NOT Human Design calculations
 
@@ -110,7 +110,7 @@ Problem statement assumes MCP tools like:
 
 ### The Codebase That Actually Exists
 
-**Repository**: `/Users/nathan.neibauer/code/claude/he360-dodo`
+**Repository**: `/Users/nathan.neibauer/code/claude/DODO`
 **Domain**: Multi-agent AI workflow orchestration for software development
 
 **Core Entities**:
@@ -247,10 +247,10 @@ Problem statement assumes MCP tools like:
 
 ### Option 3: Wrong DODO Instance
 
-**Hypothesis**: User submitted strand to wrong DODO instance. Intended to use DODO in Human Design repository, but accidentally submitted to DODO in he360-dodo repository.
+**Hypothesis**: User submitted strand to wrong DODO instance. Intended to use DODO in Human Design repository, but accidentally submitted to DODO in DODO repository.
 
 **Evidence Supporting This**:
-- `execute_64keys_reverse_engineering.py` exists in he360-dodo, suggesting strand was prepared here
+- `execute_64keys_reverse_engineering.py` exists in DODO, suggesting strand was prepared here
 - But problem assumes different codebase context
 
 **Next Step**: **Ask user which repository should execute this strand**
@@ -298,7 +298,7 @@ START: Investigate 64keys.com reverse engineering
 │  │  │
 │  │  ├─ Different repo → RESUBMIT strand with correct path
 │  │  │
-│  │  └─ This repo (he360-dodo) → CONTRADICTION (agents confirm it doesn't exist)
+│  │  └─ This repo (DODO) → CONTRADICTION (agents confirm it doesn't exist)
 │  │
 │  └─ NO → Is this greenfield?
 │     │
@@ -320,7 +320,7 @@ START: Investigate 64keys.com reverse engineering
 ### Required Clarifications
 
 **QUESTION 1**: What is the correct path to the Human Design calculation codebase?
-- If it's `/Users/nathan.neibauer/code/claude/he360-dodo` → Problem statement is wrong
+- If it's `/Users/nathan.neibauer/code/claude/DODO` → Problem statement is wrong
 - If it's a different path → Please provide correct path and resubmit strand
 - If it doesn't exist yet → Confirm this is a greenfield architecture project
 

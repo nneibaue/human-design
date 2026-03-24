@@ -1,0 +1,164 @@
+---
+strand_id: high_priority_api
+title: "Python API Layer for Chart Operations & Storage"
+created_at: 2026-03-22T09:45:00Z
+ambiguity_score: 0.15
+confidence: 0.92
+
+problem:
+  description: |
+    Implement Python API layer for Human Design chart operations (interaction,
+    penta, multichart) with storage system for people/relationships. CLI should
+    be thin wrappers over the API, with comprehensive unit tests.
+
+    Core logic exists: RawBodyGraph, CompositeBodyGraph, Transit with __add__.
+    Need clean API abstraction + persistence + CLI commands.
+
+  context:
+    brownfield: true
+    existing_code:
+      - src/human_design/models/bodygraph.py (RawBodyGraph)
+      - src/human_design/models/composite.py (CompositeBodyGraph)
+      - src/human_design/models/transit.py (Transit)
+      - src/human_design/cli.py (existing: hd bodygraph, hd gate)
+      - src/human_design/web/app.py (existing web UI)
+
+    key_constraints:
+      - API layer must be testable without CLI
+      - Storage must support tags (e.g., "Sandy's group", "Heath (husband)")
+      - CLI must be thin wrappers (< 10 lines per command)
+      - Must work with existing __add__ operator pattern
+
+    rebecca_workflow:
+      priority: "During client sessions, quickly pull up chart combinations"
+      use_cases:
+        - "Show me Sandy and Heath's interaction chart"
+        - "Pull up Sandy's family penta (Sandy, Heath, daughter, son)"
+        - "Show Sandy's chart with today's transit"
+        - "Compare this group of 5 people (penta)"
+
+  success_criteria:
+    - Python API for: interaction(p1, p2), penta(*people), with_transit(person)
+    - Storage: save_person(), load_person(), find_by_tag()
+    - CLI: hd interaction <name1> <name2>, hd penta <name1> <name2> <name3>...
+    - 30+ unit tests covering API layer (not CLI)
+    - Can retrieve "Sandy's group" constellation
+
+agents:
+  - role: architect
+    focus: |
+      Design Python API layer architecture:
+      - ChartAPI class vs functions?
+      - Storage abstraction (file-based vs database)
+      - Person model with BirthInfo + metadata (tags, relationships)
+      - API surface: what methods, what signatures?
+
+      Consider:
+      - API should feel Pythonic (simple, composable)
+      - Storage should be simple (JSON files initially)
+      - Must integrate with existing __add__ operator pattern
+      - Rebecca needs semantic naming ("Sandy's Heath (husband)")
+
+  - role: implementer
+    focus: |
+      Implement the Python API layer:
+      - src/human_design/api.py (ChartAPI)
+      - src/human_design/storage.py (PersonStore)
+      - src/human_design/models/person.py (Person model)
+
+      API methods:
+      - interaction(person1, person2) -> CompositeBodyGraph
+      - penta(*people) -> CompositeBodyGraph
+      - multichart(*people) -> CompositeBodyGraph
+      - with_transit(person, transit) -> CompositeBodyGraph
+
+      Storage:
+      - PersonStore.save(person)
+      - PersonStore.load(name)
+      - PersonStore.find_by_tag(tag)
+      - PersonStore.list_all()
+
+  - role: implementer
+    focus: |
+      Update CLI commands in src/human_design/cli.py:
+      - hd interaction <name1> <name2>
+      - hd penta <name1> <name2> <name3>...
+      - hd multichart <name1> <name2>...
+      - hd with-transit <name>
+      - hd save-person (interactive)
+      - hd list-people
+
+      Each command should be < 10 lines:
+      1. Parse args
+      2. Call API
+      3. Print/format result
+
+  - role: test_engineer
+    focus: |
+      Write comprehensive unit tests:
+      - tests/test_api.py (ChartAPI methods)
+      - tests/test_storage.py (PersonStore)
+      - tests/test_person.py (Person model)
+
+      Coverage targets:
+      - API: interaction, penta, multichart, with_transit
+      - Storage: save/load/find/list operations
+      - Edge cases: missing people, invalid names, empty constellations
+      - Integration: save person → load → create interaction chart
+
+  - role: fair_witness
+    focus: |
+      Validate against requirements:
+      - API testable without CLI? (Yes/No)
+      - Storage supports semantic tags? (Yes/No)
+      - CLI wrappers are thin (< 10 lines)? (Yes/No)
+      - Rebecca workflow enabled? (Can quickly pull up combinations?)
+      - Tests cover edge cases? (30+ tests?)
+
+      Check integration points:
+      - API uses existing models (RawBodyGraph, CompositeBodyGraph)?
+      - Storage persists to disk (survives restart)?
+      - CLI commands work end-to-end?
+
+  - role: coordinator
+    focus: |
+      Synthesize implementation into coherent deliverable:
+      1. Architecture decisions (API design, storage format)
+      2. Implementation files (api.py, storage.py, person.py, cli updates)
+      3. Test suite (test_api.py, test_storage.py, test_person.py)
+      4. Usage examples (docstrings, README updates)
+      5. Integration validation (end-to-end smoke test)
+
+      Ensure:
+      - All agents' findings are incorporated
+      - No conflicts between implementations
+      - Documentation is clear for Rebecca's use case
+      - Ready for merge to feature branch
+
+expected_artifacts:
+  code:
+    - src/human_design/api.py
+    - src/human_design/storage.py
+    - src/human_design/models/person.py
+    - src/human_design/cli.py (updated)
+
+  tests:
+    - tests/test_api.py
+    - tests/test_storage.py
+    - tests/test_person.py
+
+  documentation:
+    - API docstrings (in code)
+    - CLI help text (in code)
+    - Usage examples (docstrings)
+
+timeline:
+  estimated_rounds: 8
+  estimated_duration: "12-15 minutes"
+
+tags:
+  - week1-implementation
+  - rebecca-workflow
+  - python-api
+  - storage
+  - cli-commands
