@@ -512,7 +512,22 @@ class ImplementerConfig(BaseModel):
 class ImplementerDeps:
     """Implementer agent dependencies."""
     workspace_root: Path
+
+    # FileSystemDeps fields
     max_file_size_mb: int = 10
+    default_encoding: str = "utf-8"
+    max_lines_default: int = 1000
+
+    # CodeSearchDeps fields
+    max_results_default: int = 50
+    context_lines_default: int = 3
+    max_file_size_mb_search: int = 10
+    default_file_patterns: list[str] | None = None
+    exclude_patterns: list[str] | None = None
+
+    # GitHistoryDeps fields
+    max_commits_default: int = 50
+    timeout_seconds: int = 30
 
     def __post_init__(self):
         """Validate implementer dependencies."""
@@ -521,6 +536,20 @@ class ImplementerDeps:
 
         if not self.workspace_root.is_dir():
             raise ValueError(f"Workspace root is not a directory: {self.workspace_root}")
+
+        # Set default exclude patterns if not provided
+        if self.exclude_patterns is None:
+            self.exclude_patterns = [
+                ".git/*",
+                "*.pyc",
+                "__pycache__/*",
+                "node_modules/*",
+                ".venv/*",
+            ]
+
+        # Set default file patterns if not provided
+        if self.default_file_patterns is None:
+            self.default_file_patterns = ["*"]
 
 
 def create_implementer_agent(deps: ImplementerDeps, model: str | None = None) -> Agent:
@@ -533,14 +562,45 @@ def create_implementer_agent(deps: ImplementerDeps, model: str | None = None) ->
     Returns:
         Configured pydantic-ai Agent instance
     """
+    from ..agent_tools import (
+        register_filesystem_tools,
+        register_code_search_tools,
+        register_git_history_tools,
+        FileSystemDeps,
+        CodeSearchDeps,
+        GitHistoryDeps,
+    )
+
     agent = Agent(
         model=model or "claude-opus-4-6",
         system_prompt=IMPLEMENTER_SYSTEM_PROMPT,
         deps_type=ImplementerDeps,
     )
 
-    # Register tools (filesystem, git, code search)
-    # TODO: Import from dodo.agent_tools when available
+    # Register filesystem tools (read/write code, create files)
+    register_filesystem_tools(agent, FileSystemDeps(
+        workspace_root=deps.workspace_root,
+        max_file_size_mb=deps.max_file_size_mb,
+        default_encoding=deps.default_encoding,
+        max_lines_default=deps.max_lines_default,
+    ))
+
+    # Register code search tools (find files, search patterns)
+    register_code_search_tools(agent, CodeSearchDeps(
+        workspace_root=deps.workspace_root,
+        max_results_default=deps.max_results_default,
+        max_file_size_mb=deps.max_file_size_mb_search,
+        context_lines_default=deps.context_lines_default,
+        exclude_patterns=deps.exclude_patterns,
+        default_file_patterns=deps.default_file_patterns,
+    ))
+
+    # Register git history tools (check commits, diffs, branches)
+    register_git_history_tools(agent, GitHistoryDeps(
+        workspace_root=deps.workspace_root,
+        max_commits_default=deps.max_commits_default,
+        timeout_seconds=deps.timeout_seconds,
+    ))
 
     return agent
 
