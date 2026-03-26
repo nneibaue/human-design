@@ -63,7 +63,20 @@ class HumanDesignAgentFactory:
                 ImplementerDeps,
             )
 
-            deps = ImplementerDeps(workspace_root=Path.cwd())
+            deps = ImplementerDeps(
+                workspace_root=Path.cwd(),
+                # FileSystemDeps fields
+                max_file_size_mb=10,
+                default_encoding="utf-8",
+                max_lines_default=1000,
+                # CodeSearchDeps fields
+                max_results_default=50,
+                context_lines_default=3,
+                max_file_size_mb_search=10,
+                # GitHistoryDeps fields
+                max_commits_default=50,
+                timeout_seconds=30,
+            )
             agent = create_implementer_agent(deps, model=model)
             self._agent_cache[agent_name] = (agent, deps)
             return (agent, deps)
@@ -71,17 +84,24 @@ class HumanDesignAgentFactory:
         elif agent_name == "test_engineer":
             from human_design.agents.test_engineer import (
                 create_test_engineer_agent,
-                TestEngineerConfig,
+                TestEngineerDeps,
             )
 
-            config = TestEngineerConfig(workspace_root=Path.cwd())
-            agent = create_test_engineer_agent(config)
-            # test_engineer doesn't expose deps, create compatible object
-            from dataclasses import dataclass
-            @dataclass
-            class TestEngineerDeps:
-                workspace_root: Path = Path.cwd()
-            deps = TestEngineerDeps()
+            deps = TestEngineerDeps(
+                workspace_root=Path.cwd(),
+                # FileSystemDeps fields
+                max_file_size_mb=10,
+                default_encoding="utf-8",
+                max_lines_default=1000,
+                # CodeSearchDeps fields
+                max_results_default=50,
+                context_lines_default=3,
+                max_file_size_mb_search=10,
+                # GitHistoryDeps fields
+                max_commits_default=50,
+                timeout_seconds=30,
+            )
+            agent = create_test_engineer_agent(deps, model=model)
             self._agent_cache[agent_name] = (agent, deps)
             return (agent, deps)
 
@@ -105,7 +125,21 @@ class HumanDesignAgentFactory:
                 PythonLinguistDeps,
             )
 
-            deps = PythonLinguistDeps(workspace_root=Path.cwd())
+            deps = PythonLinguistDeps(
+                workspace_root=Path.cwd(),
+                # FileSystemDeps fields (subset - PythonLinguistDeps has simplified interface)
+                max_file_size_mb=10,
+                max_search_results=100,
+                # AST analysis configuration
+                max_search_depth=10,
+                include_test_files=True,
+                preserve_formatting=True,
+                validate_cst=True,
+                create_backup=True,
+                # GitHistoryDeps fields
+                max_commits_default=50,
+                timeout_seconds=30,
+            )
             agent = create_python_linguist_agent(deps, model=model)
             self._agent_cache[agent_name] = (agent, deps)
             return (agent, deps)
