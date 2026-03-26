@@ -15,6 +15,15 @@ from dataclasses import dataclass
 from pathlib import Path
 import logging
 
+from ..agent_tools import (
+    register_filesystem_tools,
+    register_code_search_tools,
+    register_git_history_tools,
+    FileSystemDeps,
+    CodeSearchDeps,
+    GitHistoryDeps,
+)
+
 logger = logging.getLogger(__name__)
 
 
@@ -297,9 +306,24 @@ class TestEngineerConfig(BaseModel):
 
 @dataclass
 class TestEngineerDeps:
-    """Test Engineer agent dependencies."""
+    """Test engineer agent dependencies."""
     workspace_root: Path
-    test_directory: Path
+
+    # FileSystemDeps fields
+    max_file_size_mb: int = 10
+    default_encoding: str = "utf-8"
+    max_lines_default: int = 1000
+
+    # CodeSearchDeps fields
+    max_results_default: int = 50
+    context_lines_default: int = 3
+    max_file_size_mb_search: int = 10
+    default_file_patterns: list[str] | None = None
+    exclude_patterns: list[str] | None = None
+
+    # GitHistoryDeps fields
+    max_commits_default: int = 50
+    timeout_seconds: int = 30
 
     def __post_init__(self):
         """Validate test engineer dependencies."""
@@ -309,16 +333,22 @@ class TestEngineerDeps:
         if not self.workspace_root.is_dir():
             raise ValueError(f"Workspace root is not a directory: {self.workspace_root}")
 
+        if self.exclude_patterns is None:
+            self.exclude_patterns = [".git/*", "*.pyc", "__pycache__/*", ".venv/*"]
+
+        if self.default_file_patterns is None:
+            self.default_file_patterns = ["*"]
+
 
 def create_test_engineer_agent(deps: TestEngineerDeps, model: str | None = None) -> Agent:
     """Create test engineer agent with tools.
 
     Args:
-        deps: Agent dependencies (workspace root, test directory)
+        deps: Agent dependencies (workspace root, tool configs)
         model: Optional LLM model override
 
     Returns:
-        Configured pydantic-ai Agent instance
+        Configured pydantic-ai Agent instance with registered tools
     """
     agent = Agent(
         model=model or "claude-opus-4-6",
@@ -326,8 +356,28 @@ def create_test_engineer_agent(deps: TestEngineerDeps, model: str | None = None)
         deps_type=TestEngineerDeps,
     )
 
-    # Register tools (filesystem, git, code search, test execution)
-    # TODO: Import from dodo.agent_tools when available
+    # Register filesystem tools (read tests, write new tests)
+    register_filesystem_tools(agent, FileSystemDeps(
+        workspace_root=deps.workspace_root,
+        max_file_size_mb=deps.max_file_size_mb,
+        default_encoding=deps.default_encoding,
+        max_lines_default=deps.max_lines_default,
+    ))
+
+    # Register code search tools (find test files, search patterns)
+    register_code_search_tools(agent, CodeSearchDeps(
+        workspace_root=deps.workspace_root,
+        max_results_default=deps.max_results_default,
+        max_file_size_mb=deps.max_file_size_mb_search,
+        context_lines_default=deps.context_lines_default,
+        exclude_patterns=deps.exclude_patterns,
+    ))
+
+    # Register git history tools (check test history)
+    register_git_history_tools(agent, GitHistoryDeps(
+        workspace_root=deps.workspace_root,
+        max_commits_default=deps.max_commits_default,
+    ))
 
     return agent
 
@@ -344,7 +394,6 @@ class TestEngineerAgent:
         self.config = config
         self.deps = TestEngineerDeps(
             workspace_root=config.workspace_root,
-            test_directory=config.test_directory,
         )
         self.agent = create_test_engineer_agent(self.deps, config.model)
 
