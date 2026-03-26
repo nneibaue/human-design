@@ -26,8 +26,10 @@ import logging
 from ..agent_tools import (
     register_filesystem_tools,
     register_code_search_tools,
+    register_git_history_tools,
     FileSystemDeps,
     CodeSearchDeps,
+    GitHistoryDeps,
 )
 
 # Import TypedDict models and enum for type-safe ontology queries
@@ -144,6 +146,10 @@ class PythonLinguistDeps:
     preserve_formatting: bool = True  # LibCST key feature
     validate_cst: bool = True
     create_backup: bool = True
+
+    # GitHistoryDeps fields
+    max_commits_default: int = 50
+    timeout_seconds: int = 30
 
     def __post_init__(self):
         """Validate dependencies."""
@@ -296,6 +302,13 @@ def create_python_linguist_agent(deps: PythonLinguistDeps, model: str | None = N
             ".venv/*",
             "venv/*",
         ],
+    ))
+
+    # Register git history tools (check code evolution)
+    register_git_history_tools(agent, GitHistoryDeps(
+        workspace_root=deps.workspace_root,
+        max_commits_default=deps.max_commits_default,
+        timeout_seconds=deps.timeout_seconds,
     ))
 
     # ==================== LibCST Tools ====================
