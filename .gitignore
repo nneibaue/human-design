@@ -148,3 +148,6 @@ hd-env/
 junk_drawer/
 plans/
 --raw
+
+# Git worktrees
+worktrees/
