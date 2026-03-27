@@ -5,9 +5,10 @@ using Pydantic v2 for validation and serialization.
 """
 
 from datetime import datetime
-from typing import Any, Literal, Optional
-from pydantic import BaseModel, EmailStr, Field, ConfigDict
+from typing import Literal
+from uuid import UUID
 
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 # ============================================================================
 # Auth Models
@@ -19,7 +20,7 @@ class UserRegister(BaseModel):
 
     email: EmailStr
     password: str = Field(min_length=8, description="Password must be at least 8 characters")
-    display_name: Optional[str] = Field(None, description="Optional display name for the user")
+    display_name: str | None = Field(None, description="Optional display name for the user")
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -55,7 +56,7 @@ class UserResponse(BaseModel):
 
     email: EmailStr
     created_at: datetime
-    display_name: Optional[str] = None
+    display_name: str | None = None
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -81,13 +82,17 @@ FileStatus = Literal["pending_upload", "uploaded", "queued", "transcribing", "co
 class FileUploadMetadata(BaseModel):
     """Metadata for a file to be uploaded via presigned URL"""
 
-    filename: str
-    content_type: str
+    filename: str = Field(min_length=1, max_length=255)
+    content_type: str = Field(pattern=r"^(audio|video)/.*")
     size_bytes: int = Field(gt=0, description="File size in bytes, must be positive")
 
     model_config = ConfigDict(
         json_schema_extra={
-            "example": {"filename": "lecture.mp3", "content_type": "audio/mpeg", "size_bytes": 15728640}
+            "example": {
+                "filename": "lecture.mp3",
+                "content_type": "audio/mpeg",
+                "size_bytes": 15728640,
+            }
         }
     )
 
@@ -101,19 +106,35 @@ class PresignedUploadRequest(BaseModel):
         json_schema_extra={
             "example": {
                 "files": [
-                    {"filename": "lecture1.mp3", "content_type": "audio/mpeg", "size_bytes": 15728640},
-                    {"filename": "lecture2.mp3", "content_type": "audio/mpeg", "size_bytes": 20971520},
+                    {
+                        "filename": "lecture1.mp3",
+                        "content_type": "audio/mpeg",
+                        "size_bytes": 15728640,
+                    },
+                    {
+                        "filename": "lecture2.mp3",
+                        "content_type": "audio/mpeg",
+                        "size_bytes": 20971520,
+                    },
                 ]
             }
         }
     )
 
 
+class PresignedUpload(BaseModel):
+    """Individual presigned upload URL"""
+
+    file_id: UUID
+    filename: str = Field(min_length=1, max_length=255)
+    upload_url: str
+
+
 class PresignedUploadResponse(BaseModel):
     """Response with presigned upload URLs"""
 
-    job_id: str
-    uploads: list[dict[str, Any]]  # List of {file_id, filename, upload_url}
+    job_id: UUID
+    uploads: list[PresignedUpload]
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -121,7 +142,7 @@ class PresignedUploadResponse(BaseModel):
                 "job_id": "123e4567-e89b-12d3-a456-426614174000",
                 "uploads": [
                     {
-                        "file_id": "abc123",
+                        "file_id": "abc12345-e89b-12d3-a456-426614174001",
                         "filename": "lecture1.mp3",
                         "upload_url": "https://s3.amazonaws.com/...",
                     }
@@ -134,12 +155,15 @@ class PresignedUploadResponse(BaseModel):
 class UploadCompleteRequest(BaseModel):
     """Request to confirm presigned uploads are complete"""
 
-    job_id: str
-    file_ids: list[str] = Field(min_length=1, description="List of file IDs that were uploaded")
+    job_id: UUID
+    file_ids: list[UUID] = Field(min_length=1, description="List of file IDs that were uploaded")
 
     model_config = ConfigDict(
         json_schema_extra={
-            "example": {"job_id": "123e4567-e89b-12d3-a456-426614174000", "file_ids": ["abc123", "def456"]}
+            "example": {
+                "job_id": "123e4567-e89b-12d3-a456-426614174000",
+                "file_ids": ["abc123", "def456"],
+            }
         }
     )
 
@@ -148,6 +172,15 @@ class YouTubeRequest(BaseModel):
     """Request to transcribe YouTube videos"""
 
     urls: list[str] = Field(min_length=1, description="List of YouTube URLs to transcribe")
+
+    @field_validator("urls")
+    @classmethod
+    def validate_youtube_urls(cls, urls: list[str]) -> list[str]:
+        """Validate that all URLs are YouTube URLs"""
+        for url in urls:
+            if "youtube.com" not in url and "youtu.be" not in url:
+                raise ValueError(f"Invalid YouTube URL: {url}")
+        return urls
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -164,7 +197,7 @@ class YouTubeRequest(BaseModel):
 class JobResponse(BaseModel):
     """Job summary response"""
 
-    job_id: str
+    job_id: UUID
     user_email: EmailStr
     status: JobStatus
     created_at: datetime
@@ -190,12 +223,14 @@ class JobResponse(BaseModel):
 class FileResponse(BaseModel):
     """File response with transcription status"""
 
-    file_id: str
-    filename: str
+    file_id: UUID
+    filename: str = Field(min_length=1, max_length=255)
     status: FileStatus
     created_at: datetime
-    duration_seconds: Optional[float] = Field(None, ge=0, description="Audio duration in seconds")
-    download_url: Optional[str] = Field(None, description="Pre-signed S3 URL for transcription download")
+    duration_seconds: float | None = Field(None, ge=0, description="Audio duration in seconds")
+    download_url: str | None = Field(
+        None, description="Pre-signed S3 URL for transcription download"
+    )
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -214,7 +249,7 @@ class FileResponse(BaseModel):
 class JobDetailResponse(BaseModel):
     """Detailed job response with file list"""
 
-    job_id: str
+    job_id: UUID
     user_email: EmailStr
     status: JobStatus
     total_files: int = Field(ge=0)
