@@ -532,14 +532,15 @@ src/transcription_service/
 
 ```toml
 [project.dependencies]
-fastapi = "^0.109.0"
-mangum = "^0.17.0"
-pydantic = "^2.6.0"
-python-jose[cryptography] = "^3.3.0"
-passlib[bcrypt] = "^1.7.4"
-boto3 = "^1.34.0"
-python-multipart = "^0.0.7"
-jinja2 = "^3.1.3"
+fastapi = ">=0.109.0,<0.110.0"
+mangum = ">=0.17.0,<0.18.0"
+pydantic = ">=2.6.0,<3.0.0"
+PyJWT = ">=2.8.0,<3.0.0"
+bcrypt = ">=4.1.0,<5.0.0"
+boto3 = ">=1.34.0,<2.0.0"
+python-multipart = ">=0.0.7,<0.1.0"
+jinja2 = ">=3.1.3,<4.0.0"
+yt-dlp = ">=2024.3.10,<2025.0.0"
 ```
 
 ### Deployment Commands
