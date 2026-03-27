@@ -4,11 +4,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir faster-whisper boto3
+RUN pip install --no-cache-dir faster-whisper boto3 yt-dlp
 
 WORKDIR /workspace
 
-# Copy the transcription script
+# Copy the transcription scripts
 COPY parallel_transcribe.py /workspace/
+COPY youtube_transcribe.py /workspace/
 
 ENTRYPOINT ["python"]
