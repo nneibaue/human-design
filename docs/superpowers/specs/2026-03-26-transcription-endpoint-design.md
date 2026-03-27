@@ -47,6 +47,7 @@ This service is intended for personal use with friends (low traffic, trust-based
 5. **Interface**
    - REST API for programmatic access
    - Simple web UI (HTML forms, job dashboard)
+   - Mobile-responsive design (works well on phones and tablets)
 
 ### Non-Functional Requirements
 
@@ -54,6 +55,7 @@ This service is intended for personal use with friends (low traffic, trust-based
 2. **Security:** Password-protected, JWT tokens, user data isolation
 3. **Simplicity:** No rate limiting, trust-based for friends-only usage
 4. **Reuse:** Leverage existing AWS Batch infrastructure from `transcribe_stack.py`
+5. **Mobile-First:** Web UI must be fully functional and usable on mobile devices (responsive design, touch-friendly)
 
 ## Architecture
 
@@ -251,6 +253,15 @@ GET /jobs/{job_id}
 Headers: Cookie with JWT
 Response: HTML job detail page with file list and download links
 ```
+
+**Web UI Implementation (Mobile-Responsive):**
+- CSS framework: None (vanilla CSS with media queries for simplicity)
+- Viewport meta tag: `<meta name="viewport" content="width=device-width, initial-scale=1">`
+- Touch-friendly: Buttons min 44x44px tap targets, adequate spacing
+- Responsive breakpoints: Mobile (<768px), Tablet (768-1024px), Desktop (>1024px)
+- Mobile upload: Use `<input type="file" multiple accept="audio/*">` for native file picker
+- Progress polling: Auto-refresh job status every 5 seconds, pause when tab hidden
+- Minimal JavaScript: Form validation, file upload progress, status polling
 
 ### File Upload Flow
 
@@ -505,7 +516,13 @@ src/transcription_service/
 │   ├── auth.py              # Auth endpoints
 │   ├── jobs.py              # Job management endpoints
 │   └── web.py               # HTML UI endpoints
+├── static/
+│   ├── css/
+│   │   └── main.css         # Mobile-responsive styles
+│   └── js/
+│       └── app.js           # File upload, status polling, form validation
 └── templates/
+    ├── base.html            # Base template with mobile viewport meta tag
     ├── index.html           # Landing page
     ├── dashboard.html       # Job list + upload form
     └── job_detail.html      # Job detail page
