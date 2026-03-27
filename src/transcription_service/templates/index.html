@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Transcription Service{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card card">
+        <!-- Auth header -->
+        <div class="auth-header">
+            <h2>Welcome</h2>
+            <p class="text-muted">Sign in to access your transcriptions</p>
+        </div>
+
+        <!-- Message area (hidden by default, shown via JS) -->
+        <div id="message-container" class="hidden"></div>
+
+        <!-- Login Form -->
+        <form id="login-form" data-form-type="login">
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input
+                    type="email"
+                    id="login-email"
+                    name="email"
+                    placeholder="you@example.com"
+                    required
+                    autocomplete="email"
+                    data-field="email"
+                >
+                <div class="form-error hidden" data-error-for="login-email"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input
+                    type="password"
+                    id="login-password"
+                    name="password"
+                    placeholder="••••••••"
+                    required
+                    minlength="8"
+                    autocomplete="current-password"
+                    data-field="password"
+                >
+                <div class="form-error hidden" data-error-for="login-password"></div>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary btn-block" data-action="login">
+                    <span data-label>Sign In</span>
+                    <span class="spinner spinner-sm hidden" data-spinner></span>
+                </button>
+            </div>
+        </form>
+
+        <!-- Register Form (hidden by default) -->
+        <form id="register-form" class="hidden" data-form-type="register">
+            <div class="form-group">
+                <label for="register-email">Email</label>
+                <input
+                    type="email"
+                    id="register-email"
+                    name="email"
+                    placeholder="you@example.com"
+                    required
+                    autocomplete="email"
+                    data-field="email"
+                >
+                <div class="form-error hidden" data-error-for="register-email"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="register-password">Password</label>
+                <input
+                    type="password"
+                    id="register-password"
+                    name="password"
+                    placeholder="••••••••"
+                    required
+                    minlength="8"
+                    autocomplete="new-password"
+                    data-field="password"
+                >
+                <div class="form-hint">Minimum 8 characters</div>
+                <div class="form-error hidden" data-error-for="register-password"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="register-display-name">Display Name</label>
+                <input
+                    type="text"
+                    id="register-display-name"
+                    name="display_name"
+                    placeholder="Your Name"
+                    required
+                    autocomplete="name"
+                    data-field="display_name"
+                >
+                <div class="form-error hidden" data-error-for="register-display-name"></div>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary btn-block" data-action="register">
+                    <span data-label>Create Account</span>
+                    <span class="spinner spinner-sm hidden" data-spinner></span>
+                </button>
+            </div>
+        </form>
+
+        <!-- Toggle between login/register -->
+        <div class="auth-footer">
+            <p>
+                <span id="toggle-text">Don't have an account?</span>
+                <a href="#" id="toggle-form" data-action="toggle-form">
+                    <span id="toggle-link-text">Sign up</span>
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Initialize auth page (form toggle, validation)
+    if (window.AuthPage) {
+        window.AuthPage.init();
+    }
+</script>
+{% endblock %}

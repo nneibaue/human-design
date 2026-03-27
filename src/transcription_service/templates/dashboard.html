@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Transcription Service{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Dashboard</h1>
+    <div class="dashboard-actions">
+        <span class="text-muted">Welcome, <strong data-user-name>{{ user.display_name if user else 'User' }}</strong></span>
+    </div>
+</div>
+
+<!-- Message area (for upload success/errors) -->
+<div id="message-container" class="hidden"></div>
+
+<!-- Upload Form -->
+<section class="upload-form card">
+    <div class="card-header">
+        <h2 class="card-title">Upload Files</h2>
+    </div>
+
+    <div class="card-body">
+        <!-- File upload area (drag & drop) -->
+        <form id="upload-file-form" enctype="multipart/form-data">
+            <div class="upload-area" id="upload-area" data-upload-type="file">
+                <div class="upload-icon" aria-hidden="true">📁</div>
+                <p class="upload-instructions">
+                    <strong>Drag & drop files here</strong> or click to select<br>
+                    <span class="text-small text-muted">Supports: MP3, MP4, WAV, M4A (max 5GB per file)</span>
+                </p>
+
+                <input
+                    type="file"
+                    id="file-input"
+                    name="files"
+                    accept="audio/*,video/*,.mp3,.mp4,.wav,.m4a,.mov"
+                    multiple
+                    class="hidden"
+                    data-input="file"
+                >
+
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('file-input').click()">
+                    Select Files
+                </button>
+
+                <!-- File list preview -->
+                <div id="file-preview" class="file-list-preview hidden">
+                    <p class="text-small"><strong>Selected files:</strong></p>
+                    <ul id="file-preview-list"></ul>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary btn-block" data-action="upload-files" disabled>
+                    <span data-label>Upload Files</span>
+                    <span class="spinner spinner-sm hidden" data-spinner></span>
+                </button>
+            </div>
+        </form>
+
+        <!-- YouTube URL form -->
+        <div class="mt-xl">
+            <form id="upload-youtube-form">
+                <div class="form-group">
+                    <label for="youtube-url">Or paste a YouTube URL</label>
+                    <input
+                        type="url"
+                        id="youtube-url"
+                        name="youtube_url"
+                        placeholder="https://www.youtube.com/watch?v=..."
+                        pattern="https://(www\.)?youtube\.com/watch\?v=.*"
+                        data-input="youtube"
+                    >
+                    <div class="form-hint">YouTube videos will be downloaded and transcribed</div>
+                    <div class="form-error hidden" data-error-for="youtube-url"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-secondary btn-block" data-action="upload-youtube" disabled>
+                        <span data-label>Download & Transcribe</span>
+                        <span class="spinner spinner-sm hidden" data-spinner></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Presigned upload option (for large files) -->
+        <div class="mt-xl">
+            <details>
+                <summary class="text-muted text-small" style="cursor: pointer;">Advanced: Upload large files (&gt;100MB)</summary>
+                <div class="mt-md">
+                    <p class="text-small text-muted">For files larger than 100MB, use presigned upload for better performance.</p>
+                    <button type="button" class="btn btn-sm btn-secondary" data-action="presigned-upload">
+                        Request Presigned Upload
+                    </button>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<!-- Job List -->
+<section class="card">
+    <div class="card-header">
+        <h2 class="card-title">Your Transcription Jobs</h2>
+    </div>
+
+    <div class="card-body">
+        <!-- Loading state -->
+        <div id="jobs-loading" class="loading">
+            <div class="spinner"></div>
+            <span class="loading-text">Loading jobs...</span>
+        </div>
+
+        <!-- Empty state (hidden by default) -->
+        <div id="jobs-empty" class="empty-state hidden">
+            <div class="empty-state-icon" aria-hidden="true">📂</div>
+            <h3 class="empty-state-title">No jobs yet</h3>
+            <p class="empty-state-text">Upload your first file to get started</p>
+        </div>
+
+        <!-- Job list (mobile: cards, desktop: table) -->
+        <div id="jobs-list" class="job-list hidden">
+            <!-- Mobile view: job cards (shown on mobile) -->
+            <div class="hidden-desktop" id="jobs-cards">
+                <!-- Job cards will be inserted here by JavaScript -->
+            </div>
+
+            <!-- Desktop view: table (shown on desktop) -->
+            <table class="job-table hidden-mobile" id="jobs-table">
+                <thead>
+                    <tr>
+                        <th>Job ID</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Progress</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="jobs-table-body">
+                    <!-- Rows will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Initialize dashboard (upload, job list, auto-refresh)
+    if (window.Dashboard) {
+        window.Dashboard.init();
+    }
+</script>
+{% endblock %}

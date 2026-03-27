@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}Job {{ job.id[:8] if job else 'Detail' }} - Transcription Service{% endblock %}
+
+{% block content %}
+<!-- Back to dashboard link -->
+<div class="mb-lg">
+    <a href="/dashboard" class="btn btn-secondary">← Back to Dashboard</a>
+</div>
+
+<!-- Message area -->
+<div id="message-container" class="hidden"></div>
+
+<!-- Loading state (shown while fetching job details) -->
+<div id="job-loading" class="loading">
+    <div class="spinner"></div>
+    <span class="loading-text">Loading job details...</span>
+</div>
+
+<!-- Job not found state (hidden by default) -->
+<div id="job-not-found" class="empty-state hidden">
+    <div class="empty-state-icon" aria-hidden="true">❌</div>
+    <h2 class="empty-state-title">Job Not Found</h2>
+    <p class="empty-state-text">This job does not exist or you don't have permission to view it.</p>
+    <a href="/dashboard" class="btn btn-primary">Go to Dashboard</a>
+</div>
+
+<!-- Job details (hidden until loaded) -->
+<div id="job-details" class="hidden">
+    <!-- Job header card -->
+    <section class="card">
+        <div class="card-header">
+            <h1 class="card-title">Job Details</h1>
+        </div>
+
+        <div class="card-body">
+            <!-- Job ID -->
+            <div class="form-group">
+                <label>Job ID</label>
+                <div class="text-mono text-small" data-field="job-id">
+                    {{ job.id if job else '' }}
+                </div>
+            </div>
+
+            <!-- Status with badge -->
+            <div class="form-group">
+                <label>Status</label>
+                <div>
+                    <span class="job-status" data-field="job-status">
+                        {{ job.status if job else 'Unknown' }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Progress bar (shown for running jobs) -->
+            <div class="form-group hidden" data-section="progress">
+                <label>Progress</label>
+                <div class="job-progress">
+                    <div class="job-progress-label">
+                        <span data-field="progress-text">0%</span>
+                        <span class="text-muted text-small" data-field="progress-detail"></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" data-field="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Created timestamp -->
+            <div class="form-group">
+                <label>Created</label>
+                <div class="text-small" data-field="created-at">
+                    {{ job.created_at if job else '' }}
+                </div>
+            </div>
+
+            <!-- Updated timestamp -->
+            <div class="form-group">
+                <label>Last Updated</label>
+                <div class="text-small" data-field="updated-at">
+                    {{ job.updated_at if job else '' }}
+                </div>
+            </div>
+
+            <!-- Error message (shown if job failed) -->
+            <div class="form-group hidden" data-section="error">
+                <label>Error Message</label>
+                <div class="message message-error">
+                    <div class="message-content">
+                        <p class="message-text" data-field="error-message"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job actions -->
+        <div class="card-footer">
+            <div class="btn-group">
+                <!-- Refresh button -->
+                <button type="button" class="btn btn-secondary" data-action="refresh-job">
+                    <span data-label>Refresh</span>
+                    <span class="spinner spinner-sm hidden" data-spinner></span>
+                </button>
+
+                <!-- Delete button (danger) -->
+                <button type="button" class="btn btn-danger" data-action="delete-job">
+                    <span data-label>Delete Job</span>
+                    <span class="spinner spinner-sm hidden" data-spinner></span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Files card -->
+    <section class="card">
+        <div class="card-header">
+            <h2 class="card-title">Files</h2>
+        </div>
+
+        <div class="card-body">
+            <!-- Loading state -->
+            <div id="files-loading" class="loading">
+                <div class="spinner"></div>
+                <span class="loading-text">Loading files...</span>
+            </div>
+
+            <!-- Empty state (no files) -->
+            <div id="files-empty" class="empty-state hidden">
+                <div class="empty-state-icon" aria-hidden="true">📄</div>
+                <h3 class="empty-state-title">No files available</h3>
+                <p class="empty-state-text">Files will appear here when transcription is complete</p>
+            </div>
+
+            <!-- File list -->
+            <ul id="files-list" class="file-list hidden">
+                <!-- File items will be inserted here by JavaScript
+                     Example structure:
+                     <li class="file-item">
+                         <div class="file-name">
+                             <span class="text-mono text-small">transcript.txt</span>
+                         </div>
+                         <div class="file-actions">
+                             <a href="#" class="btn btn-sm btn-primary">Download</a>
+                         </div>
+                     </li>
+                -->
+            </ul>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Initialize job detail page (auto-refresh, file downloads, delete)
+    if (window.JobDetail) {
+        // Get job ID from URL path (e.g., /jobs/abc123)
+        const jobId = window.location.pathname.split('/').pop();
+        window.JobDetail.init(jobId);
+    }
+</script>
+{% endblock %}

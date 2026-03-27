@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Transcription Service - Upload and transcribe audio/video files">
+    <title>{% block title %}Transcription Service{% endblock %}</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/static/css/main.css">
+
+    <!-- Favicon (optional, can be added later) -->
+    <!-- <link rel="icon" type="image/x-icon" href="/static/favicon.ico"> -->
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header with navigation -->
+    <header class="site-header">
+        <div class="container">
+            <h1 class="site-title">
+                <a href="/">Transcription Service</a>
+            </h1>
+
+            <nav class="site-nav" aria-label="Main navigation">
+                {% if user %}
+                    <!-- Authenticated navigation -->
+                    <a href="/dashboard">Dashboard</a>
+                    <a href="#" id="logout-link" data-action="logout">Logout</a>
+                {% else %}
+                    <!-- Unauthenticated navigation -->
+                    <a href="/">Login</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main content area -->
+    <main id="main-content" class="main-content">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="/static/js/app.js"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
