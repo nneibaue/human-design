@@ -3,11 +3,11 @@
 Single-table design:
     Users:
         PK: USER#<email>
-        SK: METADATA
+        SK: #PROFILE
 
     Jobs (owned by user):
         PK: USER#<email>
-        SK: JOB#<timestamp>#<uuid>
+        SK: JOB#<job_id>
         Attributes: job_id (for GSI lookup)
 
     Job Metadata:
@@ -104,7 +104,7 @@ def create_user(email: str, password_hash: str, display_name: str | None = None)
     now = _now_iso()
     item = {
         "PK": {"S": f"USER#{email}"},
-        "SK": {"S": "METADATA"},
+        "SK": {"S": "#PROFILE"},
         "email": {"S": email},
         "password_hash": {"S": password_hash},
         "created_at": {"S": now},
@@ -139,7 +139,7 @@ def get_user_by_email(email: str) -> dict | None:
             TableName=DYNAMODB_TABLE,
             Key={
                 "PK": {"S": f"USER#{email}"},
-                "SK": {"S": "METADATA"},
+                "SK": {"S": "#PROFILE"},
             },
         )
         if "Item" not in response:
@@ -171,7 +171,7 @@ def create_job(email: str, job_type: str) -> UUID:
     # Create job record owned by user
     user_job_item = {
         "PK": {"S": f"USER#{email}"},
-        "SK": {"S": f"JOB#{now}#{job_id}"},
+        "SK": {"S": f"JOB#{job_id}"},
         "job_id": {"S": str(job_id)},
         "status": {"S": "queued"},
         "created_at": {"S": now},
@@ -249,11 +249,12 @@ def list_jobs_for_user(email: str, limit: int = 20, offset: int = 0) -> list[dic
                 ":pk": {"S": f"USER#{email}"},
                 ":sk_prefix": {"S": "JOB#"},
             },
-            ScanIndexForward=False,  # Newest first
-            Limit=limit + offset,
         )
 
         items = [_item_to_dict(item) for item in response.get("Items", [])]
+
+        # Sort by created_at timestamp (newest first) since SK no longer contains timestamp
+        items.sort(key=lambda x: x.get("created_at", ""), reverse=True)
 
         # Manual offset handling (DynamoDB doesn't support offset directly)
         return items[offset : offset + limit]
