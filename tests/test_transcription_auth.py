@@ -1,8 +1,6 @@
 """Tests for transcription service authentication utilities"""
 
-import os
-import time
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from unittest.mock import MagicMock
 
 import jwt
@@ -51,8 +49,8 @@ class TestJWT:
 
         # Check expiration is approximately 7 days from now
         exp_timestamp = payload["exp"]
-        exp_datetime = datetime.fromtimestamp(exp_timestamp, tz=timezone.utc)
-        now = datetime.now(timezone.utc)
+        exp_datetime = datetime.fromtimestamp(exp_timestamp, tz=UTC)
+        now = datetime.now(UTC)
         delta = exp_datetime - now
 
         # Allow 1 second tolerance for test execution time
@@ -75,7 +73,7 @@ class TestJWT:
         # Create token that expired 1 hour ago
         payload = {
             "sub": "test@example.com",
-            "exp": datetime.now(timezone.utc) - timedelta(hours=1),
+            "exp": datetime.now(UTC) - timedelta(hours=1),
         }
         expired_token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
         result = verify_jwt_token(expired_token)
@@ -85,7 +83,7 @@ class TestJWT:
         """Test that verify_jwt_token returns None for token signed with wrong secret"""
         payload = {
             "sub": "test@example.com",
-            "exp": datetime.now(timezone.utc) + timedelta(days=7),
+            "exp": datetime.now(UTC) + timedelta(days=7),
         }
         wrong_token = jwt.encode(payload, "wrong-secret", algorithm=JWT_ALGORITHM)
         result = verify_jwt_token(wrong_token)
@@ -93,7 +91,7 @@ class TestJWT:
 
     def test_verify_jwt_token_returns_none_for_missing_sub(self) -> None:
         """Test that verify_jwt_token returns None when 'sub' claim is missing"""
-        payload = {"exp": datetime.now(timezone.utc) + timedelta(days=7)}
+        payload = {"exp": datetime.now(UTC) + timedelta(days=7)}
         token_without_sub = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
         result = verify_jwt_token(token_without_sub)
         assert result is None
@@ -229,7 +227,7 @@ class TestGetCurrentUser:
         # Create expired token
         payload = {
             "sub": "user@example.com",
-            "exp": datetime.now(timezone.utc) - timedelta(hours=1),
+            "exp": datetime.now(UTC) - timedelta(hours=1),
         }
         expired_token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 

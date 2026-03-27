@@ -5,14 +5,14 @@ and FastAPI dependency functions for extracting the current user from request he
 """
 
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import bcrypt
 import jwt
 from fastapi import HTTPException, Request, status
 
 # JWT Configuration
-JWT_SECRET = os.environ.get("JWT_SECRET", "dev-secret-change-in-production")
+JWT_SECRET = os.environ.get("JWT_SECRET", "dev-secret-DO-NOT-USE-IN-PRODUCTION-CHANGE-ME")
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_DAYS = 7
 
@@ -36,7 +36,7 @@ def create_jwt_token(email: str) -> str:
     """
     payload = {
         "sub": email,
-        "exp": datetime.now(timezone.utc) + timedelta(days=JWT_EXPIRATION_DAYS),
+        "exp": datetime.now(UTC) + timedelta(days=JWT_EXPIRATION_DAYS),
     }
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
