@@ -6,9 +6,11 @@ from typing import BinaryIO
 
 import boto3
 from botocore.exceptions import ClientError
+from mypy_boto3_s3.client import S3Client
+from mypy_boto3_s3.type_defs import ObjectIdentifierTypeDef
 
 
-def _get_s3_client():
+def _get_s3_client() -> S3Client:
     """Get S3 client (lazy initialization for testability)"""
     return boto3.client("s3")
 
@@ -204,9 +206,10 @@ def delete_file(bucket: str, key: str) -> None:
 
 
 def delete_files_with_prefix(bucket: str, prefix: str) -> None:
-    """Delete all files in S3 with given prefix (batch deletion)
+    """Delete all files in S3 with given prefix (handles pagination)
 
     This is useful for cleaning up all files in a job directory.
+    Automatically handles pagination for prefixes with >1000 objects.
 
     Args:
         bucket: S3 bucket name
@@ -220,18 +223,30 @@ def delete_files_with_prefix(bucket: str, prefix: str) -> None:
     """
     try:
         s3 = _get_s3_client()
-        # List all objects with prefix
-        response = s3.list_objects_v2(Bucket=bucket, Prefix=prefix)
-        objects = response.get("Contents", [])
+        continuation_token: str | None = None
 
-        if not objects:
-            return
+        while True:
+            # List objects with pagination
+            if continuation_token:
+                response = s3.list_objects_v2(
+                    Bucket=bucket, Prefix=prefix, ContinuationToken=continuation_token
+                )
+            else:
+                response = s3.list_objects_v2(Bucket=bucket, Prefix=prefix)
 
-        # Batch delete (max 1000 objects per request)
-        delete_keys = [{"Key": obj["Key"]} for obj in objects]
-        s3.delete_objects(
-            Bucket=bucket,
-            Delete={"Objects": delete_keys},
-        )
+            objects = response.get("Contents", [])
+
+            if objects:
+                # Batch delete (max 1000 per request)
+                delete_keys: list[ObjectIdentifierTypeDef] = [
+                    {"Key": obj["Key"]} for obj in objects
+                ]
+                s3.delete_objects(Bucket=bucket, Delete={"Objects": delete_keys})
+
+            # Check if more pages exist
+            if not response.get("IsTruncated"):
+                break
+
+            continuation_token = response.get("NextContinuationToken")
     except ClientError as e:
         raise RuntimeError(f"Failed to delete files with prefix from S3: {e}") from e
