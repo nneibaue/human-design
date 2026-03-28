@@ -185,7 +185,7 @@ class TranscriptionApiStack(Stack):
                 "HD_SECRET_NAME": "hd-api-credentials",
                 "BATCH_JOB_DEFINITION": job_definition_name,
                 "BATCH_JOB_QUEUE": job_queue_name,
-                "AWS_REGION": self.region,
+                # AWS_REGION is automatically provided by Lambda runtime
                 # FastAPI/Mangum configuration
                 "STAGE": "prod",
             },
@@ -219,7 +219,8 @@ class TranscriptionApiStack(Stack):
                     apigwv2.CorsHttpMethod.OPTIONS,
                 ],
                 allow_headers=["*"],
-                allow_credentials=True,
+                # Note: allow_credentials not compatible with allow_origins=["*"]
+                # JWT auth uses Authorization header, not cookies, so credentials not needed
                 max_age=Duration.hours(1),
             ),
             # Default integration (proxy all requests to Lambda)
