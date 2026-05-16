@@ -5,6 +5,8 @@ This module contains models for geographical coordinates, zodiac coordinates,
 and time-related conversions.
 """
 
+from __future__ import annotations
+
 from datetime import UTC, datetime
 from typing import cast
 from zoneinfo import ZoneInfo
