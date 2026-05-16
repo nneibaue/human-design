@@ -8,6 +8,10 @@ RUN pip install --no-cache-dir faster-whisper boto3
 
 WORKDIR /workspace
 
+# Pre-download the whisper model into the image so containers don't need
+# disk space or network access to fetch it at runtime.
+RUN python -c "from faster_whisper import WhisperModel; WhisperModel('large-v3', device='cpu', compute_type='int8')"
+
 # Copy the transcription script
 COPY parallel_transcribe.py /workspace/
 

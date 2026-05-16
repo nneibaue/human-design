@@ -28,6 +28,10 @@ app = typer.Typer(help="Scraper for 64keys.com Human Design data")
 aws_app = typer.Typer(help="AWS infrastructure commands")
 app.add_typer(aws_app, name="aws")
 
+# Transcription sub-commands
+transcribe_app = typer.Typer(help="YouTube transcription pipeline commands")
+app.add_typer(transcribe_app, name="transcribe")
+
 
 @app.command()
 def bodygraph(
@@ -466,6 +470,100 @@ def aws_billing(
         typer.echo(f"❌ Error: {e}", err=True)
         typer.echo("\n💡 Tip: Make sure Cost Explorer is enabled in your AWS account", err=True)
         raise typer.Exit(code=1) from e
+
+
+# Transcription Commands
+@transcribe_app.command("run")
+def transcribe_run(
+    urls: list[str] = typer.Argument(help="YouTube video URLs to transcribe"),
+    channel_name: str = typer.Option("", "--channel", "-c", help="Channel name for organizing files"),
+    prompt: str = typer.Option("", "--prompt", "-p", help="Whisper prompt for domain terms (empty for raw)"),
+) -> None:
+    """Transcribe YouTube videos using the AI agent pipeline.
+
+    Examples:
+        hd transcribe run https://youtu.be/abc123
+        hd transcribe run URL1 URL2 --channel IntegralEmergence
+    """
+    from .agents.transcribe import TranscribeDeps, transcribe_agent
+
+    deps = TranscribeDeps.create()
+    agent_prompt = f"Transcribe these YouTube videos: {', '.join(urls)}"
+    if channel_name:
+        agent_prompt += f"\nChannel name: {channel_name}"
+    if prompt:
+        agent_prompt += f"\nUse this whisper prompt: {prompt}"
+
+    result = transcribe_agent.run_sync(agent_prompt, deps=deps)
+    typer.echo(result.output.model_dump_json(indent=2))
+
+
+@transcribe_app.command("status")
+def transcribe_status(
+    channel: str = typer.Argument("", help="Channel name to check (or blank for all)"),
+) -> None:
+    """Check status of transcription jobs.
+
+    Examples:
+        hd transcribe status IntegralEmergence
+    """
+    if not AWS_AVAILABLE:
+        typer.echo("AWS dependencies not available", err=True)
+        raise typer.Exit(code=1)
+
+    batch = boto3.client("batch")
+    console = Console()
+
+    statuses = ["SUBMITTED", "PENDING", "RUNNABLE", "STARTING", "RUNNING", "SUCCEEDED", "FAILED"]
+    counts: dict[str, int] = {}
+    for s in statuses:
+        resp = batch.list_jobs(jobQueue="transcribe-queue", jobStatus=s, maxResults=100)
+        jobs = resp.get("jobSummaryList", [])
+        if channel:
+            jobs = [j for j in jobs if channel.lower() in j.get("jobName", "").lower()]
+        counts[s] = len(jobs)
+
+    table = Table(title=f"Transcription Jobs{f' ({channel})' if channel else ''}")
+    table.add_column("Status", style="cyan")
+    table.add_column("Count", justify="right", style="green")
+    for s, count in counts.items():
+        if count > 0:
+            table.add_row(s, str(count))
+    console.print(table)
+
+
+@transcribe_app.command("pull")
+def transcribe_pull(
+    channel: str = typer.Argument(help="Channel name to pull transcripts for"),
+) -> None:
+    """Pull completed transcripts from S3 to ~/HD/TRANSCRIPTS/.
+
+    Examples:
+        hd transcribe pull IntegralEmergence
+    """
+    if not AWS_AVAILABLE:
+        typer.echo("AWS dependencies not available", err=True)
+        raise typer.Exit(code=1)
+
+    from pathlib import Path
+
+    s3 = boto3.client("s3")
+    local_dir = Path.home() / "HD" / "TRANSCRIPTS" / channel
+    local_dir.mkdir(parents=True, exist_ok=True)
+
+    resp = s3.list_objects_v2(Bucket="hd-transcribe-output", Prefix=f"{channel}/")
+    downloaded = 0
+    for obj in resp.get("Contents", []):
+        key = obj["Key"]
+        filename = key.rsplit("/", 1)[-1]
+        if not filename:
+            continue
+        local_path = local_dir / filename
+        s3.download_file("hd-transcribe-output", key, str(local_path))
+        downloaded += 1
+        typer.echo(f"  {filename}")
+
+    typer.echo(f"\nDownloaded {downloaded} files to {local_dir}")
 
 
 if __name__ == "__main__":

@@ -4,6 +4,7 @@
 import json
 import os
 import sys
+import tempfile
 from pathlib import Path
 from datetime import datetime
 from faster_whisper import WhisperModel
@@ -12,17 +13,19 @@ from faster_whisper import WhisperModel
 sys.stdout.reconfigure(line_buffering=True)
 sys.stderr.reconfigure(line_buffering=True)
 
-# Human Design terminology prompt to improve transcription accuracy
-HD_PROMPT = """
-Human Design lecture by Ra Uru Hu. Terms include: Manifestor, Generator, 
-Manifesting Generator, Projector, Reflector, bodygraph, gates, channels, 
+# Terminology prompt to improve transcription accuracy (optional).
+# Set TRANSCRIBE_PROMPT env var to override; set to empty string to disable.
+_DEFAULT_PROMPT = """
+Human Design lecture by Ra Uru Hu. Terms include: Manifestor, Generator,
+Manifesting Generator, Projector, Reflector, bodygraph, gates, channels,
 centers, defined, undefined, open centers, strategy, authority, sacral authority,
-emotional authority, splenic authority, profile, incarnation cross, I Ching, 
-hexagram, Rave cosmology, conditioning, not-self, deconditioning, aura, 
+emotional authority, splenic authority, profile, incarnation cross, I Ching,
+hexagram, Rave cosmology, conditioning, not-self, deconditioning, aura,
 planetary imprint, Moon, Sun, Earth, nodes, design, personality, unconscious,
 conscious, transit, penta, composite, definition, split definition, single definition,
 triple split, quadruple split, no definition, lines, colors, tones, bases.
 """
+HD_PROMPT = os.environ.get("TRANSCRIBE_PROMPT", _DEFAULT_PROMPT)
 
 
 def transcribe_file(model: WhisperModel, audio_path: Path, output_dir: Path) -> dict:
@@ -34,13 +37,11 @@ def transcribe_file(model: WhisperModel, audio_path: Path, output_dir: Path) -> 
     
     start_time = datetime.now()
     
-    # Transcribe with VAD filtering and HD terminology prompt
-    segments, info = model.transcribe(
-        str(audio_path),
-        beam_size=5,
-        vad_filter=True,
-        initial_prompt=HD_PROMPT,
-    )
+    # Transcribe with VAD filtering and optional terminology prompt
+    transcribe_kwargs = dict(beam_size=5, vad_filter=True)
+    if HD_PROMPT.strip():
+        transcribe_kwargs["initial_prompt"] = HD_PROMPT
+    segments, info = model.transcribe(str(audio_path), **transcribe_kwargs)
     
     # Collect segments
     all_segments = []
@@ -135,7 +136,7 @@ def parallel_transcribe(audio_dir: Path, output_dir: Path, start_index: int = 0,
     
     for i, mp3_file in enumerate(files_to_process, 1):
         global_index = start_index + i
-        print(f"\n[{global_index}/{len(mp3_files)}]", end="")
+        print(f"\n[{global_index}/{len(audio_files)}]", end="")
         
         try:
             transcribe_file(model, mp3_file, output_dir)
@@ -152,16 +153,77 @@ def parallel_transcribe(audio_dir: Path, output_dir: Path, start_index: int = 0,
     print(f"{'#'*60}\n")
 
 
+def _parse_s3_uri(uri: str) -> tuple[str, str]:
+    """Parse s3://bucket/key into (bucket, key)."""
+    parts = uri.replace("s3://", "").split("/", 1)
+    return parts[0], parts[1] if len(parts) > 1 else ""
+
+
+def s3_download(s3_uri: str, local_dir: Path):
+    """Download file(s) from S3 to a local directory using boto3."""
+    import boto3
+    local_dir.mkdir(parents=True, exist_ok=True)
+    bucket, prefix = _parse_s3_uri(s3_uri)
+    s3 = boto3.client("s3")
+    # List objects matching the prefix
+    resp = s3.list_objects_v2(Bucket=bucket, Prefix=prefix)
+    for obj in resp.get("Contents", []):
+        key = obj["Key"]
+        filename = key.rsplit("/", 1)[-1]
+        if not filename:
+            continue
+        local_path = local_dir / filename
+        print(f"  Downloading: {key} -> {local_path}")
+        s3.download_file(bucket, key, str(local_path))
+    print(f"Downloaded {len(resp.get('Contents', []))} file(s) to {local_dir}")
+
+
+def s3_upload(local_dir: Path, s3_uri: str):
+    """Upload all files from a local directory to S3 using boto3."""
+    import boto3
+    bucket, prefix = _parse_s3_uri(s3_uri)
+    s3 = boto3.client("s3")
+    uploaded = 0
+    for f in local_dir.iterdir():
+        if f.is_file():
+            key = f"{prefix}{f.name}" if prefix.endswith("/") else f"{prefix}/{f.name}"
+            print(f"  Uploading: {f.name} -> s3://{bucket}/{key}")
+            s3.upload_file(str(f), bucket, key)
+            uploaded += 1
+    print(f"Uploaded {uploaded} file(s) to {s3_uri}")
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 4:
-        print("Usage: python parallel_transcribe.py <audio_directory> <output_directory> <start_index> [count] [model]")
-        print("Example: python parallel_transcribe.py /audio/lecture /output/lecture 0 7 large-v3")
+        print("Usage: python parallel_transcribe.py <audio_dir|s3://...> <output_dir|s3://...> <start_index> [count] [model]")
+        print("Example: python parallel_transcribe.py s3://bucket/input/ s3://bucket/output/ 0 7 large-v3")
         sys.exit(1)
-    
-    audio_dir = Path(sys.argv[1])
-    output_dir = Path(sys.argv[2])
+
+    audio_arg = sys.argv[1]
+    output_arg = sys.argv[2]
     start_index = int(sys.argv[3])
     count = int(sys.argv[4]) if len(sys.argv) > 4 else None
     model_name = sys.argv[5] if len(sys.argv) > 5 else "large-v3"
-    
+
+    s3_output_uri = None
+
+    # Handle S3 input: download to temp dir
+    if audio_arg.startswith("s3://"):
+        tmpdir = tempfile.mkdtemp(prefix="transcribe_input_")
+        s3_download(audio_arg, Path(tmpdir))
+        audio_dir = Path(tmpdir)
+    else:
+        audio_dir = Path(audio_arg)
+
+    # Handle S3 output: write locally, upload after
+    if output_arg.startswith("s3://"):
+        s3_output_uri = output_arg
+        output_dir = Path(tempfile.mkdtemp(prefix="transcribe_output_"))
+    else:
+        output_dir = Path(output_arg)
+
     parallel_transcribe(audio_dir, output_dir, start_index, count, model_name)
+
+    # Upload results to S3 if needed
+    if s3_output_uri:
+        s3_upload(output_dir, s3_output_uri)

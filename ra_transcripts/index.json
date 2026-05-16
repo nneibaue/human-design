@@ -1,0 +1,193 @@
+{
+  "series": [
+    {
+      "id": "planetary-imprint-1996",
+      "title": "Planetary Imprint",
+      "year": 1996,
+      "total_duration_seconds": 4500,
+      "description": "Deep dive into planetary mechanics in the BodyGraph using Monica Seles' chart as a case study throughout the series.",
+      "tracks": [
+        {
+          "number": 1,
+          "file": "1",
+          "topic": "The Moon - drives, movement, destiny",
+          "keywords": ["moon", "drive", "movement", "destiny", "nodes", "lunar body", "passenger consciousness"],
+          "duration_seconds": 176,
+          "example_persons": ["Monica Seles"],
+          "transcribed": true
+        },
+        {
+          "number": 2,
+          "file": "2",
+          "topic": "Mercury - communication, thinking",
+          "keywords": ["mercury", "communication", "thinking", "mental body"],
+          "duration_seconds": 0,
+          "example_persons": [],
+          "transcribed": true
+        },
+        {
+          "number": 3,
+          "file": "3",
+          "topic": "Venus - morality, mores, relationships",
+          "keywords": ["venus", "morality", "mores", "right", "wrong", "yin", "female power"],
+          "duration_seconds": 246,
+          "example_persons": ["Monica Seles"],
+          "transcribed": true
+        },
+        {
+          "number": 4,
+          "file": "4",
+          "topic": "Sun - core identity, essence",
+          "keywords": ["sun", "identity", "essence", "core"],
+          "duration_seconds": 0,
+          "example_persons": [],
+          "transcribed": true
+        },
+        {
+          "number": 5,
+          "file": "5",
+          "topic": "Jupiter - law, hierarchy, expansion",
+          "keywords": ["jupiter", "law", "hierarchy", "expansion", "principle"],
+          "duration_seconds": 202,
+          "example_persons": ["Monica Seles"],
+          "transcribed": true
+        },
+        {
+          "number": 6,
+          "file": "6",
+          "topic": "Saturn - structure, limitation, fear",
+          "keywords": ["saturn", "structure", "limitation", "fear", "discipline"],
+          "duration_seconds": 0,
+          "example_persons": [],
+          "transcribed": true
+        },
+        {
+          "number": 7,
+          "file": "7",
+          "topic": "Uranus - awakening, revolution, genius",
+          "keywords": ["uranus", "awakening", "revolution", "genius", "sudden change"],
+          "duration_seconds": 0,
+          "example_persons": [],
+          "transcribed": true
+        },
+        {
+          "number": 8,
+          "file": "8",
+          "topic": "Neptune - illusion, spirituality, dreams",
+          "keywords": ["neptune", "illusion", "spirituality", "dreams", "maia"],
+          "duration_seconds": 0,
+          "example_persons": [],
+          "transcribed": true
+        },
+        {
+          "number": 9,
+          "file": "9",
+          "topic": "Mars - action, drive, will",
+          "keywords": ["mars", "action", "drive", "will", "energy"],
+          "duration_seconds": 0,
+          "example_persons": [],
+          "transcribed": true
+        },
+        {
+          "number": 10,
+          "file": "10",
+          "topic": "Pluto - truth, power, transformation",
+          "keywords": ["pluto", "truth", "power", "transformation", "grandma", "collective shadow"],
+          "duration_seconds": 173,
+          "example_persons": ["Monica Seles"],
+          "transcribed": true
+        },
+        {
+          "number": 11,
+          "file": "11",
+          "topic": "Chiron - wounding, healing, teaching",
+          "keywords": ["chiron", "wounding", "healing", "teaching", "wounded healer"],
+          "duration_seconds": 0,
+          "example_persons": [],
+          "transcribed": true
+        },
+        {
+          "number": 12,
+          "file": "12",
+          "topic": "Nodes - soul destiny, incarnation purpose",
+          "keywords": ["nodes", "destiny", "incarnation", "soul purpose", "north node", "south node"],
+          "duration_seconds": 0,
+          "example_persons": [],
+          "transcribed": true
+        },
+        {
+          "number": 13,
+          "file": "13",
+          "topic": "Lilith - dark feminine, rebellion, boundaries",
+          "keywords": ["lilith", "feminine", "rebellion", "boundaries", "shadow"],
+          "duration_seconds": 0,
+          "example_persons": [],
+          "transcribed": true
+        },
+        {
+          "number": 14,
+          "file": "14",
+          "topic": "Black Moon - unconscious patterns, ancestral healing",
+          "keywords": ["black moon", "unconscious", "patterns", "ancestral", "healing"],
+          "duration_seconds": 0,
+          "example_persons": [],
+          "transcribed": true
+        },
+        {
+          "number": 15,
+          "file": "15",
+          "topic": "Earth - grounding, stability, yin principle",
+          "keywords": ["earth", "grounding", "stability", "yin", "balance", "receptivity"],
+          "duration_seconds": 240,
+          "example_persons": ["Monica Seles"],
+          "transcribed": true
+        },
+        {
+          "number": 16,
+          "file": "16",
+          "topic": "Vertex - synchronicity, fated encounters",
+          "keywords": ["vertex", "synchronicity", "fate", "encounters", "destiny points"],
+          "duration_seconds": 0,
+          "example_persons": [],
+          "transcribed": true
+        },
+        {
+          "number": 17,
+          "file": "17",
+          "topic": "Pars Fortuna - luck, opportunity",
+          "keywords": ["pars fortuna", "luck", "opportunity", "fortune", "grace"],
+          "duration_seconds": 0,
+          "example_persons": [],
+          "transcribed": true
+        },
+        {
+          "number": 18,
+          "file": "18",
+          "topic": "Dormant gates, conditioning, waiting for keys",
+          "keywords": ["dormant gates", "conditioning", "undefined", "waiting", "keys", "deconditioning"],
+          "duration_seconds": 115,
+          "example_persons": ["Monica Seles"],
+          "transcribed": true
+        },
+        {
+          "number": 19,
+          "file": "19",
+          "topic": "Transits and progressed charts - evolution over time",
+          "keywords": ["transits", "progressed", "evolution", "time", "cycles"],
+          "duration_seconds": 0,
+          "example_persons": [],
+          "transcribed": true
+        },
+        {
+          "number": 20,
+          "file": "20",
+          "topic": "Nodes, destiny, sacral response, personality",
+          "keywords": ["nodes", "destiny", "sacral response", "personality", "design", "incarnation cross"],
+          "duration_seconds": 240,
+          "example_persons": ["Monica Seles"],
+          "transcribed": true
+        }
+      ]
+    }
+  ]
+}

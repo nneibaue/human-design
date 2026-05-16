@@ -51,6 +51,16 @@ from .core import (
     ZodiacSignField,
 )
 
+# Transcription pipeline models
+from .transcription import (
+    ChannelDownload,
+    JobStatus,
+    TranscriptionJob,
+    TranscriptionPipeline,
+    TranscriptionResult,
+    TranscriptionSegment,
+)
+
 # 64keys summary models
 from .summaries_64keys import (
     ActivationSummary64Keys,
@@ -81,6 +91,13 @@ __all__ = [
     "GateDefinition",
     "RawActivation",
     "RawBodyGraph",
+    # Transcription
+    "ChannelDownload",
+    "JobStatus",
+    "TranscriptionJob",
+    "TranscriptionPipeline",
+    "TranscriptionResult",
+    "TranscriptionSegment",
     # 64keys summaries
     "ActivationSummary64Keys",
     "BodyGraphSummary64Keys",
