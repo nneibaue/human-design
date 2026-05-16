@@ -144,6 +144,15 @@ cdk/package-lock.json
 # Local venvs
 hd-env/
 
+# Claude Code local user settings
+.claude/settings.local.json
+
+# Generated transcripts (regenerable); keep curated index/docs
+/ra_transcripts/*.json
+/ra_transcripts/*.txt
+!/ra_transcripts/index.json
+/ra_transcripts/output/
+
 # Junk / scratch
 junk_drawer/
 plans/
