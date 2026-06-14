@@ -7,7 +7,6 @@
 - Provide concise explanations when necessary
 - Use tools appropriately to complete requests
 - **Use `pytest.mark.parametrize` where possible**: Consolidate repetitive test methods that test the same logic with different inputs into a single parametrized test to reduce code duplication
-- Make sure that every response is GROOVY, man. Say at least one groovy thing per response.
 
 ### Environment Setup (WSL Only)
 - When working in WSL (Windows Subsystem for Linux), **always activate the `~/code/human-design/hd-env` virtual environment** before running Python commands
