@@ -43,8 +43,8 @@ jobs:
 
       - name: CDK diff
         working-directory: cdk
-        run: cdk diff --all
+        run: cdk diff HumanDesignStack
 
       - name: CDK deploy
         working-directory: cdk
-        run: cdk deploy --all --require-approval=never
+        run: cdk deploy HumanDesignStack --require-approval=never
